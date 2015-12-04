@@ -1,19 +1,18 @@
 <!doctype html>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" media="all" />
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 </head>
 <body>
-<style>
-    .songResult {
-        cursor:pointer;
-    }
-</style>
-<strong>Searcjhh</strong>
-<input type="text" id="search" disabled />
-<div id="search-container">
+<div id="wrapper">
+    <img width="50px" src="images/logo.png" />
+    <h1>Freshleaf Jukebox</h1>
+    <strong>Search YouTube </strong>
+    <input type="text" id="search" disabled />
+    <div id="search-container">
 
-</div>
+    </div>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
 	<script>
@@ -71,5 +70,6 @@
             });
         }
 	</script>
+</div>
 </body>
 </html>

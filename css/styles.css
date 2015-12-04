@@ -1,0 +1,21 @@
+.songResult {
+    cursor:pointer;
+}
+#wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+body {
+    background: #00aced;
+    font-family: arial;
+}
+img {
+    display: inline-block;
+    margin-right: 10px;
+}
+h1 {
+    line-height: 50px;
+  color: #fff;
+
+}
