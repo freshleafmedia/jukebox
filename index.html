@@ -8,6 +8,9 @@
     .songResult {
         cursor:pointer;
     }
+    .added {
+        background: lightgreen;
+    }
 </style>
 <strong>Searcjhh</strong>
 <input type="text" id="search" disabled />
@@ -60,6 +63,7 @@
         $('#search-container').on('click', '> div', function() {
             var id = $(this).data('url');
             addSong(id);
+            $(this).addClass('added');
         });
 
         function addSong(id) {
