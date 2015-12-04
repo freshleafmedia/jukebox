@@ -6,6 +6,9 @@
     margin: 0 auto;
     text-align: center;
 }
+.added {
+    background: lightgreen;
+}
 body {
     background: #00aced;
     font-family: arial;

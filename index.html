@@ -59,14 +59,18 @@
         $('#search-container').on('click', '> div', function() {
             var id = $(this).data('url');
             addSong(id);
+            $(this).addClass('added');
         });
 
         function addSong(id) {
-            console.log(id);
+            console.log('Adding.. ' + id);
             $.ajax('http://192.168.1.77/dj.php', {
                 data: {
                     id: id
-                }
+                },
+		success: function(data) {
+		    console.log('Song added! [server: ' + data + ']');
+		}
             });
         }
 	</script>
