@@ -38,7 +38,8 @@
         function search(query) {
             var request = gapi.client.youtube.search.list({
                 q: query,
-                part: 'snippet'
+                part: 'snippet',
+                maxResults: '25'
             });
 
             request.execute(function (response) {
