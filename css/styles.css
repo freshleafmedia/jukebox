@@ -1,5 +1,9 @@
 .songResult {
     cursor:pointer;
+    display: flex;
+}
+.songResult .title {
+    font-weight: bold;
 }
 #wrapper {
     max-width: 1000px;
