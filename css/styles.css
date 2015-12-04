@@ -1,6 +1,7 @@
 .songResult {
     cursor:pointer;
     display: flex;
+    text-align: left;
 }
 .songResult .title {
     font-weight: bold;

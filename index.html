@@ -51,9 +51,9 @@
                         var image = $('<img />', { src: item.snippet.thumbnails.default.url });
                         var descWrap = $('<div />');
                         var title = $('<p />', { text: item.snippet.title, 'class': 'title' });
-                        var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
+                        //var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
                         descWrap.append(title);
-                        descWrap.append(author);
+                        //descWrap.append(author);
                         el.append(image);
                         el.append(descWrap);
                         $('#search-container').append(el);
