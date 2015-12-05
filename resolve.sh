@@ -19,13 +19,13 @@ done
 # Call the option parser
 optParser
 
-MYSQL_HOST='localhost'
-MYSQL_USER='root'
-MYSQL_PASS='password'
-MYSQL_DB='jukebox'
+MYSQL_HOST=$(optValue 'MYSQL_HOST')
+MYSQL_USER=$(optValue 'MYSQL_USER')
+MYSQL_PASS=$(optValue 'MYSQL_PASS')
+MYSQL_DB=$(optValue 'MYSQL_DB')
 
-RESOLVE_LIST="resolve_list"
-QUEUE_LIST="queue_list"
+QUEUE_LIST=$(optValue 'FILE_QUEUE')
+RESOLVE_LIST=$(optValue 'FILE_RESOLVE')
 
 function implode { local IFS="$1"; shift; echo "$*"; }
 

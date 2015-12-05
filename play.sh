@@ -19,15 +19,15 @@ done
 # Call the option parser
 optParser
 
-MYSQL_HOST='localhost'
-MYSQL_USER='root'
-MYSQL_PASS='password'
-MYSQL_DB='jukebox'
+MYSQL_HOST=$(optValue 'MYSQL_HOST')
+MYSQL_USER=$(optValue 'MYSQL_USER')
+MYSQL_PASS=$(optValue 'MYSQL_PASS')
+MYSQL_DB=$(optValue 'MYSQL_DB')
 
-queueFile="queue_list"
+queueFile=$(optValue 'FILE_QUEUE')
 
 # The binary to use to play the songs
-PLAYER='omxplayer'
+PLAYER=$(optValue 'PLAYER')
 
 # The regex to match split youtube IDs from the URL
 songRegex='^([^:]+):(.+)$'
