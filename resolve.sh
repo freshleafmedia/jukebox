@@ -25,7 +25,7 @@ tail -f "$RESOLVE_LIST" | while read youTubeID; do
 
     # Reset
     streamURL="";
-    useableID="";
+    usableID="";
 
     echo "Resolving $youTubeID";
 
@@ -81,7 +81,7 @@ tail -f "$RESOLVE_LIST" | while read youTubeID; do
 
         # Check the response we got
         if [ $? == 0 ]; then
-            useableID="$formatID"
+            usableID="$formatID"
             echo " OK!"
             break;
         else
@@ -92,7 +92,7 @@ tail -f "$RESOLVE_LIST" | while read youTubeID; do
     done
 
     # Write this URL to the database
-    mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" -e "INSERT IGNORE INTO URLCache VALUES ('$youTubeID','$useableID','$streamURL')" "$MYSQL_DB"
+    mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" -e "INSERT IGNORE INTO URLCache VALUES ('$youTubeID','$usableID','$streamURL')" "$MYSQL_DB"
 
     # Write this URL to the queue list
     writeToQueue "$youTubeID" "$streamURL"
