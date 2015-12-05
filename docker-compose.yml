@@ -1,0 +1,8 @@
+jukebox:
+    container_name: jukebox
+    build: ./docker/jukebox
+    privileged: true
+    ports:
+        - "80:80"
+    volumes:
+        - ./:/var/www/html
