@@ -3,6 +3,7 @@
 MYSQL_HOST='localhost'
 MYSQL_USER='root'
 MYSQL_PASS='password'
+MYSQL_DB='jukebox'
 
 function implode { local IFS="$1"; shift; echo "$*"; }
 
@@ -72,6 +73,6 @@ tail -f "$PLAYLIST" | while read youTubeID; do
     done
 
     # Write this URL to the database
-    mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" "IGNORE INSERT INTO URLCache (youTubeID,formatID,URL) VALUES ($youTubeID,$useableID,$streamURL)";
+    mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" -e "INSERT IGNORE INTO URLCache VALUES ('$youTubeID','$useableID','$streamURL')" "$MYSQL_DB"
 
 done
