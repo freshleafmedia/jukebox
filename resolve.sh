@@ -19,7 +19,7 @@ tail -f "$PLAYLIST" | while read youTubeID; do
 
     echo "Resolving $youTubeID";
 
-    echo "Fetching available qualities..."
+    echo "Fetching available formats..."
 
     # Get all the formats this video can be played in reverse order
     formats=$(youtube-dl -F "$youTubeID" | grep 'audio only' | tac)
