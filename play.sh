@@ -17,7 +17,7 @@ for f in "$LIBRARY_PATH_ROOT"/*.sh; do
 done
 
 # Call the option parser
-optParser
+optParse
 
 MYSQL_HOST=$(optValue 'MYSQL_HOST')
 MYSQL_USER=$(optValue 'MYSQL_USER')
