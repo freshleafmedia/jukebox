@@ -1,15 +1,26 @@
 #!/bin/bash
 
-PLAYLIST="playlist"
+queueFile="queue_list"
 
-tail -f $PLAYLIST | while read URL; do
-    echo "Playing $URL";
+# The binary to use to play the songs
+PLAYER='omxplayer'
 
-    real_url=`youtube-dl -f 171 -g $URL`
-    if [ $? != 0 ]; then
-    continue
+# The regex to match split youtube IDs from the URL
+songRegex='^([^:]+):(.+)$'
+
+tail -f $queueFile | while read song; do
+
+    [[ $song =~ $songRegex ]]
+
+    youTubeID="${BASH_REMATCH[1]}"
+    URL="${BASH_REMATCH[2]}"
+
+    if [ "$youTubeID" == "" ] || [ "$URL" == "" ]; then
+        echo "ERROR with $song"
+        continue;
     fi
-    echo "$real_url"
-    #omxplayer https://www.youtube.com/watch?v=$real_url 
-    cvlc --play-and-exit --no-video $real_url 
+
+    echo "Playing $youTubeID";
+
+    $PLAYER "$URL"
 done
