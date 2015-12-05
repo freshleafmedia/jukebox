@@ -7,6 +7,9 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 # Set the library root path
 LIBRARY_PATH_ROOT="$DIR/libs"
 
+# Option file config
+OPT_FILE="$HOME/.jukebox"
+
 # Include all libraries
 for f in "$LIBRARY_PATH_ROOT"/*.sh; do
 	# Include the directory
