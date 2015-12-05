@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# Get the source directory
+DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+
+# Set the library root path
+LIBRARY_PATH_ROOT="$DIR/libs"
+
+# Include all libraries
+for f in "$LIBRARY_PATH_ROOT"/*.sh; do
+	# Include the directory
+	source "$f"
+done
+
 MYSQL_HOST='localhost'
 MYSQL_USER='root'
 MYSQL_PASS='password'
