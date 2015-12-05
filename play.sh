@@ -1,5 +1,10 @@
 #!/bin/bash
 
+MYSQL_HOST='localhost'
+MYSQL_USER='root'
+MYSQL_PASS='password'
+MYSQL_DB='jukebox'
+
 queueFile="queue_list"
 
 # The binary to use to play the songs
