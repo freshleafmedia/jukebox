@@ -2,6 +2,9 @@
 
 queueFile="queue_list"
 
+# The binary to use to play the songs
+PLAYER='omxplayer'
+
 # The regex to match split youtube IDs from the URL
 songRegex='^([^:]+):(.+)$'
 
@@ -14,5 +17,5 @@ tail -f $queueFile | while read song; do
 
     echo "Playing $youTubeID";
 
-    omxplayer "$URL"
+    PLAYER "$URL"
 done
