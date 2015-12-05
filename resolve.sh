@@ -1,12 +1,31 @@
 #!/bin/bash
 
-MYSQL_HOST='localhost'
-MYSQL_USER='root'
-MYSQL_PASS='password'
-MYSQL_DB='jukebox'
+# Get the source directory
+DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 
-RESOLVE_LIST="resolve_list"
-QUEUE_LIST="queue_list"
+# Set the library root path
+LIBRARY_PATH_ROOT="$DIR/libs"
+
+# Option file config
+OPT_FILE="$HOME/.jukebox"
+
+# Include all libraries
+for f in "$LIBRARY_PATH_ROOT"/*.sh; do
+	# Include the directory
+	source "$f"
+done
+
+# Call the option parser
+optParse
+
+MYSQL_HOST=$(optValue 'MYSQL_HOST')
+MYSQL_USER=$(optValue 'MYSQL_USER')
+MYSQL_PASS=$(optValue 'MYSQL_PASS')
+MYSQL_DB=$(optValue 'MYSQL_DB')
+
+QUEUE_LIST=$(optValue 'FILE_QUEUE')
+RESOLVE_LIST=$(optValue 'FILE_RESOLVE')
 
 function implode { local IFS="$1"; shift; echo "$*"; }
 

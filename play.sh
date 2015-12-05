@@ -1,14 +1,33 @@
 #!/bin/bash
 
-MYSQL_HOST='localhost'
-MYSQL_USER='root'
-MYSQL_PASS='password'
-MYSQL_DB='jukebox'
+# Get the source directory
+DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 
-queueFile="queue_list"
+# Set the library root path
+LIBRARY_PATH_ROOT="$DIR/libs"
+
+# Option file config
+OPT_FILE="$HOME/.jukebox"
+
+# Include all libraries
+for f in "$LIBRARY_PATH_ROOT"/*.sh; do
+	# Include the directory
+	source "$f"
+done
+
+# Call the option parser
+optParse
+
+MYSQL_HOST=$(optValue 'MYSQL_HOST')
+MYSQL_USER=$(optValue 'MYSQL_USER')
+MYSQL_PASS=$(optValue 'MYSQL_PASS')
+MYSQL_DB=$(optValue 'MYSQL_DB')
+
+queueFile=$(optValue 'FILE_QUEUE')
 
 # The binary to use to play the songs
-PLAYER='omxplayer'
+PLAYER=$(optValue 'PLAYER')
 
 # The regex to match split youtube IDs from the URL
 songRegex='^([^:]+):(.+)$'

@@ -18,6 +18,26 @@ When a new URL is added it simply tries to play it and logs a play in the songs 
 
 ## Setup
 
+### Configuration
+
+All config options are defined in the file `~/.jukebox`
+
+These are the possible options, all are required
+
+```shell
+MYSQL_HOST=localhost
+MYSQL_USER=root
+MYSQL_PASS=password
+MYSQL_DB=jukebox
+
+FILE_QUEUE=queue_list
+FILE_RESOLVE=resolve_list
+
+PLAYER=omxplayer
+```
+
+### Software
+
 On a basic install of Raspbian you will need to install LAMP, `youtube-dl` and `vlc`
 
 ```
