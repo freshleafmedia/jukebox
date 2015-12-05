@@ -27,3 +27,25 @@ h1 {
   color: #fff;
 
 }
+
+#addButton {
+    margin-bottom: 20px;
+}
+
+/** Dialog **/
+#addDialog {
+    position: absolute;
+    background-color: #fff;
+    left: 50px;
+    right: 50px;
+    top: 50px;
+    padding: 20px;
+}
+#addDialogClose {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.search-container {
+    padding-top: 20px;
+}
