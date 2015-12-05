@@ -1,5 +1,21 @@
 # Fresh Jukebox
 
+
+## Use
+
+Two daemons run asynchronously:
+
+### resolve.sh
+
+This script watches `resolve_list` for YouTube IDs and when one is added it resolves it to a streamable URL
+writes it to the `URLCache` table and also appends it to a file named `queue_list`
+
+### play.sh
+
+This script is responsible for the playing of songs. It watches the file `queue_list` for URLs that get added.
+When a new URL is added it simply tries to play it.
+
+
 ## Setup
 
 On a basic install of Raspbian you will need to install LAMP, `youtube-dl` and `vlc`
@@ -9,7 +25,6 @@ sudo apt-get install vlc
 sudo curl https://yt-dl.org/latest/youtube-dl -o /usr/local/bin/youtube-dl
 sudo chmod a+rx /usr/local/bin/youtube-dl
 ```
-
 
 ## MySQL
 
