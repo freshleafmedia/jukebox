@@ -27,5 +27,8 @@ tail -f $queueFile | while read song; do
 
     echo "Playing $youTubeID";
 
+    # Record this play in the DB
+    mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" -e "INSERT INTO songs (youTubeID) VALUES('$youTubeID') ON DUPLICATE KEY UPDATE plays=plays+1" "$MYSQL_DB"
+
     $PLAYER "$URL"
 done
