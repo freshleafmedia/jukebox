@@ -7,11 +7,11 @@ MYSQL_DB='jukebox'
 
 function implode { local IFS="$1"; shift; echo "$*"; }
 
-PLAYLIST="playlist"
+RESOLVE_LIST="playlist"
 
 formatRegex='^([0-9]+)[[:space:]]+([^[:space:]]+).+$'
 
-tail -f "$PLAYLIST" | while read youTubeID; do
+tail -f "$RESOLVE_LIST" | while read youTubeID; do
 
     # Reset
     streamURL="";
