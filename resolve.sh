@@ -5,10 +5,19 @@ MYSQL_USER='root'
 MYSQL_PASS='password'
 MYSQL_DB='jukebox'
 
-function implode { local IFS="$1"; shift; echo "$*"; }
-
 RESOLVE_LIST="resolve_list"
 QUEUE_LIST="queue_list"
+
+function implode { local IFS="$1"; shift; echo "$*"; }
+
+function writeToQueue {
+
+    local youTubeID="$1"
+    local URL="$2"
+
+    echo "$youTubeID:$URL" >> "$QUEUE_LIST"
+
+}
 
 formatRegex='^([0-9]+)[[:space:]]+([^[:space:]]+).+$'
 
@@ -25,7 +34,7 @@ tail -f "$RESOLVE_LIST" | while read youTubeID; do
 
     if [ "$resolvedCheck" != "" ]; then
         echo "$youTubeID has already been resolved"
-        echo "$resolvedCheck" >> "$QUEUE_LIST"
+        writeToQueue "$youTubeID" "$resolvedCheck"
         continue;
     fi
 
@@ -86,6 +95,6 @@ tail -f "$RESOLVE_LIST" | while read youTubeID; do
     mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" -e "INSERT IGNORE INTO URLCache VALUES ('$youTubeID','$useableID','$streamURL')" "$MYSQL_DB"
 
     # Write this URL to the queue list
-    echo "$resolvedCheck" >> "$QUEUE_LIST"
+    writeToQueue "$youTubeID" "$streamURL"
 
 done
