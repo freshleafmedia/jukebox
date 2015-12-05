@@ -7,7 +7,7 @@ MYSQL_DB='jukebox'
 
 function implode { local IFS="$1"; shift; echo "$*"; }
 
-RESOLVE_LIST="playlist"
+RESOLVE_LIST="resolve_list"
 
 formatRegex='^([0-9]+)[[:space:]]+([^[:space:]]+).+$'
 
