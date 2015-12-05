@@ -9,79 +9,23 @@
 <div id="wrapper">
     <img width="50px" src="images/logo.png" />
     <h1>Freshleaf Jukebox</h1>
-    <strong>Search YouTube </strong>
-    <input type="text" id="search" disabled />
-    <div id="search-container">
+    <button class="btn" id="addButton">Add</button>
 
+    <div id="addDialog" class="dialog" style="display: none">
+        <button id="addDialogClose">Close Dialog</button>
+        <strong>Search YouTube </strong>
+        <input type="text" id="search" disabled />
+        <div id="search-container"></div>
     </div>
+
+    <div class="queue">
+        <strong>Queue</strong>
+        <div class="queue-container"></div>
+    </div>
+
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
-	<script>
-        setTimeout(googleApiClientReady, 1000);
-		function googleApiClientReady() {
-			gapi.client.setApiKey('AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I');
-            gapi.auth.init(function() {
-                gapi.client.load('youtube', 'v3', function () {
-                    handleAPILoaded();
-                });
-            });
-		}
-
-		function handleAPILoaded()
-		{
-			$('#search').prop('disabled', false);
-		}
-
-        $('#search').on('keyup', function () {
-            search($('#search').val());
-        });
-
-        function search(query) {
-            var request = gapi.client.youtube.search.list({
-                q: query,
-                part: 'snippet',
-                maxResults: '25'
-            });
-
-            request.execute(function (response) {
-                console.log(response.result);
-                $('#search-container').html('');
-                $.each(response.result.items, function(index, item) {
-                    if (item.id.kind == "youtube#video") {
-                        var el = $('<div />', { 'class': 'songResult' });
-                        el.data('url', item.id.videoId);
-                        var image = $('<img />', { src: item.snippet.thumbnails.default.url });
-                        var descWrap = $('<div />');
-                        var title = $('<p />', { text: item.snippet.title, 'class': 'title' });
-                        //var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
-                        descWrap.append(title);
-                        //descWrap.append(author);
-                        el.append(image);
-                        el.append(descWrap);
-                        $('#search-container').append(el);
-                    }
-                })
-            });
-        }
-
-        $('#search-container').on('click', '> div', function() {
-            var id = $(this).data('url');
-            addSong(id);
-            $(this).addClass('added');
-        });
-
-        function addSong(id) {
-            console.log('Adding.. ' + id);
-            $.ajax('/dj.php', {
-                data: {
-                    id: id
-                },
-		success: function(data) {
-		    console.log('Song added! [server: ' + data + ']');
-		}
-            });
-        }
-	</script>
+	<script src="/main.js"></script>
 </div>
 </body>
 </html>
