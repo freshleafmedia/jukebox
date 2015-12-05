@@ -13,7 +13,7 @@ writes it to the `URLCache` table and also appends it to a file named `queue_lis
 ### play.sh
 
 This script is responsible for the playing of songs. It watches the file `queue_list` for URLs that get added.
-When a new URL is added it simply tries to play it.
+When a new URL is added it simply tries to play it and logs a play in the songs table.
 
 
 ## Setup
