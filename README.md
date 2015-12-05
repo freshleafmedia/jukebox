@@ -13,7 +13,7 @@ writes it to the `URLCache` table and also appends it to a file named `queue_lis
 ### play.sh
 
 This script is responsible for the playing of songs. It watches the file `queue_list` for URLs that get added.
-When a new URL is added it simply tries to play it.
+When a new URL is added it simply tries to play it and logs a play in the songs table.
 
 
 ## Setup
@@ -39,6 +39,19 @@ CREATE TABLE `URLCache` (
   `URL` text,
   PRIMARY KEY (`youTubeID`),
   UNIQUE KEY `youTubeID_UNIQUE` (`youTubeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+```
+
+### songs
+
+This is the schema for the table that holds metadata about a song, for now only the play count
+
+```
+CREATE TABLE `songs` (
+  `youTubeID` varchar(12) NOT NULL,
+  `plays` int(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`youTubeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ```

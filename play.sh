@@ -1,5 +1,10 @@
 #!/bin/bash
 
+MYSQL_HOST='localhost'
+MYSQL_USER='root'
+MYSQL_PASS='password'
+MYSQL_DB='jukebox'
+
 queueFile="queue_list"
 
 # The binary to use to play the songs
@@ -21,6 +26,9 @@ tail -f $queueFile | while read song; do
     fi
 
     echo "Playing $youTubeID";
+
+    # Record this play in the DB
+    mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" -e "INSERT INTO songs (youTubeID) VALUES('$youTubeID') ON DUPLICATE KEY UPDATE plays=plays+1" "$MYSQL_DB"
 
     $PLAYER "$URL"
 done
