@@ -16,6 +16,9 @@ for f in "$LIBRARY_PATH_ROOT"/*.sh; do
 	source "$f"
 done
 
+# Call the option parser
+optParser
+
 MYSQL_HOST='localhost'
 MYSQL_USER='root'
 MYSQL_PASS='password'
