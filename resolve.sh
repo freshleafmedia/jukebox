@@ -1,5 +1,9 @@
 #!/bin/bash
 
+MYSQL_HOST='localhost'
+MYSQL_USER='root'
+MYSQL_PASS='password'
+
 function implode { local IFS="$1"; shift; echo "$*"; }
 
 PLAYLIST="playlist"
@@ -67,7 +71,7 @@ tail -f "$PLAYLIST" | while read youTubeID; do
 
     done
 
-    echo "$streamURL"
+    # Write this URL to the database
+    mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" "IGNORE INSERT INTO URLCache (youTubeID,formatID,URL) VALUES ($youTubeID,$useableID,$streamURL)";
 
-    omxplayer "$streamURL"
 done
