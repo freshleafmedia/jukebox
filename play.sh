@@ -10,12 +10,12 @@ songRegex='^([^:]+):(.+)$'
 
 tail -f $queueFile | while read song; do
 
-    [[ $song =~ songRegex ]]
+    [[ $song =~ $songRegex ]]
 
     youTubeID="${BASH_REMATCH[1]}"
     URL="${BASH_REMATCH[2]}"
 
     echo "Playing $youTubeID";
 
-    PLAYER "$URL"
+    $PLAYER "$URL"
 done
