@@ -42,3 +42,16 @@ CREATE TABLE `URLCache` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ```
+
+### songs
+
+This is the schema for the table that holds metadata about a song, for now only the play count
+
+```
+CREATE TABLE `songs` (
+  `youTubeID` varchar(12) NOT NULL,
+  `plays` int(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`youTubeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+```
