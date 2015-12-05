@@ -3,6 +3,7 @@ jukebox:
     build: ./docker/jukebox
     privileged: true
     ports:
-        - "80:80"
+        - "8080:80"
+        - "3000:3000"
     volumes:
         - ./:/var/www/html

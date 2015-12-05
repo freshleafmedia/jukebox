@@ -1,3 +1,8 @@
+var socket = io('http://localhost:3000');
+socket.on('connect', function(){
+    console.log('connected to websocket server');
+});
+
 setTimeout(googleApiClientReady, 1000);
 function googleApiClientReady() {
     gapi.client.setApiKey('AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I');
@@ -48,20 +53,12 @@ function search(query) {
 $('#search-container').on('click', '> div', function() {
     var id = $(this).data('url');
     addSong(id);
-    $(this).clone().appendTo('.queue-container');
     $(this).addClass('added');
 });
 
 function addSong(id) {
     console.log('Adding.. ' + id);
-    $.ajax('/dj.php', {
-        data: {
-            id: id
-        },
-        success: function(data) {
-            console.log('Song added! [server: ' + data + ']');
-        }
-    });
+    socket.emit('addsong', { id: id });
 }
 
 $('#addButton').click(function() {
@@ -71,3 +68,25 @@ $('#addButton').click(function() {
 $('#addDialogClose').click(function() {
     $('#addDialog').hide();
 });
+
+socket.on('newsong', function(data) {
+    console.log('From websocket: new song' + data.id);
+    addToQueue(data.id);
+});
+
+socket.on('queuelist', function(data) {
+    console.log('From websocket: whole list');
+    setQueue(data);
+});
+
+function addToQueue(id) {
+    var item = $('<div />', { text: id });
+    $('.queue-container').append(item);
+}
+
+function setQueue(data) {
+    $.each(data, function(index, item) {
+        var item = $('<div />', { text: item });
+        $('.queue-container').append(item);
+    });
+}

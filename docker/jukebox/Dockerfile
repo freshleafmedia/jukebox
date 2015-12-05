@@ -6,7 +6,8 @@ RUN apt-get update && \
       libapache2-mod-php5 \
       php5 \
       python \
-      curl
+      curl \
+      nodejs
 
 # Apache + PHP requires preforking Apache for best results & enable Apache SSL
 # forward request and error logs to docker log collector
