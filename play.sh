@@ -1,15 +1,18 @@
 #!/bin/bash
 
-PLAYLIST="playlist"
+queueFile="queue_list"
 
-tail -f $PLAYLIST | while read URL; do
-    echo "Playing $URL";
+# The regex to match split youtube IDs from the URL
+songRegex='^([^:]+):(.+)$'
 
-    real_url=`youtube-dl -f 171 -g $URL`
-    if [ $? != 0 ]; then
-    continue
-    fi
-    echo "$real_url"
-    #omxplayer https://www.youtube.com/watch?v=$real_url 
-    cvlc --play-and-exit --no-video $real_url 
+tail -f $queueFile | while read song; do
+
+    [[ $song =~ songRegex ]]
+
+    youTubeID="${BASH_REMATCH[1]}"
+    URL="${BASH_REMATCH[2]}"
+
+    echo "Playing $youTubeID";
+
+    omxplayer "$URL"
 done
