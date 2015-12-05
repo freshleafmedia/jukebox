@@ -1,19 +1,29 @@
 #!/bin/bash
 
 # The file to load the options from
-OPT_FILE="$HOME/.bash_opt"
+if [ -z $OPT_FILE ]; then
+	OPT_FILE="$HOME/.bash_opt"
+fi
 
 # The character(s) that signify the start of a comment
-OPT_COMMENT="#"
+if [ -z $OPT_COMMENT ]; then
+	OPT_COMMENT="#"
+fi
 
 # Persist any changes of the options back to the option file
-OPT_PERSIST_CHANGES=true
+if [ -z $OPT_PERSIST_CHANGES ]; then
+	OPT_PERSIST_CHANGES=true
+fi
 
 # Create the option file if it doesn't exist
-OPT_FILE_CREATE_IF_MISSING=true
+if [ -z $OPT_FILE_CREATE_IF_MISSING ]; then
+	OPT_FILE_CREATE_IF_MISSING=true
+fi
 
 # Debug mode
-OPT_DEBUG=false
+if [ -z $OPT_DEBUG ]; then
+	OPT_DEBUG=false
+fi
 
 # Define the regex to match an option
 regexOption="^[:space:]*([^=[:space:]$OPT_COMMENT]+)[[:space:]]*=[[:space:]]*(.*)$"
