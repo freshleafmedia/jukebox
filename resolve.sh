@@ -19,6 +19,14 @@ tail -f "$RESOLVE_LIST" | while read youTubeID; do
 
     echo "Resolving $youTubeID";
 
+    # Check if we have already resolved this ID
+    resolvedCheck=$(mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" -AN -e "SELECT COUNT(youTubeID) FROM URLCache WHERE youTubeID = '$youTubeID'" "$MYSQL_DB")
+
+    if [ $resolvedCheck == 1 ]; then
+        echo "$youTubeID has already been resolved"
+        continue;
+    fi
+
     echo "Fetching available formats..."
 
     # Get all the formats this video can be played in reverse order
