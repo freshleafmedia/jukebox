@@ -15,6 +15,11 @@ tail -f $queueFile | while read song; do
     youTubeID="${BASH_REMATCH[1]}"
     URL="${BASH_REMATCH[2]}"
 
+    if [ "$youTubeID" == "" ] || [ "$URL" == "" ]; then
+        echo "ERROR with $song"
+        continue;
+    fi
+
     echo "Playing $youTubeID";
 
     $PLAYER "$URL"
