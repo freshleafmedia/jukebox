@@ -39,7 +39,7 @@ if [[ "$MYSQL_PASS" != "$MYSQL_PASS_AGAIN" ]]; then
 	exit 1;
 fi
 
-MYSQL_DATABASE="jukebox"
+MYSQL_DB="jukebox"
 
 # Set the file names
 FILE_QUEUE="queue_list"
@@ -52,7 +52,7 @@ PLAYER="omxplayer"
 echo "MYSQL_USER=$MYSQL_USER" >> "$CONFIG_PATH"
 echo "MYSQL_HOST=$MYSQL_HOST" >> "$CONFIG_PATH"
 echo "MYSQL_PASS=$MYSQL_PASS" >> "$CONFIG_PATH"
-echo "MYSQL_DATABASE=$MYSQL_DATABASE" >> "$CONFIG_PATH"
+echo "MYSQL_DB=$MYSQL_DB" >> "$CONFIG_PATH"
 echo "FILE_QUEUE=$FILE_QUEUE" >> "$CONFIG_PATH"
 echo "FILE_RESOLVE=$FILE_RESOLVE" >> "$CONFIG_PATH"
 echo "PLAYER=$PLAYER" >> "$CONFIG_PATH"
