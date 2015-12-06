@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 echo "-------------------------------------------------"
-echo "				JUKEBOX INSTALLER"
-echo "					  v0.0.1"
+echo "                JUKEBOX INSTALLER"
+echo "                      v0.0.1"
 echo "-------------------------------------------------"
 
 # Ask the user for the details
