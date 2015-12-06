@@ -7,7 +7,9 @@ RUN apt-get update && \
       php5 \
       python \
       curl \
-      nodejs
+      nodejs \
+      mariadb-server \
+      mariadb-client
 
 # Apache + PHP requires preforking Apache for best results & enable Apache SSL
 # forward request and error logs to docker log collector
