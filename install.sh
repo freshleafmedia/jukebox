@@ -27,7 +27,7 @@ read -e -s -p "MySQL password again: " MYSQL_PASS_AGAIN && echo
 
 # Check the passwords matched
 if [[ "$MYSQL_PASS" != "$MYSQL_PASS_AGAIN" ]]; then
-	echo "ERROR - passwords didn't match"
+	echo "ERROR - passwords didn't match. Config file not written"
 	exit 1;
 fi
 
