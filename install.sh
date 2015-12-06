@@ -13,7 +13,7 @@ if [ -f "$CONFIG_PATH" ]; then
 	echo "The config file already exists, overwrite?"
 	select yn in "Yes" "No"; do
 		case $yn in
-			Yes ) break;;
+			Yes ) echo -n > "$CONFIG_PATH"; break;;
 			No ) exit;;
 		esac
 	done
