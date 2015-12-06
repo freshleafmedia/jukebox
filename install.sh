@@ -5,6 +5,14 @@ echo "                JUKEBOX INSTALLER"
 echo "                      v0.0.1"
 echo "-------------------------------------------------"
 
+# Install APT packages
+apt-get update
+apt-get install -y apache2 mysql-server php5
+
+# Not sure if these are needed or how to install
+# apt-get install -y nodejs npm
+# apt-get install -y vlc
+
 # Ask the user for the details
 read -e -p "Path to the config file: " -i "$HOME/.jukebox" CONFIG_PATH
 
