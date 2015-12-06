@@ -43,8 +43,9 @@ formatRegex='^([0-9]+)[[:space:]]+([^[:space:]]+).+$'
 tail -f "$RESOLVE_LIST" | while read youTubeID; do
 
     # Reset
-    streamURL="";
-    usableFormatID="";
+    streamURL=""
+    usableFormatID=""
+    formatIDs=()
 
     echo "Resolving $youTubeID";
 
