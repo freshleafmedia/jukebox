@@ -7,11 +7,15 @@ echo "-------------------------------------------------"
 
 # Install APT packages
 apt-get update
-apt-get install -y apache2 mysql-server php5 youtube-dl
+apt-get install -y apache2 mysql-server php5
 
 # Not sure if these are needed or how to install
 # apt-get install -y nodejs npm
 # apt-get install -y vlc
+
+# Install Youtube DL
+curl https://yt-dl.org/downloads/2015.12.05/youtube-dl -o /usr/local/bin/youtube-dl
+chmod a+rx /usr/local/bin/youtube-dl
 
 # Ask the user for the details
 read -e -p "Path to the config file: " -i "$HOME/.jukebox" CONFIG_PATH
