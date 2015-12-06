@@ -22,7 +22,15 @@ fi
 # Ask for the MySQL details
 read -e -p "MySQL username: " MYSQL_USER
 read -e -p "MySQL hostname: " -i "localhost" MYSQL_HOST
-read -e -p "MySQL password: " MYSQL_PASS
+read -e -s -p "MySQL password: " MYSQL_PASS && echo
+read -e -s -p "MySQL password again: " MYSQL_PASS_AGAIN && echo
+
+# Check the passwords matched
+if [[ "$MYSQL_PASS" != "$MYSQL_PASS_AGAIN" ]]; then
+	echo "ERROR - passwords didn't match"
+	exit 1;
+fi
+
 MYSQL_DATABASE="jukebox"
 
 # Set the file names
