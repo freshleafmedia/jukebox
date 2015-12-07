@@ -25,7 +25,9 @@ io.on('connection', function(socket){
     fs.readFile(resolve_list, function(err, f){
         var queue = f.toString().split('\n');
 	queue = queue.map(function(item) {
-	    return songCache[item] || { id: item, title: 'Unknown' };
+            if(item != "") {
+	        return songCache[item] || { id: item, title: 'Unknown' };
+            }
 	});
         socket.emit('queuelist', queue);
     });
