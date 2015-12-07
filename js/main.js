@@ -65,6 +65,14 @@ function addSong(song) {
     socket.emit('addsong', song);
 }
 
+$('#pauseButton').click(function() {
+    socket.emit('pause');
+});
+
+$('#playButton').click(function() {
+    socket.emit('play');
+});
+
 $('#addButton').click(function() {
     $('#addDialog').show();
 });
@@ -93,6 +101,7 @@ function addToQueue(song) {
 }
 
 function setQueue(data) {
+    $('.queue-container').html('');
     $.each(data, function(index, item) {
 	addToQueue(item);
     });
