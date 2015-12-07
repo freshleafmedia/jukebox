@@ -51,14 +51,18 @@ function search(query) {
 }
 
 $('#search-container').on('click', '> div', function() {
-    var id = $(this).data('url');
-    addSong(id);
+    var song = {
+	id: $(this).data('url'),
+	title: $(this).find('p.title').text(),
+	thumbnail: $(this).find('img').attr('src')
+    };
+    addSong(song);
     $(this).addClass('added');
 });
 
-function addSong(id) {
-    console.log('Adding.. ' + id);
-    socket.emit('addsong', { id: id });
+function addSong(song) {
+    console.log('Adding.. ' + song.id);
+    socket.emit('addsong', song);
 }
 
 $('#addButton').click(function() {
@@ -69,9 +73,9 @@ $('#addDialogClose').click(function() {
     $('#addDialog').hide();
 });
 
-socket.on('newsong', function(data) {
-    console.log('From websocket: new song' + data.id);
-    addToQueue(data.id);
+socket.on('newsong', function(song) {
+    console.log('From websocket: new song' + song.id);
+    addToQueue(song);
 });
 
 socket.on('queuelist', function(data) {
@@ -79,14 +83,17 @@ socket.on('queuelist', function(data) {
     setQueue(data);
 });
 
-function addToQueue(id) {
-    var item = $('<div />', { text: id });
+function addToQueue(song) {
+    var item = $('<div />', { 'class': 'songResult' });
+    var image = $('<img />', { src: song.thumbnail });
+    var title = $('<p />', { 'class': 'title', text: song.title });
+    item.append(image);
+    item.append(title);
     $('.queue-container').append(item);
 }
 
 function setQueue(data) {
     $.each(data, function(index, item) {
-        var item = $('<div />', { text: item });
-        $('.queue-container').append(item);
+	addToQueue(item);
     });
 }
