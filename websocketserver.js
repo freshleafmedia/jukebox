@@ -24,10 +24,11 @@ io.on('connection', function(socket){
 
     fs.readFile(resolve_list, function(err, f){
         var queue = f.toString().split('\n');
+	queue = queue.filter(function(item) {
+	    return item;
+	});
 	queue = queue.map(function(item) {
-            if(item != "") {
-	        return songCache[item] || { id: item, title: 'Unknown' };
-            }
+	    return songCache[item] || { id: item, title: 'Unknown', thumbnail: '' };
 	});
         socket.emit('queuelist', queue);
     });
