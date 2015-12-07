@@ -15,6 +15,9 @@ writes it to the `URLCache` table and also appends it to a file named `queue_lis
 This script is responsible for the playing of songs. It watches the file `queue_list` for URLs that get added.
 When a new URL is added it simply tries to play it and logs a play in the songs table.
 
+### websocketserver.js
+
+This script runs the websocket server. It needs to be run by nodejs
 
 ## Setup
 
@@ -38,7 +41,7 @@ PLAYER=omxplayer
 
 ### Software
 
-On a basic install of Raspbian you will need to install LAMP, `youtube-dl` and `vlc`
+On a basic install of Raspbian you will need to install LAMP, nodejs, `youtube-dl` and `vlc`
 
 ```
 sudo apt-get install vlc

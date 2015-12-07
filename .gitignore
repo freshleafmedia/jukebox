@@ -1,4 +1,9 @@
 .idea/
 node_modules/
-playlist
 .DS_Store
+
+playlist
+resolve_list
+queue_list
+true
+songcache.json

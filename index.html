@@ -9,6 +9,8 @@
 <div id="wrapper">
     <img width="50px" src="images/logo.png" />
     <h1>Freshleaf Jukebox</h1>
+    <button class="btn" id="pauseButton">Pause</button>
+    <button class="btn" id="playButton">Play</button>
     <button class="btn" id="addButton">Add</button>
 
     <div id="addDialog" class="dialog" style="display: none">
@@ -23,9 +25,10 @@
         <div class="queue-container"></div>
     </div>
 
-	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/socket.io-client/socket.io.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
-	<script src="/main.js"></script>
+	<script src="/js/main.js"></script>
 </div>
 </body>
 </html>
