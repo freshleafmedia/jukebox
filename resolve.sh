@@ -19,11 +19,6 @@ done
 # Call the option parser
 optParse
 
-MYSQL_HOST=$(optValue 'MYSQL_HOST')
-MYSQL_USER=$(optValue 'MYSQL_USER')
-MYSQL_PASS=$(optValue 'MYSQL_PASS')
-MYSQL_DB=$(optValue 'MYSQL_DB')
-
 LOG_DIR=$(optValue 'LOG_DIR')
 LOG_FILE="$LOG_DIR/resolve"
 
