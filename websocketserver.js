@@ -151,6 +151,8 @@ io.on('connection', function(socket){
         songCache[song.id] = song;
         commitCache();
 
+        socket.emit('resolving', song);
+
         // Run the resolver
         process.exec('./resolve.sh '+song.id, function (error, stdout, stderr) {
 

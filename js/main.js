@@ -91,6 +91,10 @@ socket.on('resolved', function(song) {
     $('.queue-container #song-'+song.id+'[data-resolving="true"]').remove();
 });
 
+socket.on('resolving', function(song) {
+    addToQueue(song, true);
+});
+
 socket.on('resolved failed', function(song) {
     $('.queue-container #song-'+song.id).attr('data-resolving','failed');
 });
