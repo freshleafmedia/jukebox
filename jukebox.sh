@@ -23,12 +23,12 @@ LOG_DIR=$(optValue 'LOG_DIR')
 PLAYER=$(optValue 'PLAYER')
 
 # Check the required variables defined
-if [ -q $LOG_DIR ]; then
+if [ "$LOG_DIR" == "" ]; then
 	echo "ERROR: LOG_DIR undefined in $OPT_FILE";
 	exit 1;
 fi
 
-if [ -q $PLAYER ]; then
+if [ "$PLAYER" == "" ]; then
 	echo "ERROR: PLAYER undefined in $OPT_FILE";
 	exit 1;
 fi
