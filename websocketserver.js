@@ -35,6 +35,8 @@ function playSong(song) {
 
     playerState = 'playing';
 
+    console.log(song.id+': Playing');
+
     // Run the player
     process.exec('./play.sh "'+song.url+'"', function (error, stdout, stderr) {
 
