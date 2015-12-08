@@ -1,9 +1,7 @@
 .idea/
 node_modules/
+logs/
 .DS_Store
 
-playlist
-resolve_list
-queue_list
-true
 songcache.json
+songqueue.json
