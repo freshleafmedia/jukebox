@@ -17,6 +17,7 @@
 body {
     background: url(../images/planks.jpg) no-repeat center top;
     background-attachment: fixed;
+    background-size: cover;
     background-blend-mode: hard-light;
     background-color: #00aced;
     font-family: arial;
