@@ -20,7 +20,7 @@ fs.readFile(songQueueFile, function(err, f) {
 });
 
 if(songQueue.length > 0) {
-    playSong(songQueue[0]);
+    playQueue();
 }
 
 function control(action) {
@@ -35,10 +35,17 @@ function commitQueue() {
     fs.writeFile(songQueueFile, JSON.stringify(songQueue));
 }
 
-function playSong(song) {
+function playQueue() {
+
+    // Check there are some queued songs and that we aren't already playing
+    if(songQueue.length === 0 || playerState === 'playing') {
+        return;
+    }
+
+    // Get the song to play
+    var song = songQueue.slice(0,1);
 
     playerState = 'playing';
-
     console.log(song.id+': Playing');
 
     // Run the player
@@ -49,15 +56,15 @@ function playSong(song) {
             return;
         }
 
-        // Remove from the queue
-        delete songQueue[song.id];
-        commitQueue();
-
         console.log(song.id+': Finished!');
 
+        // Remove from queue
+        songQueue.shift();
+        commitQueue();
+
         // Keep playing
-        if (typeof songQueue[0] !== 'undefined') {
-            playSong(songQueue[0]);
+        if (songQueue.length > 0) {
+            playQueue();
             return;
         }
 
@@ -69,13 +76,13 @@ function queueSong(song) {
 
     console.log(song.id+': Adding to the queue');
 
-    songQueue.push(song);
+    songQueue.push(song.id);
     commitQueue();
 
     io.emit('newsong', song);
 
     if (playerState === 'stopped') {
-        playSong(song);
+        playQueue(song);
     }
 }
 
