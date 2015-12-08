@@ -43,20 +43,20 @@ function playQueue() {
     }
 
     // Get the song to play
-    var song = songQueue.slice(0,1);
+    var songID = songQueue.slice(0,1);
 
     playerState = 'playing';
-    console.log(song.id+': Playing');
+    console.log(songID+': Playing');
 
     // Run the player
-    process.exec('./play.sh "'+songCache[song.id]['URL']+'"', function (error, stdout, stderr) {
+    process.exec('./play.sh "'+songCache[songID]['URL']+'"', function (error, stdout, stderr) {
 
         if (error !== null) {
-            console.error(song.id+': Failed to play!');
+            console.error(songID+': Failed to play!');
             return;
         }
 
-        console.log(song.id+': Finished!');
+        console.log(songID+': Finished!');
 
         // Remove from queue
         songQueue.shift();
