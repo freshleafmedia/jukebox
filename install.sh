@@ -49,7 +49,7 @@ FILE_QUEUE="queue_list"
 FILE_RESOLVE="resolve_list"
 
 # Set the player
-PLAYER="omxplayer"
+PLAYER="cvlc --play-and-exit -I rc --rc-host localhost:11337"
 
 # Write the details
 echo "MYSQL_USER=$MYSQL_USER" >> "$CONFIG_PATH"
