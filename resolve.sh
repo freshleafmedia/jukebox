@@ -32,7 +32,7 @@ echo "$youTubeID: Checking file cache..." >> "$LOG_FILE"
 
 if [ -f "$CACHE_DIR/$youTubeID" ]; then
     echo "$youTubeID: Cache file found" >> "$LOG_FILE"
-    echo "$CACHE_DIR/$youTubeID"
+    echo -n "$CACHE_DIR/$youTubeID"
     exit 0;
 fi
 
