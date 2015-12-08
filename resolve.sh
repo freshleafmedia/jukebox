@@ -80,5 +80,10 @@ for formatID in "${formatIDs[@]}"; do
 
 done
 
-# Write this URL to the queue list
-echo -n "$streamURL"
+# Check a URL was resolved
+if [ "$streamURL" == "" ]; then
+    echo "$youTubeID: ERROR: No formats found" >> "$LOG_FILE"
+else
+    # Write this URL to the queue list
+    echo -n "$streamURL"
+fi
