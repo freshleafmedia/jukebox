@@ -28,6 +28,6 @@ fi
 
 # Start the node server
 echo -n "Starting the node server... "
-nohup node websocketserver.js >> "$LOG_DIRECTORY/node" &
+nohup node websocketserver.js >> "$LOG_DIR/node" &
 echo "[$!]"
 
