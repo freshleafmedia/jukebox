@@ -27,6 +27,10 @@ function commitCache() {
     fs.writeFile(songCacheFile, JSON.stringify(songCache));
 }
 
+function commitQueue() {
+    fs.writeFile(songQueueFile, JSON.stringify(songQueue));
+}
+
 function playSong(song) {
 
     // Run the player
@@ -34,15 +38,12 @@ function playSong(song) {
 
         if (error !== null) {
             console.error(song.id+': Failed to play!');
-            song['state'] = 'failed';
-            commitCache();
             return;
         }
 
-        // The resolve.sh will return the URL
-        song['URL'] = stdout;
-        song['state'] = 'resolved';
-        commitCache();
+        // Remove from the queue
+        delete songQueue[song.id];
+        commitQueue();
 
         console.log(song.id+': Resolved!');
         queueSong(song);
@@ -54,7 +55,7 @@ function queueSong(song) {
     console.log(song.id+': Adding to the queue');
 
     songQueue.push(song);
-    fs.writeFile('songqueue.json', JSON.stringify(songQueue));
+    commitQueue();
 
     io.emit('newsong', song);
 }
