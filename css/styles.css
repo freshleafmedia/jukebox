@@ -95,9 +95,13 @@ input#search {
     margin: 0 auto;
 }
 .queue strong {
+    font-family: 'Pacifico', cursive;
+}
+.queue > p {
     line-height: 40px;
     font-size: 30px;
     color: #333;
-    font-family: 'Pacifico', cursive;
-    padding: 40px 0;
+    padding: 20px 0;
+    margin: 0;
+    border-bottom: 1px solid #00aced;
 }
