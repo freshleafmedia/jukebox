@@ -3,6 +3,7 @@ var fs  = require("fs");
 var process = require('child_process');
 
 var playerState = 'stopped';
+var paused = false;
 
 var songCacheFile = 'songcache.json';
 var songQueueFile = 'songqueue.json';
@@ -24,6 +25,20 @@ fs.readFile(songQueueFile, function(err, f) {
 });
 
 function control(action) {
+
+    // Check if were paused
+    if (action === 'paused' && paused === true) {
+        return;
+    }
+
+    if(action === 'paused') {
+        paused = true;
+    }
+
+    if(action === 'play') {
+        paused = false;
+    }
+
     process.exec('./control.sh '+action);
 }
 
