@@ -56,3 +56,7 @@ echo "MYSQL_DB=$MYSQL_DB" >> "$CONFIG_PATH"
 echo "FILE_QUEUE=$FILE_QUEUE" >> "$CONFIG_PATH"
 echo "FILE_RESOLVE=$FILE_RESOLVE" >> "$CONFIG_PATH"
 echo "PLAYER=$PLAYER" >> "$CONFIG_PATH"
+
+# Write the DB
+mysql -u"$MYSQL_USER" -p"$MYSQL_PASS" -e 'CREATE TABLE `URLCache` (`youTubeID` varchar(12) NOT NULL,`formatID` int(3) DEFAULT NULL,`URL` text,PRIMARY KEY (`youTubeID`),UNIQUE KEY `youTubeID_UNIQUE` (`youTubeID`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;' "$MYSQL_DB"
+mysql -u"$MYSQL_USER" -p"$MYSQL_PASS" -e 'CREATE TABLE `songs` (`youTubeID` varchar(12) NOT NULL,`plays` int(5) NOT NULL DEFAULT "0",PRIMARY KEY (`youTubeID`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;' "$MYSQL_DB"
