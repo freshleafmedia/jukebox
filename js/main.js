@@ -63,7 +63,7 @@ $('#search-container').on('click', '> div', function() {
 function addSong(song) {
     console.log('Adding.. ' + song.id);
     socket.emit('addsong', song);
-    addToResolveQueue(song);
+    addToQueue(song, true);
 }
 
 $('#pauseButton').click(function() {
