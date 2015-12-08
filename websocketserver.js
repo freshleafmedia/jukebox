@@ -42,7 +42,7 @@ function playSong(song) {
     console.log(song.id+': Playing');
 
     // Run the player
-    process.exec('./play.sh "'+song.url+'"', function (error, stdout, stderr) {
+    process.exec('./play.sh "'+song.URL+'"', function (error, stdout, stderr) {
 
         if (error !== null) {
             console.error(song.id+': Failed to play!');
