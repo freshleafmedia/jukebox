@@ -21,6 +21,15 @@ optParse
 
 LOG_DIR=$(optValue 'LOG_DIR')
 
+# Check the required variables defined
+if [ -q $LOG_DIR ]; then
+	echo "ERROR: LOG_DIR undefined in $OPT_FILE";
+fi
+
+if [ -q $PLAYER ]; then
+	echo "ERROR: PLAYER undefined in $OPT_FILE";
+fi
+
 # Check for and create the logging directory
 if [ ! -d "$LOG_DIR" ]; then
 	mkdir -p "$LOG_DIR"
