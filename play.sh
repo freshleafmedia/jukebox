@@ -19,10 +19,10 @@ done
 # Call the option parser
 optParse
 
+LOG_DIR=$(optValue 'LOG_DIR')
+LOG_FILE="$LOG_DIR/play"
+
 # The binary to use to play the songs
 PLAYER=$(optValue 'PLAYER')
 
-# The regex to match split youtube IDs from the URL
-songRegex='^([^:]+):(.+)$'
-
-$PLAYER "$URL"
+$PLAYER "$URL" >> "$LOG_FILE"
