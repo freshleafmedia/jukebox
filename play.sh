@@ -25,4 +25,4 @@ LOG_FILE="$LOG_DIR/play"
 # The binary to use to play the songs
 PLAYER=$(optValue 'PLAYER')
 
-$PLAYER "$URL" >> "$LOG_FILE"
+$PLAYER "$1" >> "$LOG_FILE"
