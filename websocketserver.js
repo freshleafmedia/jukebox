@@ -33,6 +33,8 @@ function commitQueue() {
 
 function playSong(song) {
 
+    playerState = 'playing';
+
     // Run the player
     process.exec('./play.sh "'+song.url+'"', function (error, stdout, stderr) {
 
@@ -45,8 +47,15 @@ function playSong(song) {
         delete songQueue[song.id];
         commitQueue();
 
-        console.log(song.id+': Resolved!');
-        queueSong(song);
+        console.log(song.id+': Finished!');
+
+        // Keep playing
+        if (typeof songQueue[0] !== 'undefined') {
+            playSong(songQueue[0]);
+            return;
+        }
+
+        playerState = 'stopped';
     });
 }
 
@@ -58,6 +67,10 @@ function queueSong(song) {
     commitQueue();
 
     io.emit('newsong', song);
+
+    if (playerState === 'stopped') {
+        playSong(song);
+    }
 }
 
 io.on('connection', function(socket){
