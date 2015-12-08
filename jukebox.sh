@@ -16,28 +16,15 @@ for f in "$LIBRARY_PATH_ROOT"/*.sh; do
 	source "$f"
 done
 
+# Call the option parser
+optParse
 
-
-LOG_DIRECTORY='./logs'
+LOG_DIR=$(optValue 'LOG_DIR')
 
 # Check for and create the logging directory
-if [ ! -d "$LOG_DIRECTORY" ]; then
-	mkdir -p "$LOG_DIRECTORY"
+if [ ! -d "$LOG_DIR" ]; then
+	mkdir -p "$LOG_DIR"
 fi
-
-# Touch all the necessary files to make sure they exist
-touch "$(optValue 'FILE_QUEUE')"
-touch "$(optValue 'FILE_RESOLVE')"
-
-# Start the resolver
-echo -n "Starting the resolver... "
-./resolve.sh >> "$LOG_DIRECTORY/reslove" &
-echo "[$!]"
-
-# Start the player
-echo -n "Starting the player... "
-./play.sh >> "$LOG_DIRECTORY/play" &
-echo "[$!]"
 
 # Start the node server
 echo -n "Starting the node server... "

@@ -19,102 +19,67 @@ done
 # Call the option parser
 optParse
 
-MYSQL_HOST=$(optValue 'MYSQL_HOST')
-MYSQL_USER=$(optValue 'MYSQL_USER')
-MYSQL_PASS=$(optValue 'MYSQL_PASS')
-MYSQL_DB=$(optValue 'MYSQL_DB')
-
-QUEUE_LIST=$(optValue 'FILE_QUEUE')
-RESOLVE_LIST=$(optValue 'FILE_RESOLVE')
-
-function implode { local IFS="$1"; shift; echo "$*"; }
-
-function writeToQueue {
-
-    local youTubeID="$1"
-    local URL="$2"
-
-    echo "$youTubeID:$URL" >> "$QUEUE_LIST"
-
-}
+LOG_DIR=$(optValue 'LOG_DIR')
+LOG_FILE="$LOG_DIR/resolve"
 
 formatRegex='^([0-9]+)[[:space:]]+([^[:space:]]+).+$'
 
-tail -f "$RESOLVE_LIST" | while read youTubeID; do
+youTubeID="$1"
 
-    # Reset
-    streamURL=""
-    usableFormatID=""
-    formatIDs=()
+echo "Resolving $youTubeID" >> "$LOG_FILE"
 
-    echo "Resolving $youTubeID";
+echo "Fetching available formats..." >> "$LOG_FILE"
 
-    # Check if we have already resolved this ID
-    resolvedCheck=$(mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" -AN -se "SELECT URL FROM URLCache WHERE youTubeID = '$youTubeID'" "$MYSQL_DB")
+# Get all the formats this video can be played in reverse order
+formats=$(youtube-dl -F "$youTubeID" | grep 'audio only' | tac)
 
-    if [ "$resolvedCheck" != "" ]; then
-        echo "$youTubeID has already been resolved"
-        writeToQueue "$youTubeID" "$resolvedCheck"
-        continue;
+# Count the number of returned formats
+formatCount=$(echo "$formats" | wc -l)
+
+# Check we found some qualities
+if [[ $formatCount == 0 ]]; then
+    echo "ERROR - No formats could be found!" >> "$LOG_FILE"
+    continue;
+fi
+
+declare -a formatIDs
+
+# Loop through each of the formats found
+while read -r format; do
+
+    [[ $format =~ $formatRegex ]]
+
+    formatID="${BASH_REMATCH[1]}"
+    formatType="${BASH_REMATCH[2]}"
+
+    if [ "$formatID" != "" ] && [ "formatType" != "" ]; then
+        # Add this ID to the array
+        formatIDs=(${formatIDs[@]} $formatID)
+    else
+        echo "Ignoring bad format: $format" >> "$LOG_FILE"
     fi
 
-    echo "Fetching available formats..."
+done <<< "$formats"
 
-    # Get all the formats this video can be played in reverse order
-    formats=$(youtube-dl -F "$youTubeID" | grep 'audio only' | tac)
+#echo "Found $formatCount Formats: ${formatIDs[@]}"
 
-    # Count the number of returned formats
-    formatCount=$(echo "$formats" | wc -l)
+# Try each format in turn
+for formatID in "${formatIDs[@]}"; do
 
-    # Check we found some qualities
-    if [[ $formatCount == 0 ]]; then
-        echo "ERROR - No formats could be found!"
+    #echo -n "Trying format $formatID..."
+    streamURL=$(youtube-dl -f "$formatID" -g $youTubeID)
+
+    # Check the response we got
+    if [ $? == 0 ]; then
+        usableFormatID="$formatID"
+        echo " OK!" >> "$LOG_FILE"
+        break;
+    else
+        echo " BAD! Moving on..." >> "$LOG_FILE"
         continue;
     fi
-
-    declare -a formatIDs
-
-    # Loop through each of the formats found
-    while read -r format; do
-
-        [[ $format =~ $formatRegex ]]
-
-        formatID="${BASH_REMATCH[1]}"
-        formatType="${BASH_REMATCH[2]}"
-
-        if [ "$formatID" != "" ] && [ "formatType" != "" ]; then
-            # Add this ID to the array
-            formatIDs=(${formatIDs[@]} $formatID)
-        else
-            echo "Ignoring bad format: $format"
-        fi
-
-    done <<< "$formats"
-
-    echo "Found $formatCount Formats: ${formatIDs[@]}"
-
-    # Try each format in turn
-    for formatID in "${formatIDs[@]}"; do
-
-        echo -n "Trying format $formatID..."
-        streamURL=$(youtube-dl -f "$formatID" -g $youTubeID)
-
-        # Check the response we got
-        if [ $? == 0 ]; then
-            usableFormatID="$formatID"
-            echo " OK!"
-            break;
-        else
-            echo " BAD! Moving on..."
-            continue;
-        fi
-
-    done
-
-    # Write this URL to the database
-    mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASS" -e "INSERT IGNORE INTO URLCache VALUES ('$youTubeID','$usableFormatID','$streamURL')" "$MYSQL_DB"
-
-    # Write this URL to the queue list
-    writeToQueue "$youTubeID" "$streamURL"
 
 done
+
+# Write this URL to the queue list
+echo -n "$streamURL"
