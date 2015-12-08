@@ -31,6 +31,19 @@ fs.readFile(songQueueFile, function(err, f) {
     }
 });
 
+
+function incrementStat(songID,statName) {
+    if (typeof songStats[songID] === 'undefined') {
+        songStats[songID] = {};
+    }
+
+    // Set the stat
+    songStats[songID][statName] += 1;
+
+    // Persist
+    fs.writeFile(songStatFile, JSON.stringify(songStats));
+}
+
 function control(action) {
 
     // Check if were paused
@@ -69,6 +82,9 @@ function playQueue() {
 
     playerState = 'playing';
     console.log(songID+': Playing');
+
+    // Add some stats
+    incrementStat(songID, 'playCount');
 
     // Run the player
     process.exec('./play.sh "'+songCache[songID]['URL']+'"', function (error, stdout, stderr) {
