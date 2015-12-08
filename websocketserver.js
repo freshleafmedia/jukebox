@@ -42,28 +42,39 @@ io.on('connection', function(socket){
 
     socket.on('addsong', function(song) {
 
-        console.log('Resolving '+song.id);
+        console.log(song.id+': Resolving...');
 
         // Check if we have already resolved this songs ID
         if (typeof songCache[song.id] !== 'undefined' && typeof songCache[song.id]['URL'] !== 'undefined') {
+
+            console.log(song.id+': Already resolved. Using cache');
             queueSong(song);
             return;
         }
 
+        // Set the songs state to resolving
+        song['state'] = 'resolving';
+        commitCache();
+
+        // Add the the song to the cache
+        songCache[song.id] = song;
+
+        // Run the resolver
         process.exec('./resolve.sh '+song.id, function (error, stdout, stderr) {
-            console.log('stderr: ' + stderr);
-            console.log('stdout: ' + stdout);
 
             if (error !== null) {
-                console.log('exec error: ' + error);
+                console.error(song.id+': Failed to resolve!');
+                song['state'] = 'failed';
+                commitCache();
                 return;
             }
 
             // The resolve.sh will return the URL
             song['URL'] = stdout;
-            songCache[song.id] = song;
-
+            song['state'] = 'resolved';
             commitCache();
+
+            console.log(song.id+': Resolved! Adding to the queue...');
             queueSong(song);
         });
     });
