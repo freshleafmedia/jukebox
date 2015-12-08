@@ -26,9 +26,9 @@ formatRegex='^([0-9]+)[[:space:]]+([^[:space:]]+).+$'
 
 youTubeID="$1"
 
-echo "Resolving $youTubeID" >> "$LOG_FILE"
+echo "$youTubeID: Resolving" >> "$LOG_FILE"
 
-echo "Fetching available formats..." >> "$LOG_FILE"
+echo "$youTubeID: Fetching available formats..." >> "$LOG_FILE"
 
 # Get all the formats this video can be played in reverse order
 formats=$(youtube-dl -F "$youTubeID" | grep 'audio only' | tac)
@@ -38,7 +38,7 @@ formatCount=$(echo "$formats" | wc -l)
 
 # Check we found some qualities
 if [[ $formatCount == 0 ]]; then
-    echo "ERROR - No formats could be found!" >> "$LOG_FILE"
+    echo "$youTubeID: ERROR - No formats could be found!" >> "$LOG_FILE"
     continue;
 fi
 
@@ -56,7 +56,7 @@ while read -r format; do
         # Add this ID to the array
         formatIDs=(${formatIDs[@]} $formatID)
     else
-        echo "Ignoring bad format: $format" >> "$LOG_FILE"
+        echo "$youTubeID: Ignoring bad format: $format" >> "$LOG_FILE"
     fi
 
 done <<< "$formats"
@@ -66,16 +66,16 @@ done <<< "$formats"
 # Try each format in turn
 for formatID in "${formatIDs[@]}"; do
 
-    #echo -n "Trying format $formatID..."
+    echo "$youTubeID: Trying format $formatID..."
     streamURL=$(youtube-dl -f "$formatID" -g $youTubeID)
 
     # Check the response we got
     if [ $? == 0 ]; then
         usableFormatID="$formatID"
-        echo " OK!" >> "$LOG_FILE"
+        echo "$youTubeID: Format $formatID OK!" >> "$LOG_FILE"
         break;
     else
-        echo " BAD! Moving on..." >> "$LOG_FILE"
+        echo "$youTubeID: Format $formatID BAD! Moving on..." >> "$LOG_FILE"
         continue;
     fi
 
