@@ -20,14 +20,38 @@ done
 optParse
 
 LOG_DIR=$(optValue 'LOG_DIR')
+CACHE_DIR=$(optValue 'CACHE_DIR')
+PLAYER=$(optValue 'PLAYER')
+
+# Check the required variables defined
+if [ "$LOG_DIR" == "" ]; then
+	echo "ERROR: LOG_DIR undefined in $OPT_FILE";
+	exit 1;
+fi
+
+if [ "$PLAYER" == "" ]; then
+	echo "ERROR: PLAYER undefined in $OPT_FILE";
+	exit 1;
+fi
+
+if [ "$CACHE_DIR" == "" ]; then
+	echo "ERROR: CACHE_DIR undefined in $OPT_FILE";
+	exit 1;
+fi
 
 # Check for and create the logging directory
 if [ ! -d "$LOG_DIR" ]; then
 	mkdir -p "$LOG_DIR"
 fi
 
+# Check for and create the cache directory
+if [ ! -d "$CACHE_DIR" ]; then
+	mkdir -p "$CACHE_DIR"
+fi
+
 # Start the node server
 echo -n "Starting the node server... "
-nohup node websocketserver.js >> "$LOG_DIRECTORY/node" &
+node websocketserver.js 2&>1 "$LOG_DIR/node" &
 echo "[$!]"
+echo
 

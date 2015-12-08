@@ -22,11 +22,22 @@ optParse
 LOG_DIR=$(optValue 'LOG_DIR')
 LOG_FILE="$LOG_DIR/resolve"
 
+CACHE_DIR=$(optValue 'CACHE_DIR')
+
 formatRegex='^([0-9]+)[[:space:]]+([^[:space:]]+).+$'
 
 youTubeID="$1"
 
+echo "$youTubeID: Checking file cache..." >> "$LOG_FILE"
+
+if [ -f "$CACHE_DIR/$youTubeID" ]; then
+    echo "$youTubeID: Cache file found" >> "$LOG_FILE"
+    echo -n "$CACHE_DIR/$youTubeID"
+    exit 0;
+fi
+
 echo "$youTubeID: Resolving" >> "$LOG_FILE"
+
 
 echo "$youTubeID: Fetching available formats..." >> "$LOG_FILE"
 
@@ -63,16 +74,18 @@ done <<< "$formats"
 
 #echo "Found $formatCount Formats: ${formatIDs[@]}"
 
+downloaded=false
+
 # Try each format in turn
 for formatID in "${formatIDs[@]}"; do
 
-    echo "$youTubeID: Trying format $formatID..."
-    streamURL=$(youtube-dl -f "$formatID" -g $youTubeID)
+    echo "$youTubeID: Trying format $formatID..." >> "$LOG_FILE"
+    youtube-dl -o "$CACHE_DIR/%(id)s" -f "$formatID" "$youTubeID"
 
     # Check the response we got
     if [ $? == 0 ]; then
-        usableFormatID="$formatID"
-        echo "$youTubeID: Format $formatID OK!" >> "$LOG_FILE"
+        downloaded=true
+        echo "$youTubeID: Format $formatID downloaded!" >> "$LOG_FILE"
         break;
     else
         echo "$youTubeID: Format $formatID BAD! Moving on..." >> "$LOG_FILE"
@@ -81,5 +94,10 @@ for formatID in "${formatIDs[@]}"; do
 
 done
 
-# Write this URL to the queue list
-echo -n "$streamURL"
+# Check a URL was resolved
+if [ "$downloaded" == "false" ]; then
+    echo "$youTubeID: ERROR: No formats found" >> "$LOG_FILE"
+else
+    # Write this URL to the queue list
+    echo -n "$CACHE_DIR/$youTubeID"
+fi
