@@ -63,6 +63,7 @@ $('#search-container').on('click', '> div', function() {
 function addSong(song) {
     console.log('Adding.. ' + song.id);
     socket.emit('addsong', song);
+    addToResolveQueue(song);
 }
 
 $('#pauseButton').click(function() {
@@ -86,6 +87,14 @@ socket.on('newsong', function(song) {
     addToQueue(song);
 });
 
+socket.on('resolved', function(song) {
+    $('.queue-container #song-'+song.id+'[data-resolving="true"]').remove();
+});
+
+socket.on('resolved failed', function(song) {
+    $('.queue-container #song-'+song.id).attr('data-resolving','failed');
+});
+
 socket.on('queuelist', function(data) {
     console.log('From websocket: whole list');
     setQueue(data);
@@ -95,8 +104,11 @@ socket.on('song finished', function() {
     $('.queue-container > :first-child').remove();
 });
 
-function addToQueue(song) {
-    var item = $('<div />', { 'class': 'songResult' });
+function addToQueue(song, resolving) {
+    var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.id });
+
+    item.attr('data-resolving',!!resolving);
+
     var image = $('<img />', { src: song.thumbnail });
     var title = $('<p />', { 'class': 'title', text: song.title });
     item.append(image);
