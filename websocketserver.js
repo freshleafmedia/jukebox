@@ -88,7 +88,10 @@ function queueSong(song) {
 io.on('connection', function(socket){
     console.log('User connected');
 
-    socket.emit('queuelist', songQueue);
+    songQueueFull = songQueue.map(function(item) {
+        return songCache[item];
+    });
+    socket.emit('queuelist', songQueueFull);
 
     socket.on('addsong', function(song) {
 
