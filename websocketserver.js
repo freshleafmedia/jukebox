@@ -62,13 +62,12 @@ function playQueue() {
         songQueue.shift();
         commitQueue();
 
+        playerState = 'stopped';
+
         // Keep playing
         if (songQueue.length > 0) {
             playQueue();
-            return;
         }
-
-        playerState = 'stopped';
     });
 }
 
