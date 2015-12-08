@@ -19,6 +19,10 @@ fs.readFile(songQueueFile, function(err, f) {
     songQueue = JSON.parse(songQueueJson);
 });
 
+if(songQueue.length > 0) {
+    playSong(songQueue[0]);
+}
+
 function control(action) {
     process.exec('./control.sh '+action);
 }
