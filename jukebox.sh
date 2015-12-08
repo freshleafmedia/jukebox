@@ -53,4 +53,5 @@ fi
 echo -n "Starting the node server... "
 nohup node websocketserver.js >> "$LOG_DIR/node" &
 echo "[$!]"
+echo
 
