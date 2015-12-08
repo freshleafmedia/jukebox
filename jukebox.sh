@@ -20,6 +20,7 @@ done
 optParse
 
 LOG_DIR=$(optValue 'LOG_DIR')
+PLAYER=$(optValue 'PLAYER')
 
 # Check the required variables defined
 if [ -q $LOG_DIR ]; then
