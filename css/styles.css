@@ -89,3 +89,15 @@ input#search {
 #search-container {
     padding-top: 20px;
 }
+
+.queue {
+    max-width: 700px;
+    margin: 0 auto;
+}
+.queue strong {
+    line-height: 40px;
+    font-size: 30px;
+    color: #333;
+    font-family: 'Pacifico', cursive;
+    padding: 40px 0;
+}
