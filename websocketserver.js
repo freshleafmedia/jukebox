@@ -151,7 +151,7 @@ io.on('connection', function(socket){
         songCache[song.id] = song;
         commitCache();
 
-        socket.emit('resolving', song);
+        io.emit('resolving', song);
 
         // Run the resolver
         process.exec('./resolve.sh '+song.id, function (error, stdout, stderr) {
@@ -165,7 +165,7 @@ io.on('connection', function(socket){
                 return;
             }
 
-            socket.emit('resolved', song);
+            io.emit('resolved', song);
 
             // The resolve.sh will return the URL
             songCache[song.id]['URL'] = stdout;
