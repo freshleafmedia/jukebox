@@ -62,6 +62,8 @@ function playQueue() {
         songQueue.shift();
         commitQueue();
 
+	io.emit('song finished');
+
         playerState = 'stopped';
 
         // Keep playing

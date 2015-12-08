@@ -91,6 +91,10 @@ socket.on('queuelist', function(data) {
     setQueue(data);
 });
 
+socket.on('song finished', function() {
+    $('.queue-container > :first-child').remove();
+});
+
 function addToQueue(song) {
     var item = $('<div />', { 'class': 'songResult' });
     var image = $('<img />', { src: song.thumbnail });
