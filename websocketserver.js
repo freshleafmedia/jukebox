@@ -27,11 +27,11 @@ fs.readFile(songQueueFile, function(err, f) {
 function control(action) {
 
     // Check if were paused
-    if (action === 'paused' && paused === true) {
+    if (action === 'pause' && paused === true) {
         return;
     }
 
-    if(action === 'paused') {
+    if(action === 'pause') {
         paused = true;
     }
 
