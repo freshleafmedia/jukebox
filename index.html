@@ -4,6 +4,7 @@
     <title>Freshleaf Jukebox</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css" media="all" />
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <div id="wrapper">
@@ -14,10 +15,16 @@
     <button class="btn" id="addButton">Add</button>
 
     <div id="addDialog" class="dialog" style="display: none">
-        <button id="addDialogClose">Close Dialog</button>
-        <strong>Search YouTube </strong>
-        <input type="text" id="search" disabled />
-        <div id="search-container"></div>
+        <div class="overlay"></div>
+            <div class="overlay-wrapper">
+                <button id="addDialogClose">X</button>
+                <div class="search-header">
+                    <strong>Search YouTube </strong>
+                    <input type="text" id="search" disabled />
+                </div>
+                <div id="search-container"></div>
+            </div>
+        </div>
     </div>
 
     <div class="queue">
