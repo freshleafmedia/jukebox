@@ -7,10 +7,7 @@ echo "-------------------------------------------------"
 
 # Install APT packages
 apt-get update
-apt-get install -y apache2 mysql-server php5 nodejs nodejs-legacy npm
-
-# Not sure if these are needed or how to install
-# apt-get install -y vlc
+apt-get install -y apache2 mysql-server php5 nodejs nodejs-legacy npm vlc
 
 # Install Youtube DL
 curl https://yt-dl.org/downloads/2015.12.05/youtube-dl -o /usr/local/bin/youtube-dl
