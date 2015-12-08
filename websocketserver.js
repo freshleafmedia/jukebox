@@ -2,8 +2,6 @@ var io = require('socket.io')(3000);
 var fs  = require("fs");
 var process = require('child_process');
 
-var resolve_list = 'resolve_list';
-
 var songCacheFile = 'songcache.json';
 var songQueueFile = 'songqueue.json';
 var songCache = {};
