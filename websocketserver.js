@@ -2,6 +2,8 @@ var io = require('socket.io')(3000);
 var fs  = require("fs");
 var process = require('child_process');
 
+var playerState = 'stopped';
+
 var songCacheFile = 'songcache.json';
 var songQueueFile = 'songqueue.json';
 var songCache = {};
@@ -23,6 +25,28 @@ function control(action) {
 
 function commitCache() {
     fs.writeFile(songCacheFile, JSON.stringify(songCache));
+}
+
+function playSong(song) {
+
+    // Run the player
+    process.exec('./play.sh "'+song.url+'"', function (error, stdout, stderr) {
+
+        if (error !== null) {
+            console.error(song.id+': Failed to play!');
+            song['state'] = 'failed';
+            commitCache();
+            return;
+        }
+
+        // The resolve.sh will return the URL
+        song['URL'] = stdout;
+        song['state'] = 'resolved';
+        commitCache();
+
+        console.log(song.id+': Resolved!');
+        queueSong(song);
+    });
 }
 
 function queueSong(song) {
@@ -63,14 +87,14 @@ io.on('connection', function(socket){
 
             if (error !== null) {
                 console.error(song.id+': Failed to resolve!');
-                song['state'] = 'failed';
+                songCache[song.id]['state'] = 'failed';
                 commitCache();
                 return;
             }
 
             // The resolve.sh will return the URL
-            song['URL'] = stdout;
-            song['state'] = 'resolved';
+            songCache[song.id]['URL'] = stdout;
+            songCache[song.id]['state'] = 'resolved';
             commitCache();
 
             console.log(song.id+': Resolved!');
