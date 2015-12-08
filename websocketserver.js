@@ -151,15 +151,21 @@ io.on('connection', function(socket){
         songCache[song.id] = song;
         commitCache();
 
+        io.emit('resolving', song);
+
         // Run the resolver
         process.exec('./resolve.sh '+song.id, function (error, stdout, stderr) {
+
 
             if (error !== null) {
                 console.error(song.id+': Failed to resolve!');
                 songCache[song.id]['state'] = 'failed';
                 commitCache();
+                socket.emit('resolve failed', song);
                 return;
             }
+
+            io.emit('resolved', song);
 
             // The resolve.sh will return the URL
             songCache[song.id]['URL'] = stdout;
