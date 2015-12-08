@@ -7,8 +7,15 @@ var paused = false;
 
 var songCacheFile = 'songcache.json';
 var songQueueFile = 'songqueue.json';
+var songStatFile = 'songstats.json';
 var songCache = {};
+var songStats = {};
 var songQueue = [];
+
+fs.readFile(songStatFile, function(err, f) {
+    var songStatJson = f.toString();
+    songStats = JSON.parse(songStatJson);
+});
 
 fs.readFile(songCacheFile, function(err, f) {
     var songCacheJson = f.toString();
@@ -23,6 +30,19 @@ fs.readFile(songQueueFile, function(err, f) {
         playQueue();
     }
 });
+
+
+function incrementStat(songID,statName) {
+    if (typeof songStats[songID] === 'undefined') {
+        songStats[songID] = {};
+    }
+
+    // Set the stat
+    songStats[songID][statName] += 1;
+
+    // Persist
+    fs.writeFile(songStatFile, JSON.stringify(songStats));
+}
 
 function control(action) {
 
@@ -62,6 +82,9 @@ function playQueue() {
 
     playerState = 'playing';
     console.log(songID+': Playing');
+
+    // Add some stats
+    incrementStat(songID, 'playCount');
 
     // Run the player
     process.exec('./play.sh "'+songCache[songID]['URL']+'"', function (error, stdout, stderr) {
