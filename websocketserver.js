@@ -17,11 +17,11 @@ fs.readFile(songCacheFile, function(err, f) {
 fs.readFile(songQueueFile, function(err, f) {
     var songQueueJson = f.toString();
     songQueue = JSON.parse(songQueueJson);
-});
 
-if(songQueue.length > 0) {
-    playQueue();
-}
+    if(songQueue.length > 0) {
+        playQueue();
+    }
+});
 
 function control(action) {
     process.exec('./control.sh '+action);
