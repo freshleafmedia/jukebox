@@ -25,4 +25,13 @@ LOG_FILE="$LOG_DIR/play"
 # The binary to use to play the songs
 PLAYER=$(optValue 'PLAYER')
 
+# Check the required variables defined
+if [ -q $LOG_DIR ]; then
+	echo "ERROR: LOG_DIR undefined in $OPT_FILE";
+fi
+
+if [ -q $PLAYER ]; then
+	echo "ERROR: PLAYER undefined in $OPT_FILE";
+fi
+
 $PLAYER "$1" >> "$LOG_FILE"
