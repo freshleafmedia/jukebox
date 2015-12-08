@@ -71,7 +71,6 @@ for formatID in "${formatIDs[@]}"; do
 
     # Check the response we got
     if [ $? == 0 ]; then
-        usableFormatID="$formatID"
         echo "$youTubeID: Format $formatID OK!" >> "$LOG_FILE"
         break;
     else
