@@ -66,7 +66,7 @@ done <<< "$formats"
 # Try each format in turn
 for formatID in "${formatIDs[@]}"; do
 
-    echo "$youTubeID: Trying format $formatID..."
+    echo "$youTubeID: Trying format $formatID..." >> "$LOG_FILE"
     streamURL=$(youtube-dl -f "$formatID" -g $youTubeID)
 
     # Check the response we got
