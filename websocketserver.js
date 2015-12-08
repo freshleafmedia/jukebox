@@ -7,8 +7,15 @@ var paused = false;
 
 var songCacheFile = 'songcache.json';
 var songQueueFile = 'songqueue.json';
+var songStatFile = 'songstats.json';
 var songCache = {};
+var songStats = {};
 var songQueue = [];
+
+fs.readFile(songStatFile, function(err, f) {
+    var songStatJson = f.toString();
+    songStats = JSON.parse(songStatJson);
+});
 
 fs.readFile(songCacheFile, function(err, f) {
     var songCacheJson = f.toString();
