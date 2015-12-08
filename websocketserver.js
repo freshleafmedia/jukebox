@@ -36,6 +36,9 @@ function incrementStat(songID,statName) {
     if (typeof songStats[songID] === 'undefined') {
         songStats[songID] = {};
     }
+    if (typeof songStats[statName] === 'undefined') {
+        songStats[statName] = 0;
+    }
 
     // Set the stat
     songStats[songID][statName] += 1;
