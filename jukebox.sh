@@ -24,10 +24,12 @@ LOG_DIR=$(optValue 'LOG_DIR')
 # Check the required variables defined
 if [ -q $LOG_DIR ]; then
 	echo "ERROR: LOG_DIR undefined in $OPT_FILE";
+	exit 1;
 fi
 
 if [ -q $PLAYER ]; then
 	echo "ERROR: PLAYER undefined in $OPT_FILE";
+	exit 1;
 fi
 
 # Check for and create the logging directory
