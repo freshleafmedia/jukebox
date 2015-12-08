@@ -24,7 +24,7 @@ function control(action) {
 }
 
 function commitCache() {
-    fs.writeFile('songcache.json', JSON.stringify(songCache));
+    fs.writeFile(songCacheFile, JSON.stringify(songCache));
 }
 
 function queueSong(song) {
