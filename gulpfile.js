@@ -22,6 +22,10 @@ var dest = {
 gulp.task('scripts', function() {
     gulp.src('js/source/app.js')
         .pipe(browserify())
+        .pipe(concat('app.min.js'))
+        .on('error', swallowError)
+        .pipe(uglify())
+        .on('error', swallowError)
         .pipe(gulp.dest(dest.javascript))
 });
 
