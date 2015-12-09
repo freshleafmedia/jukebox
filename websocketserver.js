@@ -1,6 +1,7 @@
 var io = require('socket.io')(3000);
 var fs  = require("fs");
 var process = require('child_process');
+var path = require('path');
 
 var playerState = 'stopped';
 var paused = false;
@@ -161,7 +162,7 @@ io.on('connection', function(socket){
         songSetAttribute(song, 'state', 'resolving');
 
         // Check if we have already downloaded this song
-        if (fs.accessSync(pathCache+'/'+song.id)) {
+        if (path.exists(pathCache+'/'+song.id) === true) {
             songSetAttribute(song, 'state', 'resolved');
             console.log(song.id+': Song in cache, now on the queue...');
             playQueue();
