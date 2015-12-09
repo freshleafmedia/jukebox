@@ -179,7 +179,7 @@ io.on('connection', function(socket){
         process.exec('./resolve.sh '+song.id, function (error, stdout, stderr) {
 
 
-            if (error !== null) {
+            if (error !== null || stdout == '') {
                 console.error(song.id+': Failed to resolve!');
                 songCache[song.id]['state'] = 'failed';
                 commitCache();
