@@ -3,6 +3,11 @@ socket.on('connect', function(){
     console.log('connected to websocket server');
 });
 
+socket.on('disconnect', function(){
+    console.log('disconnected');
+    $('.media-controls .btn, #shutdown').addClass('disabled');
+});
+
 setTimeout(googleApiClientReady, 1000);
 function googleApiClientReady() {
     gapi.client.setApiKey('AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I');
