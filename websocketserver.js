@@ -56,6 +56,7 @@ function control(action) {
 
     if (action === 'skip') {
         process.exec('killall vlc');
+        return;
     }
     // Check if were paused
     if (action === 'pause' && paused === true) {
