@@ -149,7 +149,7 @@ socket.on('resolving', function(song) {
     addToQueue(song, true);
 });
 
-socket.on('resolved failed', function(song) {
+socket.on('resolve failed', function(song) {
     $('.queue-container #song-'+song.id).attr('data-resolving','failed');
 });
 
