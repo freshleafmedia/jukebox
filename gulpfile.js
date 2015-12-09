@@ -39,6 +39,13 @@ gulp.task('sass', function() {
         .pipe(gulp.dest(dest.css))
 });
 
+/* Watch Files For Changes */
+gulp.task('watch', function() {
+    gulp.watch(paths.sass, ['sass']);
+    gulp.watch(paths.javascript, ['scripts']);
+
+});
+
 function swallowError (error) {
 
     //If you want details of the error in the console
@@ -47,4 +54,4 @@ function swallowError (error) {
     this.emit('end');
 }
 
-gulp.task('default', ['sass', 'scripts']);
+gulp.task('default', ['sass', 'scripts', 'watch']);
