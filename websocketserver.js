@@ -74,6 +74,8 @@ function playQueue(startQueueFrom) {
     // Get the song to play
     var song = songQueue.slice(startQueueFrom,1);
 
+    console.log(song);
+
     // Check we found a song
     if (typeof song === 'undefined' || song.length === 0) {
         return;
@@ -96,6 +98,8 @@ function playQueue(startQueueFrom) {
 
         // try and play the next song
         playQueue(startQueueFrom+1);
+
+        return;
     }
 
     playerState = 'playing';
