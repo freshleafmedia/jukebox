@@ -157,3 +157,9 @@ input#search {
 #forwardButton {
     background-image: url(../images/forward.png);
 }
+#volupButton {
+    background-image: url(../images/vol-up.png);
+}
+#voldownButton {
+    background-image: url(../images/vol-down.png);
+}
