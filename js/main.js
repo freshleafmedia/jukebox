@@ -91,13 +91,35 @@ $('#playButton').click(function() {
 });
 
 $('#addButton').click(function() {
-    $('#addDialog').show();
-    $('#search').focus().val('');
+    showAddDialog();
 });
 
-$('#addDialogClose').click(function() {
-    $('#addDialog').hide();
+$(document).keyup(function(event){
+    // Keys when form input isn't focused
+    if (!$(event.target).is('input')) {
+        // A or Enter triggers dialog
+        if (event.keyCode == 65 || event.keyCode == 13) {
+            showAddDialog();
+        }
+    }
+    // Esc closes dialog
+    if (event.keyCode == 27) {
+        closeAddDialog();
+    }
 });
+
+function showAddDialog() {
+    $('#addDialog').show();
+    $('#search').focus().val('');
+}
+
+$('#addDialogClose').click(function() {
+    closeAddDialog();
+});
+
+function closeAddDialog() {
+    $('#addDialog').hide();
+}
 
 $('#volupButton').click(function() {
     socket.emit('volUp');
