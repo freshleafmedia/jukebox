@@ -39,6 +39,11 @@ if [ "$CACHE_DIR" == "" ]; then
 	exit 1;
 fi
 
+if [ ! -w "$CACHE_DIR" ]; then
+	echo "ERROR: CACHE_DIR ($CACHE_DIR) not writeable";
+	exit 1;
+fi
+
 # Check for and create the logging directory
 if [ ! -d "$LOG_DIR" ]; then
 	mkdir -p "$LOG_DIR"
