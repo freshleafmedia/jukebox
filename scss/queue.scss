@@ -1,0 +1,90 @@
+// Queue Styles
+
+.queue {
+  max-width: 700px;
+  margin: 0 auto;
+  padding-top: 285px;
+}
+.queue strong {
+  font-family: 'Pacifico', cursive;
+}
+.queue > p {
+  line-height: 40px;
+  font-size: 30px;
+  color: #fff;
+  padding: 20px 0;
+  margin: 0 0 20px;
+  border-bottom: 1px solid #00aced;
+}
+.queue  p {
+  color: #fff;
+}
+
+.songResult {
+  display: flex;
+  text-align: left;
+  position: relative;
+  margin-bottom: 10px;
+  border-top-left-radius: 45px;
+  border-bottom-left-radius: 45px;
+}
+#search-container .songResult {
+  cursor: pointer;
+}
+.songResult .title {
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+.songResult .imageWrapper {
+  position: relative;
+  height: 90px;
+  width: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+  margin-right: 20px;
+}
+.songResult .imageWrapper img {
+  position: relative;
+  margin-left: -20px;
+  z-index: 2;
+  opacity: 0.6;
+}
+.songResult:first-of-type .imageWrapper {
+  -webkit-animation: rotating 3s linear infinite;
+  -moz-animation: rotating 3s linear infinite;
+  -ms-animation: rotating 3s linear infinite;
+  -o-animation: rotating 3s linear infinite;
+  animation: rotating 3s linear infinite;
+}
+.songResult .imageWrapper::before,
+.songResult .imageWrapper::after {
+  display: block;
+  position: absolute;
+  content: '';
+  height: 90px;
+  width: 90px;
+  border-radius: 50%;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  background: url(../images/record.png) no-repeat center;
+  background-size: cover;
+}
+.songResult .imageWrapper::after {
+  z-index: 3;
+  background: url(../images/record-inner.png) no-repeat center;
+  background-size: cover;
+  opacity: 0.8;
+}
+.songResult[data-resolving="true"] {
+  opacity: 0.6;
+}
+.songResult[data-resolving="true"] .imageWrapper,
+#search-container .songResult .imageWrapper{
+  -webkit-animation: none;
+  -moz-animation: none;
+  -ms-animation: none;
+  -o-animation: none;
+  animation: none;
+}

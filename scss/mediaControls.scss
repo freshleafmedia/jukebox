@@ -1,0 +1,63 @@
+// Media Buttons
+
+.media-controls {
+  background: url(../images/vinyl.png) no-repeat bottom center;
+  padding: 20px 0 55px;
+  position: absolute;
+  top: 160px;
+  left: 0%;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn.media {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #227fde;
+}
+.btn.media.active,
+.btn.media:hover {
+  background-color: #6bc874;
+}
+
+button.disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+#playButton {
+  background-image: url(../images/play.png);
+}
+#pauseButton {
+  background-image: url(../images/pause.png);
+}
+#rewindButton {
+  background-image: url(../images/rewind.png);
+}
+#forwardButton {
+  background-image: url(../images/forward.png);
+}
+#volupButton {
+  background-image: url(../images/vol-up.png);
+}
+#voldownButton {
+  background-image: url(../images/vol-down.png);
+}
+#shutdown {
+  background-color: #e7466f;
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(../images/power.png);
+}

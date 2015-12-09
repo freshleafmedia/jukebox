@@ -17,7 +17,93 @@ img {
   display: inline-block;
   margin-right: 10px; }
 
-/* Header */
+/* Button styles */
+button {
+  cursor: pointer; }
+
+button:focus {
+  outline: none; }
+
+#addDialogClose {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #227fde;
+  font-family: 'Pacifico', cursive;
+  line-height: 40px;
+  color: #fff;
+  padding: 0; }
+
+#addDialogClose:hover {
+  background-color: #6bc874; }
+
+/* Footer */
+#footer {
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  line-height: 2em;
+  font-family: 'Pacifico', cursive;
+  left: 0; }
+
+.github-icon {
+  position: fixed;
+  bottom: 5px;
+  display: none;
+  right: 5px;
+  width: 40px;
+  cursor: pointer;
+  height: 40px;
+  background-color: #333;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-image: url(../images/github.png); }
+
+.github-banner img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  margin-right: 0; }
+
+/* Keyframes for animation */
+@-webkit-keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
 header {
   position: fixed;
   top: 0;
@@ -61,7 +147,64 @@ h1 {
 #addButton:hover {
   background: #6bc874; }
 
-/** Dialog **/
+.media-controls {
+  background: url(../images/vinyl.png) no-repeat bottom center;
+  padding: 20px 0 55px;
+  position: absolute;
+  top: 160px;
+  left: 0%;
+  cursor: pointer;
+  width: 100%; }
+
+.btn.media {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #227fde; }
+
+.btn.media.active, .btn.media:hover {
+  background-color: #6bc874; }
+
+button.disabled {
+  opacity: 0.4;
+  cursor: default; }
+
+#playButton {
+  background-image: url(../images/play.png); }
+
+#pauseButton {
+  background-image: url(../images/pause.png); }
+
+#rewindButton {
+  background-image: url(../images/rewind.png); }
+
+#forwardButton {
+  background-image: url(../images/forward.png); }
+
+#volupButton {
+  background-image: url(../images/vol-up.png); }
+
+#voldownButton {
+  background-image: url(../images/vol-down.png); }
+
+#shutdown {
+  background-color: #e7466f;
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(../images/power.png); }
+
 #addDialog {
   position: absolute;
   left: 20%;
@@ -113,7 +256,6 @@ input#search {
 .added {
   background: lightgreen; }
 
-/* Queue Styles */
 .queue {
   max-width: 700px;
   margin: 0 auto;
@@ -198,149 +340,3 @@ input#search {
   -ms-animation: none;
   -o-animation: none;
   animation: none; }
-
-/* Button styles */
-button {
-  cursor: pointer; }
-
-button:focus {
-  outline: none; }
-
-#addDialogClose {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #fff;
-  border-radius: 5px;
-  cursor: pointer !important;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #227fde;
-  font-family: 'Pacifico', cursive;
-  line-height: 40px;
-  color: #fff;
-  padding: 0; }
-
-#addDialogClose:hover {
-  background-color: #6bc874; }
-
-/* Media Buttons */
-.media-controls {
-  background: url(../images/vinyl.png) no-repeat bottom center;
-  padding: 20px 0 55px;
-  position: absolute;
-  top: 160px;
-  left: 0%;
-  cursor: pointer;
-  width: 100%; }
-
-.btn.media {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #fff;
-  border-radius: 5px;
-  cursor: pointer !important;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #227fde; }
-
-.btn.media.active, .btn.media:hover {
-  background-color: #6bc874; }
-
-button.disabled {
-  opacity: 0.4;
-  cursor: default; }
-
-#playButton {
-  background-image: url(../images/play.png); }
-
-#pauseButton {
-  background-image: url(../images/pause.png); }
-
-#rewindButton {
-  background-image: url(../images/rewind.png); }
-
-#forwardButton {
-  background-image: url(../images/forward.png); }
-
-#volupButton {
-  background-image: url(../images/vol-up.png); }
-
-#voldownButton {
-  background-image: url(../images/vol-down.png); }
-
-#shutdown {
-  background-color: #e7466f;
-  position: fixed;
-  top: 5px;
-  left: 5px;
-  width: 40px;
-  height: 40px;
-  border: 2px solid #fff;
-  border-radius: 5px;
-  cursor: pointer !important;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url(../images/power.png); }
-
-/* Footer */
-#footer {
-  position: fixed;
-  bottom: 0;
-  text-align: center;
-  width: 100%;
-  line-height: 2em;
-  font-family: 'Pacifico', cursive;
-  left: 0; }
-
-.github-icon {
-  position: fixed;
-  bottom: 5px;
-  display: none;
-  right: 5px;
-  width: 40px;
-  cursor: pointer;
-  height: 40px;
-  background-color: #333;
-  border-radius: 50%;
-  border: 1px solid #fff;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-image: url(../images/github.png); }
-
-.github-banner img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: 0;
-  margin-right: 0; }
-
-/* Keyframes for animation */
-@-webkit-keyframes rotating {
-  from {
-    -ms-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  to {
-    -ms-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg); } }
-
-@keyframes rotating {
-  from {
-    -ms-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  to {
-    -ms-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg); } }
