@@ -17,16 +17,51 @@ img {
     display: inline-block;
     margin-right: 10px;
 }
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    z-index: 4;
+    width: 550px;
+    left: 50%;
+    margin-left: -275px;
+    text-align: center;
+    transition: top 0.3s linear;
+}
+header.scrolled {
+    top: -120px;
+}
+.masthead {
+    background: url(../images/header.png) center top no-repeat;
+    height: 90px;
+    padding-top: 35px;
+    position: relative;
+    z-index: 5;
+}
 h1 {
     line-height: 50px;
     font-size: 34px;
     font-family: 'Pacifico', cursive;
-    background: url(../images/header.png) center top no-repeat;
-    width: 550px;
-    margin: 0 auto;
-    padding-top: 35px;
-    height: 190px;
     color: #fff;
+    margin: 0;
+}
+#addButton {
+    width: 400px;
+    margin: 36px auto 40px;
+    display: block;
+    border: 2px solid #fff;
+    position: relative;
+    height: 40px;
+    border-radius: 10px;
+    color: #fff;
+    font-size:18px;
+    background: #e7466f;
+    cursor: pointer;
+    font-family: 'Pacifico', cursive;
+}
+#addButton:hover {
+    background: #6bc874;
 }
 
 /** Dialog **/
@@ -89,6 +124,7 @@ input#search {
 .queue {
     max-width: 700px;
     margin: 0 auto;
+    padding-top: 285px;
 }
 .queue strong {
     font-family: 'Pacifico', cursive;
@@ -170,27 +206,19 @@ input#search {
 button {
     cursor: pointer;
 }
-#addButton {
-    width: 400px;
-    margin: -103px auto 40px;
-    display: block;
-    border: 2px solid #fff;
-    position: relative;
-    z-index: 1;
-    height: 40px;
-    border-radius: 10px;
-    color: #fff;
-    font-size:18px;
-    background: #e7466f;
-    cursor: pointer;
-    font-family: 'Pacifico', cursive;
-}
-#addButton:hover {
-    background: #0bc81d;
-}
+
 
 /* Media Buttons */
 
+.media-controls {
+    background: url(../images/vinyl.png) no-repeat bottom center;
+    padding: 20px 0 55px;
+    position: absolute;
+    top: 160px;
+    left: 0%;
+    cursor: pointer;
+    width: 100%;
+}
 
 .btn.media {
     width: 40px;
@@ -204,7 +232,7 @@ button {
 }
 .btn.media.active,
 .btn.media:hover {
-    background-color: #e7466f;
+    background-color: #6bc874;
 }
 
 button.disabled {
@@ -253,6 +281,7 @@ button.disabled {
     width: 100%;
     line-height: 2em;
     font-family: 'Pacifico', cursive;
+    left:0;
 }
 .github-icon {
     position: fixed;

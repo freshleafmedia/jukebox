@@ -171,3 +171,16 @@ function setQueue(data) {
 	addToQueue(item);
     });
 }
+
+$(window).on('scroll', function() {
+    var y_scroll_pos = window.pageYOffset;
+    var scroll_pos_test = 120;             // set to whatever you want it to be
+
+    if(y_scroll_pos > scroll_pos_test) {
+        $('header').addClass('scrolled');
+    }
+    else {
+        $('header').removeClass('scrolled');
+    }
+});
+
