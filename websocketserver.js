@@ -100,8 +100,20 @@ function playQueue() {
     // Add some stats
     incrementStat(songID, 'playCount');
 
+    if (typeof songCache[songID]['URL'] === 'undefined' || songCache[songID]['URL'] === '') {
+        console.error(songID+': Failed to play!');
+        // Remove from queue
+        songQueue.shift();
+        commitQueue();
+        return;
+    }
+
     // Run the player
     process.exec('./play.sh "'+songCache[songID]['URL']+'"', function (error, stdout, stderr) {
+
+        // Remove from queue
+        songQueue.shift();
+        commitQueue();
 
         if (error !== null) {
             console.error(songID+': Failed to play!');
@@ -109,10 +121,6 @@ function playQueue() {
         }
 
         console.log(songID+': Finished!');
-
-        // Remove from queue
-        songQueue.shift();
-        commitQueue();
 
 	io.emit('song finished');
 
