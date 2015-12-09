@@ -19,7 +19,7 @@ body {
     background-attachment: fixed;
     background-size: cover;
     background-blend-mode: hard-light;
-    background-color: #00aced;
+    background-color: #227fde;
     font-family: arial;
     margin: 0;
 }
@@ -198,4 +198,19 @@ button.disabled {
     width: 100%;
     line-height: 2em;
     font-family: 'Pacifico', cursive;
+}
+.github-icon {
+    position: fixed;
+    bottom: 5px;
+    display: none;
+    right: 5px;
+    width: 40px;
+    cursor: pointer;
+    height: 40px;
+    background-color: #333;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-image: url(../images/github.png);
 }
