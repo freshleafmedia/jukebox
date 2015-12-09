@@ -116,16 +116,8 @@ socket.on('newsong', function(song) {
     notify('New Song Added', song.title);
 });
 
-socket.on('resolved', function(song) {
-    $('.queue-container #song-'+song.id+'[data-resolving="true"]').remove();
-});
-
-socket.on('resolving', function(song) {
-    addToQueue(song, true);
-});
-
-socket.on('resolved failed', function(song) {
-    $('.queue-container #song-'+song.id).attr('data-resolving','failed');
+socket.on('setAttr', function(data) {
+    $('.queue-container #song-'+data.song.id).attr('data-'+data.attrName, data.attrValue);
 });
 
 socket.on('queuelist', function(data) {
@@ -153,10 +145,8 @@ socket.on('controlstatus', function(controlStatus) {
     }
 });
 
-function addToQueue(song, resolving) {
+function addToQueue(song) {
     var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.id });
-
-    item.attr('data-resolving',!!resolving);
 
     var image = $('<img />', { src: song.thumbnail });
     var title = $('<p />', { 'class': 'title', text: song.title });

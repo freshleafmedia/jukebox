@@ -5,22 +5,10 @@ var process = require('child_process');
 var playerState = 'stopped';
 var paused = false;
 
-var songCacheFile = 'songcache.json';
+var pathCache = './cache';
+
 var songQueueFile = 'songqueue.json';
-var songStatFile = 'songstats.json';
-var songCache = {};
-var songStats = {};
 var songQueue = [];
-
-fs.readFile(songStatFile, function(err, f) {
-    var songStatJson = f.toString();
-    songStats = JSON.parse(songStatJson);
-});
-
-fs.readFile(songCacheFile, function(err, f) {
-    var songCacheJson = f.toString();
-    songCache = JSON.parse(songCacheJson);
-});
 
 fs.readFile(songQueueFile, function(err, f) {
     var songQueueJson = f.toString();
@@ -33,7 +21,7 @@ fs.readFile(songQueueFile, function(err, f) {
 
 function updateControlStatus() {
     io.emit('controlstatus', {
-        'paused': paused
+        'paused': (playerState === 'paused')
     });
 }
 
@@ -59,16 +47,8 @@ function control(action) {
         return;
     }
     // Check if were paused
-    if (action === 'pause' && paused === true) {
+    if (action === 'pause' && playerState === 'paused') {
         return;
-    }
-
-    if(action === 'pause') {
-        paused = true;
-    }
-
-    if(action === 'play') {
-        paused = false;
     }
 
     process.exec('./control.sh '+action);
@@ -76,15 +56,15 @@ function control(action) {
     updateControlStatus();
 }
 
-function commitCache() {
-    fs.writeFile(songCacheFile, JSON.stringify(songCache));
-}
-
 function commitQueue() {
     fs.writeFile(songQueueFile, JSON.stringify(songQueue));
 }
 
-function playQueue() {
+function playQueue(startQueueFrom) {
+
+    if(typeof startQueueFrom === 'undefined') {
+        startQueueFrom = 0;
+    }
 
     // Check there are some queued songs and that we aren't already playing
     if(songQueue.length === 0 || playerState === 'playing') {
@@ -92,110 +72,124 @@ function playQueue() {
     }
 
     // Get the song to play
-    var songID = songQueue.slice(0,1);
+    var song = songQueue.slice(startQueueFrom,1);
+
+    // Check we found a song
+    if (typeof song === 'undefined') {
+        return;
+    }
+
+    // Check if this song is playable
+    if (song.state !== 'resolved') {
+
+        // try and play the next song
+        playQueue(startQueueFrom+1);
+    }
+
+    if (typeof song.URL === 'undefined') {
+        songSetAttribute(song,'state','error');
+        songSetAttribute(song,'message','No URL to play');
+
+        console.error(song.id+': ERROR: No URL!');
+
+        // try and play the next song
+        playQueue(startQueueFrom+1);
+    }
 
     playerState = 'playing';
     console.log(songID+': Playing');
 
-    // Add some stats
-    incrementStat(songID, 'playCount');
-
-    if (typeof songCache[songID] === 'undefined' || typeof songCache[songID]['URL'] === 'undefined' || songCache[songID]['URL'] === '') {
-        console.error(songID+': Failed to play!');
-        // Remove from queue
-        songQueue.shift();
-        commitQueue();
-        return;
-    }
+    songSetAttribute(song,'state','playing');
 
     // Run the player
-    process.exec('./play.sh "'+songCache[songID]['URL']+'"', function (error, stdout, stderr) {
-
-        // Remove from queue
-        songQueue.shift();
-        commitQueue();
+    process.exec('./play.sh "'+song.URL+'"', function (error, stdout, stderr) {
 
         if (error !== null) {
+            songSetAttribute(song,'state','failed');
+            songSetAttribute(song,'message',error);
             console.error(songID+': Failed to play!');
             return;
         }
 
+        // Remove from queue
+        songQueue.shift();
+
         console.log(songID+': Finished!');
 
-	io.emit('song finished');
+	    io.emit('song finished', song);
 
         playerState = 'stopped';
 
         // Keep playing
-        if (songQueue.length > 0) {
-            playQueue();
-        }
+        playQueue();
     });
 }
 
-function queueSong(song) {
+function songSetAttribute(song, attrName, attrValue) {
 
-    console.log(song.id+': Adding to the queue');
+    song[attrName] = attrValue;
 
-    songQueue.push(song.id);
-    commitQueue();
+    var data = {
+        'song': song,
+        'name': attrName,
+        'value': attrValue,
+    };
 
-    io.emit('newsong', song);
-
-    if (playerState === 'stopped') {
-        playQueue(song);
-    }
+    io.emit('setAttr', data);
 }
 
 io.on('connection', function(socket){
     console.log('User connected');
 
-    songQueueFull = songQueue.map(function(item) {
-        return songCache[item];
-    });
-    socket.emit('queuelist', songQueueFull);
+    socket.emit('queuelist', songQueue);
 
     socket.on('addsong', function(song) {
 
-        console.log(song.id+': Resolving...');
+        console.log(song.id+': Trying to add...');
 
-        // Check if we have already resolved this songs ID
-        if (typeof songCache[song.id] !== 'undefined' && typeof songCache[song.id]['URL'] !== 'undefined') {
-            console.log(song.id+': Already resolved. Using cached URL');
-            queueSong(song);
+        // Check if this song is already on the queue
+        if (typeof songQueue[song.id] !== 'undefined') {
+            console.log(song.id+': Already queued');
             return;
         }
 
+        // Add the song to the queue
+        songQueue.push(song.id);
+        io.emit('newsong', song);
+
+        // Set the song as resolving
+        songSetAttribute(song, 'state', 'resolving');
+
+        // Check if we have already downloaded this song
+        var cacheStat = fs.statSync(pathCache+'/'+song.id);
+        if (cacheStat.isFile() === true) {
+            songSetAttribute(song, 'state', 'resolved');
+            console.log(song.id+': Song in cache, now on the queue...');
+            playQueue();
+            return;
+        }
+
+        console.log(song.id+': Resolving...');
+
         // Set the songs state to resolving
-        song['state'] = 'resolving';
-
-        // Add the the song to the cache
-        songCache[song.id] = song;
-        commitCache();
-
-        io.emit('resolving', song);
+        songSetAttribute(song, 'state', 'resolving');
 
         // Run the resolver
         process.exec('./resolve.sh '+song.id, function (error, stdout, stderr) {
 
-
-            if (error !== null) {
+            if (error !== null || stdout == '') {
                 console.error(song.id+': Failed to resolve!');
-                songCache[song.id]['state'] = 'failed';
-                commitCache();
+                songSetAttribute(song, 'state', 'failed');
                 socket.emit('resolve failed', song);
                 return;
             }
 
-            io.emit('resolved', song);
-
-            // The resolve.sh will return the URL
-            songCache[song.id]['URL'] = stdout;
-            songCache[song.id]['state'] = 'resolved';
-            commitCache();
+            // Set the URL and state
+            songSetAttribute(song, 'URL', stdout);
+            songSetAttribute(song, 'state', 'resolved');
 
             console.log(song.id+': Resolved!');
-            queueSong(song);
+            playQueue();
         });
     });
     socket.on('pause', function() {
