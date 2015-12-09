@@ -3,7 +3,6 @@ var fs  = require("fs");
 var process = require('child_process');
 
 var playerState = 'stopped';
-var paused = false;
 
 var songCacheFile = 'songcache.json';
 var songQueueFile = 'songqueue.json';
@@ -33,7 +32,7 @@ fs.readFile(songQueueFile, function(err, f) {
 
 function updateControlStatus() {
     io.emit('controlstatus', {
-        'paused': paused
+        'paused': (playerState === 'paused')
     });
 }
 
@@ -59,16 +58,16 @@ function control(action) {
         return;
     }
     // Check if were paused
-    if (action === 'pause' && paused === true) {
+    if (action === 'pause' && playerState === 'paused') {
         return;
     }
 
     if(action === 'pause') {
-        paused = true;
+        playerState = 'paused';
     }
 
     if(action === 'play') {
-        paused = false;
+        playerState = 'playing';
     }
 
     process.exec('./control.sh '+action);
@@ -87,7 +86,7 @@ function commitQueue() {
 function playQueue() {
 
     // Check there are some queued songs and that we aren't already playing
-    if(songQueue.length === 0 || playerState === 'playing') {
+    if(songQueue.length === 0 || playerState !== 'stopped') {
         return;
     }
 
