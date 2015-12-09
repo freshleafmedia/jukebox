@@ -117,7 +117,7 @@ socket.on('newsong', function(song) {
 });
 
 socket.on('setAttr', function(data) {
-    $('.queue-container #song-'+data.song.id).attr('data-'+data.attrName, data.attrValue);
+    $('.queue-container #song-'+data.song.id).attr('data-'+data.name, data.value);
 });
 
 socket.on('queuelist', function(data) {
