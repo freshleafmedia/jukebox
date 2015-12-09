@@ -82,6 +82,8 @@ function playQueue(startQueueFrom) {
     // Check if this song is playable
     if (song.state !== 'resolved') {
 
+        console.log('Trying next in queue...');
+
         // try and play the next song
         playQueue(startQueueFrom+1);
     }
