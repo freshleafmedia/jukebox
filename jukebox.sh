@@ -49,6 +49,17 @@ if [ ! -d "$CACHE_DIR" ]; then
 	mkdir -p "$CACHE_DIR"
 fi
 
+# Check the JSON files are populated
+if [ -s songcache.json ]; then
+	echo -n "{}" > songcache.json
+fi
+if [ -s songqueue.json ]; then
+	echo -n "[]" > songqueue.json
+fi
+if [ -s songstats.json ]; then
+	echo -n "{}" > songstats.json
+fi
+
 # Start the node server
 echo -n "Starting the node server... "
 node websocketserver.js 2&>1 "$LOG_DIR/node" &
