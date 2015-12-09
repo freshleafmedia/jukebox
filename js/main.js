@@ -59,7 +59,9 @@ function search(query) {
                 //var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
                 descWrap.append(title);
                 //descWrap.append(author);
-                el.append(image);
+                var imgwrap = $('<div />', { 'class': 'imageWrapper' });
+                imgwrap.append(image);
+                el.append(imgwrap);
                 el.append(descWrap);
                 $('#search-container').append(el);
             }
@@ -190,7 +192,9 @@ function addToQueue(song, resolving) {
 
     var image = $('<img />', { src: song.thumbnail });
     var title = $('<p />', { 'class': 'title', text: song.title });
-    item.append(image);
+    var imgwrap = $('<div />', { 'class': 'imageWrapper' });
+    imgwrap.append(image);
+    item.append(imgwrap);
     item.append(title);
     $('.queue-container').append(item);
 }

@@ -142,13 +142,18 @@ input#search {
     display: flex;
     text-align: left;
     position: relative;
-    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-top-left-radius: 45px;
+    border-bottom-left-radius: 45px;
+}
+#search-container .songResult {
+    cursor: pointer;
 }
 .songResult .title {
     font-weight: bold;
     padding-bottom: 10px;
 }
-.songResult .image-wrapper {
+.songResult .imageWrapper {
     position: relative;
     height: 90px;
     width: 90px;
@@ -157,21 +162,21 @@ input#search {
     -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
     margin-right: 20px;
 }
-.songResult .image-wrapper img {
+.songResult .imageWrapper img {
     position: relative;
     margin-left: -20px;
     z-index: 2;
     opacity: 0.6;
 }
-.songResult:first-of-type .image-wrapper{
+.songResult:first-of-type .imageWrapper {
      -webkit-animation: rotating 3s linear infinite;
     -moz-animation: rotating 3s linear infinite;
     -ms-animation: rotating 3s linear infinite;
     -o-animation: rotating 3s linear infinite;
     animation: rotating 3s linear infinite;
 }
-.songResult .image-wrapper::before,
-.songResult .image-wrapper::after {
+.songResult .imageWrapper::before,
+.songResult .imageWrapper::after {
     display: block;
     position: absolute;
     content: '';
@@ -184,7 +189,7 @@ input#search {
     background: url(../images/record.png) no-repeat center;
     background-size: cover;
 }
-.songResult .image-wrapper::after {
+.songResult .imageWrapper::after {
     z-index: 3;
     background: url(../images/record-inner.png) no-repeat center;
     background-size: cover;
@@ -193,7 +198,8 @@ input#search {
 .songResult[data-resolving="true"] {
     opacity: 0.6;
 }
-.songResult[data-resolving="true"] .image-wrapper{
+.songResult[data-resolving="true"] .imageWrapper,
+#search-container .songResult .imageWrapper{
     -webkit-animation: none;
     -moz-animation: none;
     -ms-animation: none;
