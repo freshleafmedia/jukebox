@@ -174,14 +174,17 @@ socket.on('song finished', function() {
 });
 
 socket.on('controlstatus', function(controlStatus) {
+    var bodyEl = $('body');
     var pauseEl = $('#pauseButton');
     var playEl = $('#playButton');
     if (controlStatus.paused) {
         pauseEl.addClass('disabled');
         playEl.removeClass('disabled');
+        bodyEl.removeClass('playing');
     } else {
         pauseEl.removeClass('disabled');
         playEl.addClass('disabled');
+        bodyEl.addClass('playing');
     }
 });
 
