@@ -1,5 +1,5 @@
 body {
-    background: url(../images/planks.jpg) no-repeat center top;
+    background: url(../images/jukebox.png) no-repeat center top;
     background-attachment: fixed;
     background-size: cover;
     background-blend-mode: hard-light;
@@ -132,10 +132,13 @@ input#search {
 .queue > p {
     line-height: 40px;
     font-size: 30px;
-    color: #333;
+    color: #fff;
     padding: 20px 0;
     margin: 0 0 20px;
     border-bottom: 1px solid #00aced;
+}
+.queue  p {
+    color: #fff;
 }
 
 .songResult {
