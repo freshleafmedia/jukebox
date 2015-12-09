@@ -8,7 +8,7 @@ var paused = false;
 var pathCache = './cache';
 
 var songQueueFile = 'songqueue.json';
-var songQueue = [];
+var songQueue = {};
 
 fs.readFile(songQueueFile, function(err, f) {
     var songQueueJson = f.toString();
