@@ -49,9 +49,19 @@ if [ ! -d "$LOG_DIR" ]; then
 	mkdir -p "$LOG_DIR"
 fi
 
+if [ ! -w "$LOG_DIR" ]; then
+	echo "ERROR: CACHE_DIR ($LOG_DIR) not writeable";
+	exit 1;
+fi
+
 # Check for and create the cache directory
 if [ ! -d "$CACHE_DIR" ]; then
 	mkdir -p "$CACHE_DIR"
+fi
+
+if [ ! -w "$CACHE_DIR" ]; then
+	echo "ERROR: CACHE_DIR ($CACHE_DIR) not writeable";
+	exit 1;
 fi
 
 # Check the JSON files are populated
