@@ -154,13 +154,20 @@ socket.on('resolved failed', function(song) {
 socket.on('queuelist', function(data) {
     console.log('From websocket: whole list');
     setQueue(data);
+    var queueEl = $('.queue-container');
+    var title = queueEl.find('> :first-child .title').text();
+    updateNowPlaying(title);
 });
 
 socket.on('song finished', function() {
     var queueEl = $('.queue-container');
     queueEl.find('> :first-child').remove();
     if (queueEl.find('> div').length > 0) {
-        notify('Next Up', queueEl.find('> :first-child .title').text());
+        var title = queueEl.find('> :first-child .title').text();
+        notify('Next Up', title);
+        updateNowPlaying(title);
+    } else {
+        updateNowPlaying('');
     }
 });
 
@@ -193,4 +200,12 @@ function setQueue(data) {
     $.each(data, function(index, item) {
 	addToQueue(item);
     });
+}
+
+function updateNowPlaying(title) {
+    if (title == '') {
+        $('title').text('Freshleaf Jukebox');
+    } else {
+        $('title').text(title + ' - Freshleaf Jukebox');
+    }
 }
