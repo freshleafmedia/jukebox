@@ -110,6 +110,9 @@ input#search {
     margin: 0 0 20px;
     border-bottom: 1px solid #00aced;
 }
+button {
+    cursor: pointer;
+}
 #addButton {
     width: 400px;
     margin: -103px auto 40px;
@@ -125,6 +128,9 @@ input#search {
     cursor: pointer;
     font-family: 'Pacifico', cursive;
 }
+#addButton:hover {
+    background: #0bc81d;
+}
 
 /* Media Buttons */
 
@@ -133,15 +139,17 @@ input#search {
     height: 40px;
     border: 2px solid #fff;
     border-radius: 5px;
-    cursor: pointer;
+    cursor: pointer !important;
     background-position: center;
     background-repeat: no-repeat;
     background-color: #227fde;
 }
-.btn.media.active {
+.btn.media.active,
+.btn.media:hover {
     background-color: #e7466f;
 }
-.btn.media.disabled {
+
+button.disabled {
     opacity: 0.4;
     cursor: default;
 }
@@ -162,4 +170,24 @@ input#search {
 }
 #voldownButton {
     background-image: url(../images/vol-down.png);
+}
+#shutdown {
+    background-color: #e7466f;
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    cursor: pointer !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(../images/power.png);
+}
+.songResult {
+    padding-bottom: 10px;
+}
+.songResult[data-resolving="true"] {
+    opacity: 0.6;
 }

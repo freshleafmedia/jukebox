@@ -10,12 +10,16 @@
 <div id="wrapper">
     <h1>Freshleaf Jukebox</h1>
     <button class="btn" id="addButton">Add Song</button>
-    <button class="btn media disabled" id="rewindButton"></button>
-    <button class="btn media" id="playButton"></button>
-    <button class="btn media" id="pauseButton"></button>
-    <button class="btn media" id="voldownButton"></button>
-    <button class="btn media" id="volupButton"></button>
-    <button class="btn media" id="forwardButton"></button>
+
+    <!-- Media Control buttons -->
+    <div class="media-controls">
+        <button class="btn media disabled" id="rewindButton"></button>
+        <button class="btn media" id="playButton"></button>
+        <button class="btn media" id="pauseButton"></button>
+        <button class="btn media" id="voldownButton"></button>
+        <button class="btn media" id="volupButton"></button>
+        <button class="btn media" id="forwardButton"></button>
+    </div>
 
     <div id="addDialog" class="dialog" style="display: none">
         <div class="overlay"></div>
@@ -35,6 +39,8 @@
         <div class="queue-container"></div>
     </div>
 
+    <button id="shutdown" class="disabled"></button>
+    <section id="footer">Lovingly Crafted by Team Freshleaf</section>
 	<script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/socket.io-client/socket.io.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
