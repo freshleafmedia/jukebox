@@ -161,8 +161,7 @@ io.on('connection', function(socket){
         songSetAttribute(song, 'state', 'resolving');
 
         // Check if we have already downloaded this song
-        var cacheStat = fs.statSync(pathCache+'/'+song.id);
-        if (cacheStat.isFile() === true) {
+        if (fs.accessSync(pathCache+'/'+song.id)) {
             songSetAttribute(song, 'state', 'resolved');
             console.log(song.id+': Song in cache, now on the queue...');
             playQueue();
