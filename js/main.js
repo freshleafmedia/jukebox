@@ -93,6 +93,10 @@ $('#addDialogClose').click(function() {
     $('#addDialog').hide();
 });
 
+$('#forwardButton').click(function() {
+    socket.emit('skipsong');
+});
+
 socket.on('newsong', function(song) {
     console.log('From websocket: new song' + song.id);
     addToQueue(song);

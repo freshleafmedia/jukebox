@@ -54,6 +54,9 @@ function incrementStat(songID,statName) {
 
 function control(action) {
 
+    if (action === 'skip') {
+        process.exec('killall vlc');
+    }
     // Check if were paused
     if (action === 'pause' && paused === true) {
         return;
@@ -191,6 +194,9 @@ io.on('connection', function(socket){
     });
     socket.on('play', function() {
         control('play');
+    });
+    socket.on('skipsong', function() {
+        control('skip');
     });
     updateControlStatus();
 });
