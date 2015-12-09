@@ -209,6 +209,23 @@ button {
 button:focus {
     outline: none;
 }
+#addDialogClose {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    cursor: pointer !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #227fde;
+    font-family: 'Pacifico', cursive;
+    line-height: 40px;
+    color: #fff;
+    padding: 0;
+}
+#addDialogClose:hover {
+    background-color: #6bc874;
+}
 
 /* Media Buttons */
 
