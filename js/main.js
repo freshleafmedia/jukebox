@@ -81,6 +81,14 @@ $('#addDialogClose').click(function() {
     $('#addDialog').hide();
 });
 
+$('#volupButton').click(function() {
+    socket.emit('volUp');
+});
+
+$('#voldownButton').click(function() {
+    socket.emit('volDown');
+});
+
 socket.on('newsong', function(song) {
     console.log('From websocket: new song' + song.id);
     addToQueue(song);

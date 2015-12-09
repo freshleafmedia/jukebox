@@ -192,6 +192,13 @@ io.on('connection', function(socket){
     socket.on('play', function() {
         control('play');
     });
+
+    socket.on('volUp', function() {
+        control('voldown');
+    });
+    socket.on('volDown', function() {
+        control('volUp');
+    });
     updateControlStatus();
 });
 
