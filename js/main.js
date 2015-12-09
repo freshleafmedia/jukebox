@@ -92,6 +92,7 @@ $('#playButton').click(function() {
 
 $('#addButton').click(function() {
     $('#addDialog').show();
+    $('#search').focus().val('');
 });
 
 $('#addDialogClose').click(function() {
