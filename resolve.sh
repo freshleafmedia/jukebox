@@ -80,7 +80,7 @@ downloaded=false
 for formatID in "${formatIDs[@]}"; do
 
     echo "$youTubeID: Trying format $formatID..." >> "$LOG_FILE"
-    youtube-dl -o "$CACHE_DIR/%(id)s" --write-info-json -f "$formatID" "$youTubeID" >> "$LOG_FILE"
+    youtube-dl -o "$CACHE_DIR/%(id)s" --no-progress --write-info-json -f "$formatID" "$youTubeID" >> "$LOG_FILE"
 
     # Check the response we got
     if [ $? == 0 ]; then
