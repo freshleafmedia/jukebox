@@ -13,6 +13,18 @@ function googleApiClientReady() {
     });
 }
 
+function notify(title, content) {
+	if (window.Notification) {
+		if (Notification.permission === "granted") {
+			var notification = new Notification(title, { 'body': content, 'icon': '/favicon.ico' });
+		} else {
+			Notification.requestPermission(function(permission) {
+				var notification = new Notification(title, { 'body': content, 'icon': '/favicon.ico' });
+			});
+		}
+	}
+}
+
 function handleAPILoaded()
 {
     $('#search').prop('disabled', false);
@@ -84,6 +96,7 @@ $('#addDialogClose').click(function() {
 socket.on('newsong', function(song) {
     console.log('From websocket: new song' + song.id);
     addToQueue(song);
+    notify('New Song Added', song.title);
 });
 
 socket.on('resolved', function(song) {
@@ -104,7 +117,11 @@ socket.on('queuelist', function(data) {
 });
 
 socket.on('song finished', function() {
-    $('.queue-container > :first-child').remove();
+    var queueEl = $('.queue-container');
+    queueEl.find('> :first-child').remove();
+    if (queueEl.find('> div').length > 0) {
+        notify('Next Up', queueEl.find('> :first-child .title').text());
+    }
 });
 
 socket.on('controlstatus', function(controlStatus) {
