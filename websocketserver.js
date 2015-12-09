@@ -100,7 +100,7 @@ function playQueue() {
     // Add some stats
     incrementStat(songID, 'playCount');
 
-    if (typeof songCache[songID]['URL'] === 'undefined' || songCache[songID]['URL'] === '') {
+    if (typeof songCache[songID] === 'undefined' || typeof songCache[songID]['URL'] === 'undefined' || songCache[songID]['URL'] === '') {
         console.error(songID+': Failed to play!');
         // Remove from queue
         songQueue.shift();
