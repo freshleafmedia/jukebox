@@ -72,8 +72,9 @@ function playQueue(startQueueFrom) {
     }
 
     // Get the song to play
-    var song = songQueue.slice(startQueueFrom,1);
+    var song = songQueue.slice(startQueueFrom,startQueueFrom+1);
 
+    console.log(songQueue);
     console.log(song);
 
     // Check we found a song
