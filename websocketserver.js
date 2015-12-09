@@ -75,7 +75,7 @@ function playQueue(startQueueFrom) {
     var song = songQueue.slice(startQueueFrom,1);
 
     // Check we found a song
-    if (typeof song === 'undefined') {
+    if (typeof song === 'undefined' || song.length === 0) {
         return;
     }
 
