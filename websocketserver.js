@@ -209,10 +209,11 @@ io.on('connection', function(socket){
     });
 
     socket.on('volUp', function() {
-        control('voldown');
+        control('volup');
     });
+
     socket.on('volDown', function() {
-        control('volUp');
+        control('voldown');
     });
     updateControlStatus();
 });
