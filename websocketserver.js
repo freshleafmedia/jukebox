@@ -199,6 +199,13 @@ io.on('connection', function(socket){
     socket.on('skipsong', function() {
         control('skip');
     });
+
+    socket.on('volUp', function() {
+        control('voldown');
+    });
+    socket.on('volDown', function() {
+        control('volUp');
+    });
     updateControlStatus();
 });
 

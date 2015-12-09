@@ -93,6 +93,14 @@ $('#addDialogClose').click(function() {
     $('#addDialog').hide();
 });
 
+$('#volupButton').click(function() {
+    socket.emit('volUp');
+});
+
+$('#voldownButton').click(function() {
+    socket.emit('volDown');
+});
+
 $('#forwardButton').click(function() {
     socket.emit('skipsong');
 });
