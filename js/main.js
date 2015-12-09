@@ -107,6 +107,18 @@ socket.on('song finished', function() {
     $('.queue-container > :first-child').remove();
 });
 
+socket.on('controlstatus', function(controlStatus) {
+    var pauseEl = $('#pauseButton');
+    var playEl = $('#playButton');
+    if (controlStatus.paused) {
+        pauseEl.addClass('disabled');
+        playEl.removeClass('disabled');
+    } else {
+        pauseEl.removeClass('disabled');
+        playEl.addClass('disabled');
+    }
+});
+
 function addToQueue(song, resolving) {
     var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.id });
 

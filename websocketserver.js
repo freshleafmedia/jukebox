@@ -31,6 +31,11 @@ fs.readFile(songQueueFile, function(err, f) {
     }
 });
 
+function updateControlStatus() {
+    io.emit('controlstatus', {
+        'paused': paused
+    });
+}
 
 function incrementStat(songID,statName) {
     if (typeof songStats[songID] === 'undefined') {
@@ -63,6 +68,8 @@ function control(action) {
     }
 
     process.exec('./control.sh '+action);
+
+    updateControlStatus();
 }
 
 function commitCache() {
@@ -185,5 +192,6 @@ io.on('connection', function(socket){
     socket.on('play', function() {
         control('play');
     });
+    updateControlStatus();
 });
 
