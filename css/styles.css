@@ -191,3 +191,11 @@ button.disabled {
 .songResult[data-resolving="true"] {
     opacity: 0.6;
 }
+#footer {
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    line-height: 2em;
+    font-family: 'Pacifico', cursive;
+}
