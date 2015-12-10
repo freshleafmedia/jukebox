@@ -21,7 +21,6 @@
 }
 
 .songResult {
-  display: flex;
   text-align: left;
   position: relative;
   margin-bottom: 10px;
@@ -43,6 +42,7 @@
   overflow: hidden;
   -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
   margin-right: 20px;
+  flex: 0 0 90px;
 }
 .songResult .imageWrapper img {
   position: relative;
