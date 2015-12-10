@@ -50,7 +50,7 @@
   z-index: 2;
   opacity: 0.6;
 }
-.songResult:first-of-type .imageWrapper {
+.playing .songResult:first-of-type .imageWrapper {
   -webkit-animation: rotating 3s linear infinite;
   -moz-animation: rotating 3s linear infinite;
   -ms-animation: rotating 3s linear infinite;
