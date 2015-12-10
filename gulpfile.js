@@ -6,6 +6,7 @@ var minifycss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
+var notify = require("gulp-notify");
 
 var paths = {
     sass: 'scss/*.scss',
@@ -22,21 +23,29 @@ var dest = {
 gulp.task('scripts', function() {
     gulp.src('js/source/app.js')
         .pipe(browserify())
+        .on('error', notify.onError({
+            message: "Error: <%= error.message %>",
+            title: "Browserify failed"
+        }))
+        .on('error', swallowError)
         .pipe(concat('app.min.js'))
-        .on('error', swallowError)
         .pipe(uglify())
-        .on('error', swallowError)
         .pipe(gulp.dest(dest.javascript))
 });
 
 gulp.task('sass', function() {
     return gulp.src('scss/main.scss')
         .pipe(sass())
+        .on('error', notify.onError({
+            message: "Error: <%= error.message %>",
+            title: "Gulp SASS failed"
+        }))
         .on('error', swallowError)
         .pipe(gulp.dest(dest.css))
         .pipe(rename({suffix: '.min'}))
         .pipe(minifycss())
         .pipe(gulp.dest(dest.css))
+
 });
 
 /* Watch Files For Changes */

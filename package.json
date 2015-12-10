@@ -15,13 +15,14 @@
     "socket.io-client": "^1.3.7"
   },
   "devDependencies": {
-    "gulp-browserify": "*",
     "gulp": "^3.8.9",
+    "gulp-browserify": "*",
     "gulp-concat": "^2.4.3",
     "gulp-minify-css": "^0.4.2",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.1.0",
     "gulp-sass": "^1.3.2",
     "gulp-uglify": "^1.1.0",
-    "gulp-watch": "^1.1.0",
-    "gulp-rename": "^1.1.0"
+    "gulp-watch": "^1.1.0"
   }
 }
