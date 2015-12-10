@@ -320,11 +320,11 @@ input#search {
   opacity: 0.6; }
 
 .playing .songResult:first-of-type .imageWrapper {
-  -webkit-animation: rotating 3s linear infinite;
-  -moz-animation: rotating 3s linear infinite;
-  -ms-animation: rotating 3s linear infinite;
-  -o-animation: rotating 3s linear infinite;
-  animation: rotating 3s linear infinite; }
+  -webkit-animation: rotating 6s linear infinite;
+  -moz-animation: rotating 6s linear infinite;
+  -ms-animation: rotating 6s linear infinite;
+  -o-animation: rotating 6s linear infinite;
+  animation: rotating 6s linear infinite; }
 
 .songResult .imageWrapper::before,
 .songResult .imageWrapper::after {
