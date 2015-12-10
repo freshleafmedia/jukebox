@@ -228,3 +228,10 @@ $(window).on('scroll', function() {
     }
 });
 
+navigator.serviceWorker.register('/worker.js', {
+    scope: '/'
+}).then(function(reg) {
+    console.log('service worker registered', reg);
+}, function(err) {
+    console.log('service worker NOT registered', err);
+});
