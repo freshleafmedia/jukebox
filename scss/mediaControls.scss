@@ -6,7 +6,6 @@
   position: absolute;
   top: 160px;
   left: 0%;
-  cursor: pointer;
   width: 100%;
 }
 
@@ -15,19 +14,28 @@
   height: 40px;
   border: 2px solid #fff;
   border-radius: 5px;
-  cursor: pointer !important;
+  cursor: pointer;
   background-position: center;
   background-repeat: no-repeat;
   background-color: #227fde;
-}
-.btn.media.active,
-.btn.media:hover {
-  background-color: #6bc874;
+  &.active,
+  &:hover {
+    background-color: #6bc874;
+  }
+  &.disabled {
+    &.active,
+    &:hover {
+      background-color: #227fde;
+      cursor: default;
+    }
+  }
 }
 
-button.disabled {
-  opacity: 0.4;
-  cursor: default;
+button {
+  &.disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
 }
 #playButton {
   background-image: url(../images/play.png);
