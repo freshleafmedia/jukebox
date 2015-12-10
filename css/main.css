@@ -348,7 +348,7 @@ input#search {
 .songResult[data-resolving="true"] {
   opacity: 0.6; }
 
-.songResult[data-resolving="true"] .imageWrapper,
+.playing .songResult[data-resolving="true"] .imageWrapper,
 #search-container .songResult .imageWrapper {
   -webkit-animation: none;
   -moz-animation: none;
