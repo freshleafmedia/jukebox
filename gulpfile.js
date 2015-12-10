@@ -31,6 +31,7 @@ gulp.task('scripts', function() {
         .pipe(concat('app.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest(dest.javascript))
+        .pipe(notify({title: "Browserify complete", message: "All of the shiny things!!"}));
 });
 
 gulp.task('sass', function() {
@@ -45,6 +46,7 @@ gulp.task('sass', function() {
         .pipe(rename({suffix: '.min'}))
         .pipe(minifycss())
         .pipe(gulp.dest(dest.css))
+        .pipe(notify({title: "SASS Compiled", message: "Jam my sandwich!!"}));
 
 });
 
