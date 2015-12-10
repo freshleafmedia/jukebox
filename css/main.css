@@ -9,16 +9,16 @@ body {
   background: url(../images/jukebox.png) no-repeat center top;
   background-size: cover;
   background-blend-mode: hard-light;
-  background-color: #227fde;
+  background-color: #666;
   top: -5%;
   left: -5%;
   height: 110%;
   width: 110%;
-  -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -o-filter: blur(5px);
-  -ms-filter: blur(5px);
-  filter: blur(5px); }
+  -webkit-filter: blur(30px);
+  -moz-filter: blur(30px);
+  -o-filter: blur(30px);
+  -ms-filter: blur(30px);
+  filter: blur(30px); }
 
 #wrapper {
   width: 100%;
