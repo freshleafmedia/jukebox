@@ -1,17 +1,31 @@
 body {
-  background: url(../images/planks.jpg) no-repeat center top;
-  background-attachment: fixed;
-  background-size: cover;
-  background-blend-mode: hard-light;
-  background-color: #227fde;
+  background: none;
   font-family: "Helvetic Neue";
   margin: 0;
   padding: 0; }
 
+#background {
+  position: fixed;
+  background: url(../images/jukebox.png) no-repeat center top;
+  background-size: cover;
+  background-blend-mode: hard-light;
+  background-color: #227fde;
+  top: -5%;
+  left: -5%;
+  height: 110%;
+  width: 110%;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px); }
+
 #wrapper {
-  max-width: 1000px;
+  width: 100%;
   margin: 0 auto;
-  text-align: center; }
+  text-align: center;
+  z-index: 1;
+  position: relative; }
 
 img {
   display: inline-block;
@@ -23,23 +37,6 @@ button {
 
 button:focus {
   outline: none; }
-
-#addDialogClose {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #fff;
-  border-radius: 5px;
-  cursor: pointer !important;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #227fde;
-  font-family: 'Pacifico', cursive;
-  line-height: 40px;
-  color: #fff;
-  padding: 0; }
-
-#addDialogClose:hover {
-  background-color: #6bc874; }
 
 /* Footer */
 #footer {
@@ -255,6 +252,23 @@ input#search {
 
 .added {
   background: lightgreen; }
+
+#addDialogClose {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #227fde;
+  font-family: 'Pacifico', cursive;
+  line-height: 40px;
+  color: #fff;
+  padding: 0; }
+
+#addDialogClose:hover {
+  background-color: #6bc874; }
 
 .queue {
   max-width: 700px;
