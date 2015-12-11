@@ -276,7 +276,8 @@ input#search {
   margin-top: 305px;
   background: rgba(0, 0, 0, 0.5);
   padding: 30px;
-  border-radius: 10px; }
+  border-radius: 10px;
+  position: relative; }
 
 .queue strong {
   font-family: 'Pacifico', cursive; }
@@ -373,3 +374,22 @@ input#search {
   -ms-animation: none;
   -o-animation: none;
   animation: none; }
+
+#shuffleSongs {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1;
+  background-image: url(../images/shuffle.png);
+  background-position: center;
+  top: 30px;
+  position: absolute;
+  right: 30px;
+  background-repeat: no-repeat;
+  background-color: #227fde; }
+  #shuffleSongs.active, #shuffleSongs:hover {
+    background-color: #6bc874; }
+    #shuffleSongs.active.disabled, #shuffleSongs:hover.disabled {
+      background-color: #227fde; }

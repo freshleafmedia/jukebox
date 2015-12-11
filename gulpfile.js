@@ -7,6 +7,7 @@ var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var notify = require("gulp-notify");
+var livereload = require('gulp-livereload');
 
 var paths = {
     sass: 'scss/*.scss',
@@ -31,7 +32,8 @@ gulp.task('scripts', function() {
         .pipe(concat('app.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest(dest.javascript))
-        .pipe(notify({title: "Browserify complete", message: "All of the shiny things!!"}));
+        .pipe(notify({title: "Browserify complete", message: "All of the shiny things!!"}))
+        .pipe(livereload());
 });
 
 gulp.task('sass', function() {
@@ -46,12 +48,14 @@ gulp.task('sass', function() {
         .pipe(rename({suffix: '.min'}))
         .pipe(minifycss())
         .pipe(gulp.dest(dest.css))
-        .pipe(notify({title: "SASS Compiled", message: "Jam my sandwich!!"}));
+        .pipe(notify({title: "SASS Compiled", message: "Jam my sandwich!!"}))
+        .pipe(livereload());
 
 });
 
 /* Watch Files For Changes */
 gulp.task('watch', function() {
+    livereload.listen();
     gulp.watch(paths.sass, ['sass']);
     gulp.watch(paths.javascript, ['scripts']);
 
