@@ -21,11 +21,13 @@ body {
   filter: blur(30px); }
 
 #wrapper {
+  overflow: hidden;
   width: 100%;
   margin: 0 auto;
   text-align: center;
   z-index: 1;
-  position: relative; }
+  position: relative;
+  padding-bottom: 50px; }
 
 img {
   display: inline-block;
@@ -40,13 +42,14 @@ button:focus {
 
 /* Footer */
 #footer {
-  position: fixed;
-  bottom: 0;
+  position: absolute;
+  bottom: 10px;
   text-align: center;
   width: 100%;
   line-height: 2em;
   font-family: "Pacifico", cursive;
-  left: 0; }
+  left: 0;
+  color: #fff; }
 
 .github-icon {
   position: fixed;
@@ -437,3 +440,6 @@ input#search {
     cursor: pointer; }
   .playlist-item:hover {
     margin-left: -360px; }
+
+.toBeBuilt {
+  opacity: 0.1 !important; }

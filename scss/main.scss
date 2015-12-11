@@ -35,11 +35,13 @@ body {
   filter: blur(30px);
 }
 #wrapper {
+  overflow: hidden;
  width: 100%;
   margin: 0 auto;
   text-align: center;
   z-index: 1;
   position: relative;
+  padding-bottom: 50px;
 }
 img {
   display: inline-block;
@@ -59,13 +61,14 @@ button:focus {
 /* Footer */
 
 #footer {
-  position: fixed;
-  bottom: 0;
+  position: absolute;
+  bottom: 10px;
   text-align: center;
   width: 100%;
   line-height: 2em;
   font-family: $pacifico;
   left:0;
+  color: #fff;
 }
 .github-icon {
   position: fixed;
@@ -130,3 +133,7 @@ button:focus {
 @import "search";
 @import "queue";
 @import "playlists";
+
+.toBeBuilt {
+  opacity: 0.1 !important;
+}
