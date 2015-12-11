@@ -1,3 +1,11 @@
+//Variables
+
+$blue: #227fde;
+$green: #6bc874;
+$pacifico: 'Pacifico', cursive;
+
+//Core styles
+
 body {
   //background: url(../images/planks.jpg) no-repeat center top;
   //background-attachment: fixed;
@@ -56,7 +64,7 @@ button:focus {
   text-align: center;
   width: 100%;
   line-height: 2em;
-  font-family: 'Pacifico', cursive;
+  font-family: $pacifico;
   left:0;
 }
 .github-icon {
@@ -121,3 +129,4 @@ button:focus {
 @import "mediaControls";
 @import "search";
 @import "queue";
+@import "playlists";

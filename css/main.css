@@ -45,7 +45,7 @@ button:focus {
   text-align: center;
   width: 100%;
   line-height: 2em;
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
   left: 0; }
 
 .github-icon {
@@ -138,10 +138,10 @@ h1 {
   font-size: 18px;
   background: #e7466f;
   cursor: pointer;
-  font-family: 'Pacifico', cursive; }
-
-#addButton:hover {
-  background: #6bc874; }
+  font-family: "Pacifico", cursive;
+  transition: background 0.3s linear; }
+  #addButton:hover {
+    background: #6bc874; }
 
 .media-controls {
   background: url(../images/vinyl.png) no-repeat bottom center;
@@ -159,7 +159,8 @@ h1 {
   cursor: pointer;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #227fde; }
+  background-color: #227fde;
+  transition: background 0.3s linear; }
   .btn.media.active, .btn.media:hover {
     background-color: #6bc874; }
   .btn.media.disabled.active, .btn.media.disabled:hover {
@@ -267,10 +268,10 @@ input#search {
   font-family: 'Pacifico', cursive;
   line-height: 40px;
   color: #fff;
-  padding: 0; }
-
-#addDialogClose:hover {
-  background-color: #6bc874; }
+  padding: 0;
+  transition: background 0.3s linear; }
+  #addDialogClose:hover {
+    background-color: #6bc874; }
 
 .queue {
   max-width: 640px;
@@ -395,3 +396,44 @@ input#search {
     background-color: #6bc874; }
     #shuffleSongs.active.disabled, #shuffleSongs:hover.disabled {
       background-color: #227fde; }
+
+.playlists {
+  position: absolute;
+  right: -360px;
+  width: 400px;
+  top: 0; }
+
+.playlist-item {
+  position: relative;
+  margin-left: -4px;
+  width: 400px;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  height: 40px;
+  border: 2px solid #fff;
+  text-align: center;
+  transition: margin .7s .3s linear;
+  margin-bottom: 10px; }
+  .playlist-item span {
+    float: left;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background: #227fde;
+    line-height: 36px;
+    border-radius: 5px;
+    border: 2px solid #fff;
+    color: #fff;
+    font-family: "Pacifico", cursive;
+    font-size: 30px;
+    margin-left: -2px;
+    margin-top: -2px; }
+  .playlist-item p {
+    line-height: 40px;
+    padding: 0;
+    margin: 0;
+    cursor: pointer; }
+  .playlist-item:hover {
+    margin-left: -360px; }
