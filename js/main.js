@@ -115,7 +115,7 @@ function showAddDialog() {
     $('#search').focus().val('');
 }
 
-$('#addDialogClose').click(function() {
+$('#addDialogClose, .overlay').click(function() {
     closeAddDialog();
 });
 

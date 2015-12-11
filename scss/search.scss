@@ -11,6 +11,7 @@
   position: absolute;
   right: 0;
   top: 0;
+  cursor: pointer;
 }
 .search-container {
   padding-top: 20px;
@@ -24,6 +25,7 @@
   height: 100%;
   background: rgba(0,0,0,0.4);
   z-index: 6;
+  cursor: pointer;
 }
 .overlay-wrapper{
   position: relative;
