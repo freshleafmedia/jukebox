@@ -35,10 +35,6 @@ function handleAPILoaded()
     $('#search').prop('disabled', false);
 }
 
-$('#search').on('keyup', function () {
-    search($('#search').val());
-});
-
 function search(query) {
     var request = gapi.client.youtube.search.list({
         q: query,
@@ -97,16 +93,43 @@ $('#addButton').click(function() {
 });
 
 $(document).keyup(function(event){
+    // Up/Down and j/k keys to navigate selecting a song
+    if (event.keyCode == 40 || event.keyCode == 74) {
+        if($('.highlight').length) {
+            var highlighted = $('.highlight');
+            highlighted.next().addClass('highlight');
+            highlighted.removeClass('highlight');
+        } else {
+            $('#search-container > .songResult:first-child').addClass('highlight');
+        }
+        return;
+    }
+    if (event.keyCode == 38 || event.keyCode == 75) {
+        if($('.highlight').length) {
+            var highlighted = $('.highlight');
+            highlighted.prev().addClass('highlight');
+            highlighted.removeClass('highlight');
+        }
+        return;
+    }
+    // Esc closes dialog
+    if (event.keyCode == 27) {
+        closeAddDialog();
+    }
+    // Run search on keydown in search box
+    if ($(event.target).is('#search')) {
+        if (event.keyCode == 13 && $('.highlight').length) {
+            $('.highlight').click();
+            return;
+        }
+        search($('#search').val());
+    }
     // Keys when form input isn't focused
     if (!$(event.target).is('input')) {
         // A or Enter triggers dialog
         if (event.keyCode == 65 || event.keyCode == 13) {
             showAddDialog();
         }
-    }
-    // Esc closes dialog
-    if (event.keyCode == 27) {
-        closeAddDialog();
     }
 });
 

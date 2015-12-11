@@ -255,6 +255,9 @@ input#search {
 .added {
   background: lightgreen; }
 
+.highlight {
+  border-right: 5px solid #227fde; }
+
 #addDialogClose {
   width: 40px;
   height: 40px;
