@@ -51,11 +51,11 @@
 }
 .songResult .imageWrapper img {
   position: relative;
-  margin-left: -20px;
+  margin-left: -15px;
   z-index: 2;
   opacity: 0.6;
 }
-.playing .songResult:first-of-type .imageWrapper {
+.playing .songResult:first-of-type .imageWrapper img{
   -webkit-animation: rotating 6s linear infinite;
   -moz-animation: rotating 6s linear infinite;
   -ms-animation: rotating 6s linear infinite;
@@ -85,8 +85,8 @@
 .songResult[data-resolving="true"] {
   opacity: 0.6;
 }
-.playing .songResult[data-resolving="true"] .imageWrapper,
-#search-container .songResult .imageWrapper{
+.playing .songResult[data-resolving="true"] .imageWrapper img,
+#search-container .songResult .imageWrapper img{
   -webkit-animation: none;
   -moz-animation: none;
   -ms-animation: none;
