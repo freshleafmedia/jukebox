@@ -97,7 +97,5 @@ done
 # Check a URL was resolved
 if [ "$downloaded" == "false" ]; then
     echo "$youTubeID: ERROR: No formats found" >> "$LOG_FILE"
-else
-    # Write this URL to the queue list
-    echo -n "$CACHE_DIR/$youTubeID"
+    exit 1;
 fi
