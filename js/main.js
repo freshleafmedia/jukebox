@@ -185,16 +185,16 @@ JukeBox.prototype.getPlaylist = function() {
 
 
 
-var PlayList = function(data) {
-    this.ID = data.ID;
+var PlayList = function(playlistData) {
+    this.ID = playlistData.ID;
     this.songs = [];
     this.El = $('.queueContainer');
-    this.build();
+    this.build(playlistData);
 };
 
-PlayList.prototype.build = function(playlist) {
+PlayList.prototype.build = function(playlistData) {
 
-    $.each(playlist.songs, function(song, item) {
+    $.each(playlistData.songs, function(song, item) {
 
         this.El.append(this.buildSong(song));
 
