@@ -188,7 +188,7 @@ JukeBox.prototype.getPlaylist = function() {
 var PlayList = function(playlistData) {
     this.ID = playlistData.ID;
     this.songs = [];
-    this.El = $('.queueContainer');
+    this.El = $('.queue-container');
     this.build(playlistData);
 };
 
