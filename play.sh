@@ -21,8 +21,11 @@ optParse
 
 LOG_DIR=$(optValue 'LOG_DIR')
 LOG_FILE="$LOG_DIR/play"
+CACHE_DIR=$(optValue 'CACHE_DIR')
+
+YTID="$1"
 
 # The binary to use to play the songs
 PLAYER=$(optValue 'PLAYER')
 
-$PLAYER "$1" >> "$LOG_FILE"
+$PLAYER "$CACHE_DIR/$YTID" >> "$LOG_FILE"
