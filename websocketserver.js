@@ -2,6 +2,9 @@ var io = require('socket.io')(3000);
 var fs  = require("fs");
 var process = require('child_process');
 
+var pathCache = './cache';
+var pathPlaylists = './playlists';
+
 var JukeBox = function() {
     this.playlists = {};
     this.playlistID = 0;
@@ -260,7 +263,7 @@ Song.prototype.play = function() {
 
     this.setStatus(Song.STATUS_PLAYING);
 
-    process.exec('./play.sh '+this.youTubeID, function (error, stdout, stderr) {
+    process.exec('cvlc --play-and-exit -I rc --rc-host localhost:11337 "'+this.data['_filename']+'"', function (error, stdout, stderr) {
 
         if(error !== null) {
             this.setStatus(Song.STATUS_PLAYING_FAILED);
