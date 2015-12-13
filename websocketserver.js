@@ -47,7 +47,7 @@ JukeBox.prototype.playlistStateChanged = function(playlist) {
         this.setStatus(JukeBox.STATUS_PLAYING);
     }
 
-    if (playlist.state === Playlist.STATUS_LOADED) {
+    if (playlist.state === Playlist.STATUS_LOADED || playlist.state === Playlist.STATUS_READY) {
         this.playPlaylist();
     }
 
