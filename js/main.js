@@ -203,7 +203,7 @@ PlayList.prototype.build = function(playlistData) {
 
 PlayList.prototype.buildSong = function(song) {
 
-    var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.id, 'data-state': song.state, 'data-duration': song.data.duration });
+    var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.ID, 'data-state': song.state, 'data-duration': song.data.duration });
 
     var image = $('<img />', { src: song.data.thumbnail });
 
