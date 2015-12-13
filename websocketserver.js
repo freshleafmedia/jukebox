@@ -207,9 +207,9 @@ Playlist.prototype.addSong = function(songRaw) {
 
 var Song = function(songRaw, songStateChangedCallback) {
     this.youTubeID = songRaw.id;
+    this.thumbnail = 'https://i.ytimg.com/vi/'+this.youTubeID+'/mqdefault.jpg';
     this.data = {
-        'thumbnail': songRaw.thumbnail,
-        'title': songRaw.title
+        title: songRaw.title
     };
     this.songStateChangedCallback = songStateChangedCallback;
     this.download();
