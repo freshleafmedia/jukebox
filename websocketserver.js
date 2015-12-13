@@ -187,8 +187,8 @@ Playlist.prototype.addSong = function(youTubeID) {
 var Song = function(youTubeID, songStateChangedCallback) {
     this.youTubeID = youTubeID;
     this.data = {};
-    this.download();
     this.songStateChangedCallback = songStateChangedCallback;
+    this.download();
 };
 
 Object.defineProperty(Song, "STATUS_PLAYING", { value: 'playing' });
