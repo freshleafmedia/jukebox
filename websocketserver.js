@@ -38,9 +38,9 @@ JukeBox.prototype.getPlaylist = function() {
 
 };
 
-JukeBox.prototype.addToPlaylist = function(youTubeID) {
+JukeBox.prototype.addToPlaylist = function(song) {
 
-    this.getPlaylist().addSong(youTubeID);
+    this.getPlaylist().addSong(song);
 
 };
 
@@ -179,7 +179,9 @@ Playlist.prototype.songStateChanged = function(song) {
     }
 };
 
-Playlist.prototype.addSong = function(youTubeID) {
+Playlist.prototype.addSong = function(songRaw) {
+
+    var youTubeID = songRaw.id;
 
     // Check if the song is already on the playlist
     var onList = false;
@@ -197,15 +199,18 @@ Playlist.prototype.addSong = function(youTubeID) {
         return;
     }
 
-    this.songs.push(new Song(youTubeID, this.songStateChanged.bind(this)));
+    this.songs.push(new Song(songRaw, this.songStateChanged.bind(this)));
 };
 
 
 
 
-var Song = function(youTubeID, songStateChangedCallback) {
-    this.youTubeID = youTubeID;
-    this.data = {};
+var Song = function(songRaw, songStateChangedCallback) {
+    this.youTubeID = songRaw.id;
+    this.data = {
+        'thumbnail': songRaw.thumbnail,
+        'title': songRaw.title
+    };
     this.songStateChangedCallback = songStateChangedCallback;
     this.download();
 };
@@ -307,7 +312,7 @@ io.on('connection', function(socket){
 
         console.log(song.id+': Trying to add');
 
-        player.addToPlaylist(song.id);
+        player.addToPlaylist(song);
 
         //io.emit('resolving', song);
     });
