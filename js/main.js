@@ -194,7 +194,7 @@ var PlayList = function(playlistData) {
 
 PlayList.prototype.build = function(playlistData) {
 
-    $.each(playlistData.songs, function(song, item) {
+    $.each(playlistData.songs, function(index, song) {
 
         this.El.append(this.buildSong(song));
 
