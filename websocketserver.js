@@ -284,6 +284,8 @@ io.on('connection', function(socket){
 
     socket.on('addsong', function(song) {
 
-        io.emit('resolving', song);
+        player.addToPlaylist(song.id);
+
+        //io.emit('resolving', song);
     });
 });
