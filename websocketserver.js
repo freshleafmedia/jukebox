@@ -13,6 +13,11 @@ Object.defineProperty(JukeBox, "STATUS_PLAYING", { value: 'playing' });
 Object.defineProperty(JukeBox, "STATUS_STOPPED", { value: 'stopped' });
 Object.defineProperty(JukeBox, "STATUS_PAUSED", { value: 'paused' });
 
+JukeBox.prototype.setStatus = function(status) {
+    console.log('JUKEBOX STATE: '+ status);
+    this.state = status;
+};
+
 JukeBox.prototype.loadPlaylist = function(playlistID) {
 
     // Check if we have already loaded this playlist
@@ -49,11 +54,6 @@ JukeBox.prototype.playlistStateChanged = function(playlist) {
     if (playlist.state === Playlist.STATUS_EMPTY) {
         this.setStatus(JukeBox.STATUS_STOPPED);
     }
-};
-
-JukeBox.prototype.setStatus = function(status) {
-    console.log('JUKEBOX STATE: '+ status);
-    this.state = status;
 };
 
 JukeBox.prototype.control = function(action) {
