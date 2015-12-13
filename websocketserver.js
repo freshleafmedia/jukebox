@@ -21,7 +21,7 @@ JukeBox.prototype.setStatus = function(status) {
 JukeBox.prototype.loadPlaylist = function(playlistID) {
 
     // Check if we have already loaded this playlist
-    if (this.playlists[playlistID] == null) {
+    if (typeof this.playlists[playlistID] === 'undefined') {
         this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this));
     }
 
