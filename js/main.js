@@ -189,6 +189,7 @@ var PlayList = function(data) {
     this.ID = data.ID;
     this.songs = [];
     this.El = $('.queueContainer');
+    this.build();
 };
 
 PlayList.prototype.build = function(playlist) {
