@@ -30,8 +30,7 @@ function notify(title, content) {
 	}
 }
 
-function handleAPILoaded()
-{
+function handleAPILoaded() {
     $('#search').prop('disabled', false);
 }
 
@@ -79,14 +78,6 @@ function addSong(song) {
     console.log('Adding.. ' + song.id);
     socket.emit('addsong', song);
 }
-
-$('#pauseButton').click(function() {
-    socket.emit('pause');
-});
-
-$('#playButton').click(function() {
-    socket.emit('play');
-});
 
 $('#addButton').click(function() {
     showAddDialog();
@@ -146,70 +137,10 @@ function closeAddDialog() {
     $('#addDialog').hide();
 }
 
-$('#volupButton').click(function() {
-    socket.emit('volUp');
-});
-
-$('#voldownButton').click(function() {
-    socket.emit('volDown');
-});
-
-$('#forwardButton').click(function() {
-    socket.emit('skipsong');
-});
-
-socket.on('newsong', function(song) {
-    console.log('From websocket: new song' + song.id);
-    addToQueue(song);
-    notify('New Song Added', song.title);
-});
-
-socket.on('resolved', function(song) {
-    $('.queue-container #song-'+song.id+'[data-resolving="true"]').remove();
-});
-
-socket.on('resolving', function(song) {
-    addToQueue(song, true);
-});
-
-socket.on('resolve failed', function(song) {
-    $('.queue-container #song-'+song.id).attr('data-resolving','failed');
-});
-
 socket.on('queuelist', function(data) {
-    console.log('From websocket: whole list');
-    setQueue(data);
-    var queueEl = $('.queue-container');
-    var title = queueEl.find('> :first-child .title').text();
-    updateNowPlaying(title);
+    console.log(data);
 });
 
-socket.on('song finished', function() {
-    var queueEl = $('.queue-container');
-    queueEl.find('> :first-child').remove();
-    if (queueEl.find('> div').length > 0) {
-        var title = queueEl.find('> :first-child .title').text();
-        notify('Next Up', title);
-        updateNowPlaying(title);
-    } else {
-        updateNowPlaying('');
-    }
-});
-
-socket.on('controlstatus', function(controlStatus) {
-    var bodyEl = $('body');
-    var pauseEl = $('#pauseButton');
-    var playEl = $('#playButton');
-    if (controlStatus.paused) {
-        pauseEl.addClass('disabled');
-        playEl.removeClass('disabled');
-        bodyEl.removeClass('playing');
-    } else {
-        pauseEl.removeClass('disabled');
-        playEl.addClass('disabled');
-        bodyEl.addClass('playing');
-    }
-});
 
 function addToQueue(song, resolving) {
     var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.id });
@@ -239,6 +170,7 @@ function updateNowPlaying(title) {
         $('title').text(title + ' - Freshleaf Jukebox');
     }
 }
+
 $(window).on('scroll', function() {
     var y_scroll_pos = window.pageYOffset;
     var scroll_pos_test = 120;             // set to whatever you want it to be
