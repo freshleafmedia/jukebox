@@ -136,16 +136,6 @@ Playlist.prototype.loadFromFile = function() {
     this.setState(Playlist.STATUS_LOADED);
 };
 
-Playlist.prototype.addSong = function(youTubeID) {
-
-    if(typeof this.songs[youTubeID] !== 'undefined') {
-        console.log(youTubeID+': Already on the playlist');
-        return;
-    }
-
-    this.songs.push(new Song(youTubeID, this.songStateChanged.bind(this)));
-};
-
 Playlist.prototype.removeSong = function(youTubeID) {
 
     for (var i=0; i<this.songs.length; i++) {
@@ -179,6 +169,16 @@ Playlist.prototype.songStateChanged = function(song) {
         }
 
     }
+};
+
+Playlist.prototype.addSong = function(youTubeID) {
+
+    if(typeof this.songs[youTubeID] !== 'undefined') {
+        console.log(youTubeID+': Already on the playlist');
+        return;
+    }
+
+    this.songs.push(new Song(youTubeID, this.songStateChanged.bind(this)));
 };
 
 
