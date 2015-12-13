@@ -175,7 +175,7 @@ JukeBox.prototype.addPlaylist = function(playlistData, overwrite) {
 
     // Check if we have already loaded this playlist
     if (overwrite === true || typeof this.playlists[playlistData.ID] === 'undefined') {
-        this.playlists[playlistData.ID] = new Playlist(playlistData);
+        this.playlists[playlistData.ID] = new PlayList(playlistData);
     }
 };
 
