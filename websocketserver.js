@@ -46,6 +46,7 @@ JukeBox.prototype.playlistStateChanged = function(playlist) {
 };
 
 JukeBox.prototype.setStatus = function(status) {
+    console.log('JUKEBOX STATE: '+ status);
     this.state = status;
 };
 
@@ -94,6 +95,7 @@ Playlist.prototype.shuffle = function() {
 };
 
 Playlist.prototype.setState = function(status) {
+    console.log('PLAYLIST['+this.ID+'] STATE: '+ status);
     this.state = status;
     this.playlistStateChangedCallback(this);
 };
@@ -184,6 +186,8 @@ Object.defineProperty(Song, "STATUS_DOWNLOAD_FAILED", { value: 'download_failed'
 Object.defineProperty(Song, "STATUS_REMOVING", { value: 'removing' });
 
 Song.prototype.setStatus = function(status) {
+
+    console.log('SONG['+this.youTubeID+'] STATE: '+ status);
 
     this.state = status;
 
