@@ -138,7 +138,7 @@ Playlist.prototype.loadFromFile = function() {
 
 Playlist.prototype.addSong = function(youTubeID) {
 
-    if(this.songs[youTubeID] !== null) {
+    if(typeof this.songs[youTubeID] !== 'undefined') {
         console.log(youTubeID+': Already on the playlist');
         return;
     }
