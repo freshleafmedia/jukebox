@@ -37,10 +37,16 @@ JukeBox.prototype.addToPlaylist = function(youTubeID) {
 };
 
 JukeBox.prototype.playlistStateChanged = function(playlist) {
+
+    if (playlist.state === Playlist.STATUS_PLAYING) {
+        this.setStatus(JukeBox.STATUS_PLAYING);
+    }
+
     if (playlist.state === Playlist.STATUS_LOADED) {
         this.playPlaylist();
     }
-    if (playlist.state === Playlist.STATUS_PLAYING_FINISHED) {
+
+    if (playlist.state === Playlist.STATUS_EMPTY) {
         this.setStatus(JukeBox.STATUS_STOPPED);
     }
 };
@@ -67,8 +73,6 @@ JukeBox.prototype.playPlaylist = function() {
         return;
     }
 
-    this.setStatus(JukeBox.STATUS_PLAYING);
-
     this.getPlaylist().play();
 };
 
@@ -86,7 +90,6 @@ var Playlist = function(ID, playlistStateChangedCallback) {
 
 Object.defineProperty(Playlist, "STATUS_PLAYING", { value: 'playing' });
 Object.defineProperty(Playlist, "STATUS_PLAYING_FAILED", { value: 'playing_failed' });
-Object.defineProperty(Playlist, "STATUS_PLAYING_FINISHED", { value: 'playing_finished' });
 Object.defineProperty(Playlist, "STATUS_EMPTY", { value: 'empty' });
 Object.defineProperty(Playlist, "STATUS_LOADED", { value: 'loaded' });
 
@@ -158,11 +161,22 @@ Playlist.prototype.removeSong = function(youTubeID) {
 
 Playlist.prototype.songStateChanged = function(song) {
 
+    if (song.state === Song.STATUS_PLAYING) {
+        this.setState(Playlist.STATUS_PLAYING);
+    }
+
     if (song.state === Song.STATUS_PLAYABLE) {
         this.playPlaylist();
     }
+
     if (song.state === Song.STATUS_PLAYING_FINISHED) {
         this.removeSong(song.youTubeID);
+
+        // If this was the last song mark the playlist as empty
+        if(this.songs.length === 0) {
+            this.setState(Playlist.STATUS_EMPTY);
+        }
+
     }
 };
 
