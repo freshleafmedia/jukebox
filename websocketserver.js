@@ -69,10 +69,6 @@ JukeBox.prototype.control = function(action) {
 
 JukeBox.prototype.playPlaylist = function() {
 
-    if (this.state === JukeBox.STATUS_PLAYING) {
-        return;
-    }
-
     this.getPlaylist().play();
 };
 
@@ -105,6 +101,10 @@ Playlist.prototype.setState = function(status) {
 };
 
 Playlist.prototype.play = function() {
+
+    if (this.state === Playlist.STATUS_PLAYING) {
+        return;
+    }
 
     for (var i=0; i<this.songs.length; i++) {
 
