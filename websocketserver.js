@@ -139,6 +139,7 @@ Playlist.prototype.loadFromFile = function() {
 Playlist.prototype.addSong = function(youTubeID) {
 
     if(this.songs[youTubeID] !== null) {
+        console.log(youTubeID+': Already on the playlist');
         return;
     }
 
@@ -283,6 +284,8 @@ io.on('connection', function(socket){
     socket.emit('playlist', player.getPlaylist());
 
     socket.on('addsong', function(song) {
+
+        console.log(song.id+': Trying to add');
 
         player.addToPlaylist(song.id);
 
