@@ -178,8 +178,19 @@ Playlist.prototype.songStateChanged = function(song) {
 
 Playlist.prototype.addSong = function(youTubeID) {
 
-    if(typeof this.songs[youTubeID] !== 'undefined') {
-        console.log(youTubeID+': Already on the playlist');
+    // Check if the song is already on the playlist
+    var onList = false;
+    for (var i=0; i<this.songs.length; i++) {
+        var song = this.songs[i];
+
+        if(song.youTubeID === youTubeID) {
+            onList = true;
+            break;
+        }
+    }
+
+    if(onList === true) {
+        console.log('SONG['+youTubeID+']: Already on the playlist');
         return;
     }
 
