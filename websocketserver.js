@@ -144,7 +144,8 @@ Playlist.prototype.removeSong = function(youTubeID) {
 
         if(song.youTubeID === youTubeID) {
             this.songs[i].setStatus(Song.STATUS_REMOVING);
-            delete this.songs[i];
+
+            this.songs.splice(i,1);
             break;
         }
     }
