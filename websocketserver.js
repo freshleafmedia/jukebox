@@ -3,44 +3,44 @@ var fs  = require("fs");
 var process = require('child_process');
 
 var JukeBox = function() {
-    this.queues = {};
-    this.queueID = 0;
+    this.playlists = {};
+    this.playlistID = 0;
     this.state = JukeBox.STATUS_STOPPED;
-    this.loadQueue(0);
+    this.loadPlaylist(0);
 };
 
 Object.defineProperty(JukeBox, "STATUS_PLAYING", { value: 'playing' });
 Object.defineProperty(JukeBox, "STATUS_STOPPED", { value: 'stopped' });
 Object.defineProperty(JukeBox, "STATUS_PAUSED", { value: 'paused' });
 
-JukeBox.prototype.loadQueue = function(queueID) {
+JukeBox.prototype.loadPlaylist = function(playlistID) {
 
-    // Check if we have already loaded this queue
-    if (this.queues[queueID] == null) {
-        this.queues[queueID] = new Queue(queueID, this.queueStateChanged);
+    // Check if we have already loaded this playlist
+    if (this.playlists[playlistID] == null) {
+        this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged);
     }
 
-    this.queueID = queueID;
+    this.playlistID = playlistID;
 
 };
 
-JukeBox.prototype.getQueue = function() {
+JukeBox.prototype.getPlaylist = function() {
 
-    return this.queues[this.queueID];
-
-};
-
-JukeBox.prototype.addToQueue = function(youTubeID) {
-
-    this.getQueue().addSong(youTubeID);
+    return this.playlists[this.playlistID];
 
 };
 
-JukeBox.prototype.queueStateChanged = function(queue) {
-    if (queue.state === Queue.STATUS_LOADED) {
-        this.playQueue();
+JukeBox.prototype.addToPlaylist = function(youTubeID) {
+
+    this.getPlaylist().addSong(youTubeID);
+
+};
+
+JukeBox.prototype.playlistStateChanged = function(playlist) {
+    if (playlist.state === Playlist.STATUS_LOADED) {
+        this.playPlaylist();
     }
-    if (queue.state === Queue.STATUS_PLAYING_FINISHED) {
+    if (playlist.state === Playlist.STATUS_PLAYING_FINISHED) {
         this.setStatus(JukeBox.STATUS_STOPPED);
     }
 };
@@ -60,7 +60,7 @@ JukeBox.prototype.control = function(action) {
     });
 };
 
-JukeBox.prototype.playQueue = function() {
+JukeBox.prototype.playPlaylist = function() {
 
     if (this.state === JukeBox.STATUS_PLAYING) {
         return;
@@ -68,37 +68,37 @@ JukeBox.prototype.playQueue = function() {
 
     this.setStatus(JukeBox.STATUS_PLAYING);
 
-    this.getQueue().play();
+    this.getPlaylist().play();
 };
 
 
 
 
-var Queue = function(ID, queueStateChangedCallback) {
+var Playlist = function(ID, playlistStateChangedCallback) {
     this.ID = ID;
     this.songs = [];
-    this.queueStateChangedCallback = queueStateChangedCallback;
-    this.state = Queue.STATUS_EMPTY;
+    this.playlistStateChangedCallback = playlistStateChangedCallback;
+    this.state = Playlist.STATUS_EMPTY;
     this.loadFromFile();
     this.play();
 };
 
-Object.defineProperty(Queue, "STATUS_PLAYING", { value: 'playing' });
-Object.defineProperty(Queue, "STATUS_PLAYING_FAILED", { value: 'playing_failed' });
-Object.defineProperty(Queue, "STATUS_PLAYING_FINISHED", { value: 'playing_finished' });
-Object.defineProperty(Queue, "STATUS_EMPTY", { value: 'empty' });
-Object.defineProperty(Queue, "STATUS_LOADED", { value: 'loaded' });
+Object.defineProperty(Playlist, "STATUS_PLAYING", { value: 'playing' });
+Object.defineProperty(Playlist, "STATUS_PLAYING_FAILED", { value: 'playing_failed' });
+Object.defineProperty(Playlist, "STATUS_PLAYING_FINISHED", { value: 'playing_finished' });
+Object.defineProperty(Playlist, "STATUS_EMPTY", { value: 'empty' });
+Object.defineProperty(Playlist, "STATUS_LOADED", { value: 'loaded' });
 
-Queue.prototype.shuffle = function() {
+Playlist.prototype.shuffle = function() {
     this.songs.shuffle();
 };
 
-Queue.prototype.setState = function(status) {
+Playlist.prototype.setState = function(status) {
     this.state = status;
-    this.queueStateChangedCallback(this);
+    this.playlistStateChangedCallback(this);
 };
 
-Queue.prototype.play = function() {
+Playlist.prototype.play = function() {
 
     for (var i=0; i<this.songs.length; i++) {
 
@@ -116,22 +116,22 @@ Queue.prototype.play = function() {
     }
 };
 
-Queue.prototype.loadFromFile = function() {
+Playlist.prototype.loadFromFile = function() {
 
-    // Determine the queue file name
-    var queueFile = './queues/'+this.ID+'.json';
+    // Determine the playlist file name
+    var playlistFile = './playlists/'+this.ID+'.json';
 
-    this.songs = JSON.parse(fs.readFileSync(queueFile).toString());
+    this.songs = JSON.parse(fs.readFileSync(playlistFile).toString());
 
     if(this.songs.length === 0) {
-        this.setState(Queue.STATUS_EMPTY);
+        this.setState(Playlist.STATUS_EMPTY);
         return;
     }
 
-    this.setState(Queue.STATUS_LOADED);
+    this.setState(Playlist.STATUS_LOADED);
 };
 
-Queue.prototype.addSong = function(youTubeID) {
+Playlist.prototype.addSong = function(youTubeID) {
 
     if(this.songs[youTubeID] !== null) {
         return;
@@ -140,7 +140,7 @@ Queue.prototype.addSong = function(youTubeID) {
     this.songs.push(new Song(youTubeID, this.songStateChanged));
 };
 
-Queue.prototype.removeSong = function(youTubeID) {
+Playlist.prototype.removeSong = function(youTubeID) {
 
     for (var i=0; i<this.songs.length; i++) {
         var song = this.songs[i];
@@ -154,10 +154,10 @@ Queue.prototype.removeSong = function(youTubeID) {
 
 };
 
-Queue.prototype.songStateChanged = function(song) {
+Playlist.prototype.songStateChanged = function(song) {
 
     if (song.state === Song.STATUS_PLAYABLE) {
-        this.playQueue();
+        this.playPlaylist();
     }
     if (song.state === Song.STATUS_PLAYING_FINISHED) {
         this.removeSong(song.youTubeID);
@@ -256,13 +256,13 @@ Array.prototype.shuffle = function() {
 
 // Initiate the player
 var player = new JukeBox();
-player.playQueue();
+player.playPlaylist();
 
 
 io.on('connection', function(socket){
     console.log('User connected');
 
-    socket.emit('queue', player.getQueue());
+    socket.emit('playlist', player.getPlaylist());
 
     socket.on('addsong', function(song) {
 
