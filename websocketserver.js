@@ -22,7 +22,7 @@ JukeBox.prototype.loadPlaylist = function(playlistID) {
 
     // Check if we have already loaded this playlist
     if (this.playlists[playlistID] == null) {
-        this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged);
+        this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this));
     }
 
     this.playlistID = playlistID;
@@ -142,7 +142,7 @@ Playlist.prototype.addSong = function(youTubeID) {
         return;
     }
 
-    this.songs.push(new Song(youTubeID, this.songStateChanged));
+    this.songs.push(new Song(youTubeID, this.songStateChanged.bind(this)));
 };
 
 Playlist.prototype.removeSong = function(youTubeID) {
