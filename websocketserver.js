@@ -245,7 +245,7 @@ Song.prototype.play = function() {
 
     this.setStatus(Song.STATUS_PLAYING);
 
-    process.exec('./play.sh '+this.youTubeID, function (error, stdout, stderr) {
+    process.exec('./play.sh '+this.data.url, function (error, stdout, stderr) {
 
         if(error !== null) {
             this.setStatus(Song.STATUS_PLAYING_FAILED);
