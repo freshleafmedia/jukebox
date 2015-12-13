@@ -205,7 +205,7 @@ PlayList.prototype.buildSong = function(song) {
 
     var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.youTubeID, 'data-state': song.state, 'data-duration': song.data.duration });
 
-    var image = $('<img />', { src: song.data.thumbnail });
+    var image = $('<img />', { src: song.thumbnail });
 
     var title = $('<p />', { 'class': 'title', text: song.data.title });
     var imgwrap = $('<div />', { 'class': 'imageWrapper' });
