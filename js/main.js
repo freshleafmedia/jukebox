@@ -137,7 +137,7 @@ function closeAddDialog() {
     $('#addDialog').hide();
 }
 
-socket.on('queuelist', function(data) {
+socket.on('playlist', function(data) {
     console.log(data);
 });
 
