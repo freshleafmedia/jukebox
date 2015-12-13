@@ -217,10 +217,28 @@ PlayList.prototype.buildSong = function(song) {
     return item;
 };
 
+PlayList.prototype.removeSong = function(songToRemove) {
+
+    this.El.children('#song-'+songToRemove.youTubeID).remove();
+
+    for (var i=0; i<this.songs.length; i++) {
+        var song = this.songs[i];
+
+        if(song.youTubeID === songToRemove.youTubeID) {
+            this.songs.splice(i,1);
+            break;
+        }
+    }
+};
+
 
 var player = new JukeBox();
 
 
 socket.on('playlist', function(playlistData) {
     player.setPlaylist(playlistData);
+});
+
+socket.on('songRemove', function(song) {
+    player.getPlaylist().removeSong(song);
 });

@@ -228,6 +228,10 @@ Song.prototype.setStatus = function(status) {
 
     console.log('SONG['+this.youTubeID+'] STATE: '+ status);
 
+    if (status === Song.STATUS_REMOVING) {
+        io.emit('songRemove', this);
+    }
+
     this.state = status;
 
     this.songStateChangedCallback(this);
