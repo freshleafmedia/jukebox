@@ -167,7 +167,10 @@ Playlist.prototype.songStateChanged = function(song) {
         // If this was the last song mark the playlist as empty
         if(this.songs.length === 0) {
             this.setState(Playlist.STATUS_EMPTY);
+            return
         }
+
+        this.setState(Playlist.STATUS_READY);
 
     }
 };
