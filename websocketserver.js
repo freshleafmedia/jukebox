@@ -88,6 +88,7 @@ var Playlist = function(ID, playlistStateChangedCallback) {
     this.play();
 };
 
+Object.defineProperty(Playlist, "STATUS_READY", { value: 'ready' });
 Object.defineProperty(Playlist, "STATUS_PLAYING", { value: 'playing' });
 Object.defineProperty(Playlist, "STATUS_PLAYING_FAILED", { value: 'playing_failed' });
 Object.defineProperty(Playlist, "STATUS_EMPTY", { value: 'empty' });
@@ -156,8 +157,8 @@ Playlist.prototype.songStateChanged = function(song) {
         this.setState(Playlist.STATUS_PLAYING);
     }
 
-    if (song.state === Song.STATUS_PLAYABLE) {
-        this.playPlaylist();
+    if (this.state !== Playlist.STATUS_PLAYING && song.state === Song.STATUS_PLAYABLE) {
+        this.setState(Playlist.STATUS_READY);
     }
 
     if (song.state === Song.STATUS_PLAYING_FINISHED) {
@@ -216,6 +217,7 @@ Song.prototype.download = function() {
     process.exec('./download.sh '+this.youTubeID, function (error, stdout, stderr) {
 
         if (error !== null) {
+            console.error(error);
 
             this.setStatus(Song.STATUS_DOWNLOAD_FAILED);
             return;
