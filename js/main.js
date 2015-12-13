@@ -185,13 +185,13 @@ JukeBox.prototype.getPlaylist = function() {
 
 
 
-var playList = function(data) {
+var PlayList = function(data) {
     this.ID = data.ID;
     this.songs = [];
     this.El = $('.queueContainer');
 };
 
-playList.prototype.build = function(playlist) {
+PlayList.prototype.build = function(playlist) {
 
     $.each(playlist.songs, function(song, item) {
 
@@ -200,7 +200,7 @@ playList.prototype.build = function(playlist) {
     }.bind(this));
 };
 
-playList.prototype.buildSong = function(song) {
+PlayList.prototype.buildSong = function(song) {
 
     var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.id, 'data-state': song.state, 'data-duration': song.data.duration });
 
