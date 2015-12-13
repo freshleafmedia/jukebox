@@ -137,31 +137,6 @@ function closeAddDialog() {
     $('#addDialog').hide();
 }
 
-socket.on('playlist', function(data) {
-    console.log(data);
-});
-
-
-function addToQueue(song, resolving) {
-    var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.id });
-
-    item.attr('data-resolving',!!resolving);
-
-    var image = $('<img />', { src: song.thumbnail });
-    var title = $('<p />', { 'class': 'title', text: song.title });
-    var imgwrap = $('<div />', { 'class': 'imageWrapper' });
-    imgwrap.append(image);
-    item.append(imgwrap);
-    item.append(title);
-    $('.queue-container').append(item);
-}
-
-function setQueue(data) {
-    $('.queue-container').html('');
-    $.each(data, function(index, item) {
-	addToQueue(item);
-    });
-}
 
 function updateNowPlaying(title) {
     if (title == '') {
@@ -183,3 +158,68 @@ $(window).on('scroll', function() {
     }
 });
 
+
+var JukeBox = function() {
+    this.playlists = {};
+};
+
+JukeBox.prototype.setPlaylist = function(playlistData) {
+
+    // Try and add this playlist
+    this.addPlaylist(playlistData);
+
+    this.playlistID = playlistData.ID;
+};
+
+JukeBox.prototype.addPlaylist = function(playlistData, overwrite) {
+
+    // Check if we have already loaded this playlist
+    if (overwrite === true || typeof this.playlists[playlistData.ID] === 'undefined') {
+        this.playlists[playlistData.ID] = new Playlist(playlistData);
+    }
+};
+
+JukeBox.prototype.getPlaylist = function() {
+    return this.playlists[this.playlistID];
+};
+
+
+
+var playList = function(data) {
+    this.ID = data.ID;
+    this.songs = [];
+    this.El = $('.queueContainer');
+};
+
+playList.prototype.build = function(playlist) {
+
+    $.each(playlist.songs, function(song, item) {
+
+        this.El.append(this.buildSong(song));
+
+    }.bind(this));
+};
+
+playList.prototype.buildSong = function(song) {
+
+    var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.id, 'data-state': song.state, 'data-duration': song.data.duration });
+
+    var image = $('<img />', { src: song.data.thumbnail });
+
+    var title = $('<p />', { 'class': 'title', text: song.data.title });
+    var imgwrap = $('<div />', { 'class': 'imageWrapper' });
+
+    imgwrap.append(image);
+    item.append(imgwrap);
+    item.append(title);
+
+    return item;
+};
+
+
+var player = new JukeBox();
+
+
+socket.on('playlist', function(playlistData) {
+    player.setPlaylist(playlistData);
+});
