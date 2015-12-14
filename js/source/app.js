@@ -1,3 +1,5 @@
+import Jukebox from "./jukebox.js";
+
 var socket = io('//:3000');
 socket.on('connect', function(){
     console.log('connected to websocket server');
@@ -157,33 +159,6 @@ $(window).on('scroll', function() {
         $('header').removeClass('scrolled');
     }
 });
-
-
-var JukeBox = function() {
-    this.playlists = {};
-};
-
-JukeBox.prototype.setPlaylist = function(playlistData) {
-
-    // Try and add this playlist
-    this.addPlaylist(playlistData);
-
-    this.playlistID = playlistData.ID;
-};
-
-JukeBox.prototype.addPlaylist = function(playlistData, overwrite) {
-
-    // Check if we have already loaded this playlist
-    if (overwrite === true || typeof this.playlists[playlistData.ID] === 'undefined') {
-        this.playlists[playlistData.ID] = new PlayList(playlistData);
-    }
-};
-
-JukeBox.prototype.getPlaylist = function() {
-    return this.playlists[this.playlistID];
-};
-
-
 
 var PlayList = function(playlistData) {
     this.ID = playlistData.ID;
