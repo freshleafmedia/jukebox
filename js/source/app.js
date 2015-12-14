@@ -196,7 +196,7 @@ PlayList.prototype.build = function(playlistData) {
 
     $.each(playlistData.songs, function(index, song) {
 
-        this.El.append(this.buildSong(song));
+        this.addSong(song);
 
     }.bind(this));
 };
@@ -231,6 +231,9 @@ PlayList.prototype.removeSong = function(songToRemove) {
     }
 };
 
+PlayList.prototype.addSong = function() {
+    this.El.append(this.buildSong(song));
+};
 
 var player = new JukeBox();
 
@@ -241,4 +244,8 @@ socket.on('playlist', function(playlistData) {
 
 socket.on('songRemove', function(song) {
     player.getPlaylist().removeSong(song);
+});
+
+socket.on('songAdd', function(song) {
+    player.getPlaylist().addSong(song);
 });
