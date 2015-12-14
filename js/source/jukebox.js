@@ -1,11 +1,10 @@
 var Playlist = require("./playlist.js").default;
 
-export default class JukeBox
+export default class Jukebox
 {
     constructor()
     {
         this.playlists = {};
-var playlist = new Playlist(test);
     }
 
     setPlaylist(playlistData)
@@ -20,7 +19,7 @@ var playlist = new Playlist(test);
     {
         // Check if we have already loaded this playlist
         if (overwrite === true || typeof this.playlists[playlistData.ID] === 'undefined') {
-            this.playlists[playlistData.ID] = new PlayList(playlistData);
+            this.playlists[playlistData.ID] = new Playlist(playlistData);
         }
     }
 
@@ -29,5 +28,3 @@ var playlist = new Playlist(test);
         return this.playlists[this.playlistID];
     }
 }
-
-var jukebox = new JukeBox();

@@ -1,4 +1,4 @@
-var JukeBox = require("./jukebox.js").default;
+var Jukebox = require("./jukebox.js").default;
 
 var socket = io('//:3000');
 socket.on('connect', function(){
@@ -160,7 +160,7 @@ $(window).on('scroll', function() {
     }
 });
 
-var player = new JukeBox();
+var player = new Jukebox();
 
 socket.on('playlist', function(playlistData) {
     player.setPlaylist(playlistData);

@@ -1,4 +1,4 @@
-export default class PlayList {
+export default class Playlist {
 
     constructor(playlistData) {
         this.ID = playlistData.ID;
