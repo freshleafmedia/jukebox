@@ -2,5 +2,5 @@
 
 # Start the node server
 echo -n "Starting the node server... "
-node server/src/server.js &
+node server/server.js &
 echo "[$!]"
