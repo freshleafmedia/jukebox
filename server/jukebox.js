@@ -88,6 +88,10 @@ class JukeBox {
 		this.getPlaylist().play();
 	};
 
+	play() {
+		this.control('play');
+	};
+
 	pause() {
 		this.control('pause');
 	};
