@@ -1,5 +1,7 @@
 var gulp = require('gulp');
-var browserify = require('gulp-browserify');
+var browserify = require('browserify');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
 var sass = require('gulp-sass');
 var watch = require('gulp-watch');
 var minifycss = require('gulp-minify-css');
@@ -22,15 +24,11 @@ var dest = {
 
 // Basic usage
 gulp.task('scripts', function() {
-    gulp.src('js/source/app.js')
-        .pipe(browserify())
-        .on('error', notify.onError({
-            message: "Error: <%= error.message %>",
-            title: "Browserify failed"
-        }))
-        .on('error', swallowError)
-        .pipe(concat('app.min.js'))
-        .pipe(uglify())
+    browserify('./js/source/app.js')
+        .transform("babelify", { presets: ["es2015"] })
+        .bundle()
+        .pipe(source('app.min.js'))
+        //.pipe(uglify())
         .pipe(gulp.dest(dest.javascript))
         .pipe(notify({title: "Browserify complete", message: "All of the shiny things!!"}))
         .pipe(livereload());
