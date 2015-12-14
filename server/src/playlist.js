@@ -12,7 +12,7 @@ class Playlist {
 		this.state = Playlist.STATUS_EMPTY;
 
 		// Set the default options
-		if (typeof this.options.paths !== 'object' || typeof this.options.paths.playlist === 'undefined') {
+		if (typeof this.options.paths !== 'object' || typeof this.options.paths.playlists === 'undefined') {
 			this.options.paths = {
 				playlists: './playlists'
 			}
