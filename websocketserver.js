@@ -73,132 +73,135 @@ export default class JukeBox {
 }
 
 
-var Playlist = function(ID, playlistStateChangedCallback) {
-    this.ID = ID;
-    this.songs = [];
-    this.playlistStateChangedCallback = playlistStateChangedCallback;
-    this.state = Playlist.STATUS_EMPTY;
-    this.loadFromFile();
-    this.play();
-};
+export default class Playlist {
 
-Object.defineProperty(Playlist, "STATUS_READY", { value: 'ready' });
-Object.defineProperty(Playlist, "STATUS_PLAYING", { value: 'playing' });
-Object.defineProperty(Playlist, "STATUS_PLAYING_FAILED", { value: 'playing_failed' });
-Object.defineProperty(Playlist, "STATUS_EMPTY", { value: 'empty' });
-Object.defineProperty(Playlist, "STATUS_LOADED", { value: 'loaded' });
+    const STATUS_READY = 'ready';
+    const STATUS_PLAYING = 'playing';
+    const STATUS_PLAYING_FAILED = 'playing_failed';
+    const STATUS_EMPTY = 'empty';
+    const STATUS_LOADED = 'loaded';
 
-Playlist.prototype.shuffle = function() {
-    this.songs.shuffle();
-};
+    constructor(ID, playlistStateChangedCallback) {
+        this.ID = ID;
+        this.songs = [];
+        this.playlistStateChangedCallback = playlistStateChangedCallback;
+        this.state = Playlist.STATUS_EMPTY;
+        this.loadFromFile();
+        this.play();
+    };
 
-Playlist.prototype.setState = function(status) {
-    console.log('PLAYLIST['+this.ID+'] STATE: '+ status);
-    this.state = status;
-    this.playlistStateChangedCallback(this);
-};
+    shuffle = function () {
+        this.songs.shuffle();
+    };
 
-Playlist.prototype.play = function() {
+    setState = function (status) {
+        console.log('PLAYLIST[' + this.ID + '] STATE: ' + status);
+        this.state = status;
+        this.playlistStateChangedCallback(this);
+    };
 
-    if (this.state === Playlist.STATUS_PLAYING) {
-        return;
-    }
+    play = function () {
 
-    for (var i=0; i<this.songs.length; i++) {
-
-        // Get the song
-        var song = this.songs[i];
-
-        // Check the song is playable
-        if(song.state !== Song.STATUS_PLAYABLE) {
-            continue;
+        if (this.state === Playlist.STATUS_PLAYING) {
+            return;
         }
 
-        // Play the song!
-        song.play();
-        break;
-    }
-};
+        for (var i = 0; i < this.songs.length; i++) {
 
-Playlist.prototype.loadFromFile = function() {
+            // Get the song
+            var song = this.songs[i];
 
-    // Determine the playlist file name
-    var playlistFile = './playlists/'+this.ID+'.json';
+            // Check the song is playable
+            if (song.state !== Song.STATUS_PLAYABLE) {
+                continue;
+            }
 
-    this.songs = JSON.parse(fs.readFileSync(playlistFile).toString());
-
-    if(this.songs.length === 0) {
-        this.setState(Playlist.STATUS_EMPTY);
-        return;
-    }
-
-    this.setState(Playlist.STATUS_LOADED);
-};
-
-Playlist.prototype.removeSong = function(youTubeID) {
-
-    for (var i=0; i<this.songs.length; i++) {
-        var song = this.songs[i];
-
-        if(song.youTubeID === youTubeID) {
-            this.songs[i].setStatus(Song.STATUS_REMOVING);
-
-            this.songs.splice(i,1);
+            // Play the song!
+            song.play();
             break;
         }
-    }
+    };
 
-};
+    loadFromFile = function () {
 
-Playlist.prototype.songStateChanged = function(song) {
+        // Determine the playlist file name
+        var playlistFile = './playlists/' + this.ID + '.json';
 
-    if (song.state === Song.STATUS_PLAYING) {
-        this.setState(Playlist.STATUS_PLAYING);
-    }
+        this.songs = JSON.parse(fs.readFileSync(playlistFile).toString());
 
-    if (this.state !== Playlist.STATUS_PLAYING && song.state === Song.STATUS_PLAYABLE) {
-        this.setState(Playlist.STATUS_READY);
-    }
-
-    if (song.state === Song.STATUS_PLAYING_FINISHED) {
-        this.removeSong(song.youTubeID);
-
-        // If this was the last song mark the playlist as empty
-        if(this.songs.length === 0) {
+        if (this.songs.length === 0) {
             this.setState(Playlist.STATUS_EMPTY);
-            return
+            return;
         }
 
-        this.setState(Playlist.STATUS_READY);
+        this.setState(Playlist.STATUS_LOADED);
+    };
 
-    }
-};
+    removeSong = function (youTubeID) {
 
-Playlist.prototype.addSong = function(songRaw) {
+        for (var i = 0; i < this.songs.length; i++) {
+            var song = this.songs[i];
 
-    var youTubeID = songRaw.id;
+            if (song.youTubeID === youTubeID) {
+                this.songs[i].setStatus(Song.STATUS_REMOVING);
 
-    // Check if the song is already on the playlist
-    var onList = false;
-    for (var i=0; i<this.songs.length; i++) {
-        var song = this.songs[i];
-
-        if(song.youTubeID === youTubeID) {
-            onList = true;
-            break;
+                this.songs.splice(i, 1);
+                break;
+            }
         }
-    }
 
-    if(onList === true) {
-        console.log('SONG['+youTubeID+']: Already on the playlist');
-        return;
-    }
+    };
 
-    var song = new Song(songRaw, this.songStateChanged.bind(this));
-    this.songs.push(song);
+    songStateChanged = function (song) {
 
-    io.emit('songAdd', song);
-};
+        if (song.state === Song.STATUS_PLAYING) {
+            this.setState(Playlist.STATUS_PLAYING);
+        }
+
+        if (this.state !== Playlist.STATUS_PLAYING && song.state === Song.STATUS_PLAYABLE) {
+            this.setState(Playlist.STATUS_READY);
+        }
+
+        if (song.state === Song.STATUS_PLAYING_FINISHED) {
+            this.removeSong(song.youTubeID);
+
+            // If this was the last song mark the playlist as empty
+            if (this.songs.length === 0) {
+                this.setState(Playlist.STATUS_EMPTY);
+                return
+            }
+
+            this.setState(Playlist.STATUS_READY);
+
+        }
+    };
+
+    addSong = function (songRaw) {
+
+        var youTubeID = songRaw.id;
+
+        // Check if the song is already on the playlist
+        var onList = false;
+        for (var i = 0; i < this.songs.length; i++) {
+            var song = this.songs[i];
+
+            if (song.youTubeID === youTubeID) {
+                onList = true;
+                break;
+            }
+        }
+
+        if (onList === true) {
+            console.log('SONG[' + youTubeID + ']: Already on the playlist');
+            return;
+        }
+
+        var song = new Song(songRaw, this.songStateChanged.bind(this));
+        this.songs.push(song);
+
+        io.emit('songAdd', song);
+    };
+}
 
 
 
