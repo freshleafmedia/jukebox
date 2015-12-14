@@ -5,77 +5,72 @@ var process = require('child_process');
 var pathCache = './cache';
 var pathPlaylists = './playlists';
 
-var JukeBox = function() {
-    this.playlists = {};
-    this.playlistID = 0;
-    this.state = JukeBox.STATUS_STOPPED;
-    this.loadPlaylist(0);
-};
+export default class JukeBox {
 
-Object.defineProperty(JukeBox, "STATUS_PLAYING", { value: 'playing' });
-Object.defineProperty(JukeBox, "STATUS_STOPPED", { value: 'stopped' });
-Object.defineProperty(JukeBox, "STATUS_PAUSED", { value: 'paused' });
+	const STATUS_PLAYING = 'playing';
+	const STATUS_STOPPED = 'stopped';
+	const STATUS_PAUSED = 'paused';
 
-JukeBox.prototype.setStatus = function(status) {
-    console.log('JUKEBOX STATE: '+ status);
-    this.state = status;
-};
+	constructor() {
+		this.playlists = {};
+		this.playlistID = 0;
+		this.state = JukeBox.STATUS_STOPPED;
+		this.loadPlaylist(0);
+	}
 
-JukeBox.prototype.loadPlaylist = function(playlistID) {
+	setStatus = function (status) {
+		console.log('JUKEBOX STATE: ' + status);
+		this.state = status;
+	};
 
-    // Check if we have already loaded this playlist
-    if (typeof this.playlists[playlistID] === 'undefined') {
-        this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this));
-    }
+	loadPlaylist = function (playlistID) {
 
-    this.playlistID = playlistID;
+		// Check if we have already loaded this playlist
+		if (typeof this.playlists[playlistID] === 'undefined') {
+			this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this));
+		}
 
-};
+		this.playlistID = playlistID;
+	};
 
-JukeBox.prototype.getPlaylist = function() {
+	getPlaylist = function () {
+		return this.playlists[this.playlistID];
+	};
 
-    return this.playlists[this.playlistID];
+	addToPlaylist = function (song) {
+		this.getPlaylist().addSong(song);
+	};
 
-};
+	playlistStateChanged = function (playlist) {
 
-JukeBox.prototype.addToPlaylist = function(song) {
+		if (playlist.state === Playlist.STATUS_PLAYING) {
+			this.setStatus(JukeBox.STATUS_PLAYING);
+		}
 
-    this.getPlaylist().addSong(song);
+		if (playlist.state === Playlist.STATUS_LOADED || playlist.state === Playlist.STATUS_READY) {
+			this.playPlaylist();
+		}
 
-};
+		if (playlist.state === Playlist.STATUS_EMPTY) {
+			this.setStatus(JukeBox.STATUS_STOPPED);
+		}
+	};
 
-JukeBox.prototype.playlistStateChanged = function(playlist) {
+	control = function (action) {
 
-    if (playlist.state === Playlist.STATUS_PLAYING) {
-        this.setStatus(JukeBox.STATUS_PLAYING);
-    }
+		switch (action) {
+			case 'play':	this.setStatus(JukeBox.STATUS_PLAYING); break;
+			case 'pause':	this.setStatus(JukeBox.STATUS_PAUSED); break;
+		}
 
-    if (playlist.state === Playlist.STATUS_LOADED || playlist.state === Playlist.STATUS_READY) {
-        this.playPlaylist();
-    }
+		process.exec('./download.sh ' + action, function (error, stdout, stderr) {
+		});
+	};
 
-    if (playlist.state === Playlist.STATUS_EMPTY) {
-        this.setStatus(JukeBox.STATUS_STOPPED);
-    }
-};
-
-JukeBox.prototype.control = function(action) {
-
-    switch(action) {
-        case 'play': this.setStatus(JukeBox.STATUS_PLAYING); break;
-        case 'pause': this.setStatus(JukeBox.STATUS_PAUSED); break;
-    }
-
-    process.exec('./download.sh '+action, function (error, stdout, stderr) {
-    });
-};
-
-JukeBox.prototype.playPlaylist = function() {
-
-    this.getPlaylist().play();
-};
-
-
+	playPlaylist = function () {
+		this.getPlaylist().play();
+	};
+}
 
 
 var Playlist = function(ID, playlistStateChangedCallback) {
