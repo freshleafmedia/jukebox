@@ -4,7 +4,7 @@ var fs  = require("fs");
 class Song {
 
 	constructor(songRaw, songStateChangedCallback, options) {
-		this.options = options;
+		this.options = options || {};
 		this.youTubeID = songRaw.id;
 		this.thumbnail = 'https://i.ytimg.com/vi/' + this.youTubeID + '/mqdefault.jpg';
 		this.data = {

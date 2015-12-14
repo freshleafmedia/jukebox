@@ -4,7 +4,7 @@ var Playlist = require("./playlist.js");
 class JukeBox {
 
 	constructor(options) {
-		this.options = options;
+		this.options = options || {};
 		this.playlists = {};
 		this.playlistID = 0;
 		this.state = JukeBox.STATUS_STOPPED;
