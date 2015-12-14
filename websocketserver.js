@@ -199,7 +199,10 @@ Playlist.prototype.addSong = function(songRaw) {
         return;
     }
 
-    this.songs.push(new Song(songRaw, this.songStateChanged.bind(this)));
+    var song = new Song(songRaw, this.songStateChanged.bind(this));
+    this.songs.push(song);
+
+    io.emit('songAdd', song);
 };
 
 
