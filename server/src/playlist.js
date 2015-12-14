@@ -1,5 +1,5 @@
 'use strict';
-var Song = require("./song.js").Song;
+var Song = require("./song.js");
 var fs  = require("fs");
 
 class Playlist {
@@ -143,4 +143,4 @@ Object.defineProperty(Playlist, "STATUS_EMPTY", { value: 'empty' });
 Object.defineProperty(Playlist, "STATUS_LOADED", { value: 'loaded' });
 
 
-module.exports.Playlist = Playlist;
+module.exports = Playlist;

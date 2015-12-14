@@ -82,4 +82,4 @@ Object.defineProperty(Song, "STATUS_DOWNLOADING", { value: 'downloading' });
 Object.defineProperty(Song, "STATUS_DOWNLOAD_FAILED", { value: 'download_failed' });
 Object.defineProperty(Song, "STATUS_REMOVING", { value: 'removing' });
 
-module.exports.Song = Song;
+module.exports = Song;

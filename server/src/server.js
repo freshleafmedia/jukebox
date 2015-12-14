@@ -3,7 +3,7 @@
 var io = require('socket.io')(3000);
 var process = require('child_process');
 
-var JukeBox = require("./jukebox.js").JukeBox;
+var JukeBox = require("./jukebox.js");
 
 var pathCache = './cache';
 var pathPlaylists = './playlists';

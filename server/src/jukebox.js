@@ -1,5 +1,5 @@
 'use strict';
-var Playlist = require("./playlist.js").Playlist;
+var Playlist = require("./playlist.js");
 
 class JukeBox {
 
@@ -69,4 +69,4 @@ Object.defineProperty(JukeBox, "STATUS_STOPPED", { value: 'stopped' });
 Object.defineProperty(JukeBox, "STATUS_PAUSED", { value: 'paused' });
 
 
-module.exports.JukeBox = JukeBox;
+module.exports = JukeBox;
