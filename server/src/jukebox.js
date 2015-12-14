@@ -8,6 +8,18 @@ class JukeBox {
 		this.playlists = {};
 		this.playlistID = 0;
 		this.state = JukeBox.STATUS_STOPPED;
+
+		// Set the default options
+		if (typeof this.options.paths !== 'object') {
+			this.options.paths = {};
+		}
+		if (typeof this.options.paths.playlists === 'undefined') {
+			this.options.paths.playlists = './playlists';
+		}
+		if (typeof this.options.paths.cache === 'undefined') {
+			this.options.paths.cache = './cache';
+		}
+
 		this.loadPlaylist(0);
 	};
 
