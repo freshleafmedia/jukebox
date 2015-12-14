@@ -26,14 +26,3 @@ if [ -f "$CONFIG_PATH" ]; then
 		esac
 	done
 fi
-
-read -e -p "Logging directory: " -i "./logs" LOG_DIR
-read -e -p "Cache directory: " -i "./cache" CACHE_DIR
-
-# Set the player
-PLAYER="cvlc --play-and-exit -I rc --rc-host localhost:11337"
-
-# Write the details
-echo "LOG_DIR=$LOG_DIR" >> "$CONFIG_PATH"
-echo "CACHE_DIR=$CACHE_DIR" >> "$CONFIG_PATH"
-echo "PLAYER=$PLAYER" >> "$CONFIG_PATH"
