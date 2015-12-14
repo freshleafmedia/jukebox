@@ -3,8 +3,6 @@ var fs  = require("fs");
 var process = require('child_process');
 
 var Jukebox = require("./jukebox.js").default;
-var Playlist = require("./playlist.js").default;
-var Song = require("./song.js").default;
 
 var pathCache = './cache';
 var pathPlaylists = './playlists';

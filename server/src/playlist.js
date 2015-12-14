@@ -1,4 +1,4 @@
-
+var Song = require("./song.js").default;
 
 export default class Playlist {
 

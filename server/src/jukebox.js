@@ -1,3 +1,4 @@
+var Playlist = require("./playlist.js").default;
 
 export default class JukeBox {
 
