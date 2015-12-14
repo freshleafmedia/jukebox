@@ -4,7 +4,8 @@ var fs  = require("fs");
 
 class Playlist {
 
-	constructor(ID, playlistStateChangedCallback) {
+	constructor(ID, playlistStateChangedCallback, options) {
+		this.options = options;
 		this.ID = ID;
 		this.songs = [];
 		this.playlistStateChangedCallback = playlistStateChangedCallback;
@@ -142,7 +143,7 @@ class Playlist {
 			return;
 		}
 
-		var song = new Song(songRaw, this.songStateChanged.bind(this));
+		var song = new Song(songRaw, this.songStateChanged.bind(this), this.options);
 		this.songs.push(song);
 
 		io.emit('songAdd', song);

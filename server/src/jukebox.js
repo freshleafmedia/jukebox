@@ -3,7 +3,8 @@ var Playlist = require("./playlist.js");
 
 class JukeBox {
 
-	constructor() {
+	constructor(options) {
+		this.options = options;
 		this.playlists = {};
 		this.playlistID = 0;
 		this.state = JukeBox.STATUS_STOPPED;
@@ -19,7 +20,7 @@ class JukeBox {
 
 		// Check if we have already loaded this playlist
 		if (typeof this.playlists[playlistID] === 'undefined') {
-			this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this));
+			this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this), this.options);
 		}
 
 		this.playlistID = playlistID;
