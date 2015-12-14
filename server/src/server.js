@@ -7,9 +7,16 @@ var JukeBox = require("./jukebox.js");
 var pathCache = './cache';
 var pathPlaylists = './playlists';
 
+// Define the server options
+var options = {
+	paths: {
+		cache: './cache',
+		playlists: './playlists'
+	}
+};
 
 // Initiate the server
-var server = new JukeBox();
+var server = new JukeBox(options);
 server.playPlaylist();
 
 

@@ -3,10 +3,23 @@ var Playlist = require("./playlist.js");
 
 class JukeBox {
 
-	constructor() {
+	constructor(options) {
+		this.options = options || {};
 		this.playlists = {};
 		this.playlistID = 0;
 		this.state = JukeBox.STATUS_STOPPED;
+
+		// Set the default options
+		if (typeof this.options.paths !== 'object') {
+			this.options.paths = {};
+		}
+		if (typeof this.options.paths.playlists === 'undefined') {
+			this.options.paths.playlists = './playlists';
+		}
+		if (typeof this.options.paths.cache === 'undefined') {
+			this.options.paths.cache = './cache';
+		}
+
 		this.loadPlaylist(0);
 	};
 
@@ -19,7 +32,7 @@ class JukeBox {
 
 		// Check if we have already loaded this playlist
 		if (typeof this.playlists[playlistID] === 'undefined') {
-			this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this));
+			this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this), this.options);
 		}
 
 		this.playlistID = playlistID;

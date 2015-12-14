@@ -4,7 +4,8 @@ var process = require('child_process');
 
 class Song {
 
-	constructor(songRaw, songStateChangedCallback) {
+	constructor(songRaw, songStateChangedCallback, options) {
+		this.options = options || {};
 		this.youTubeID = songRaw.id;
 		this.thumbnail = 'https://i.ytimg.com/vi/' + this.youTubeID + '/mqdefault.jpg';
 		this.data = {
