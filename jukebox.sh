@@ -2,5 +2,5 @@
 
 # Start the node server
 echo -n "Starting the node server... "
-node websocketserver.js &
+node server/src/server.js &
 echo "[$!]"
