@@ -10,6 +10,11 @@ class Playlist {
 		this.playlistStateChangedCallback = playlistStateChangedCallback;
 		this.state = Playlist.STATUS_EMPTY;
 		this.file = './playlists/' + this.ID + '.json';
+
+		try {
+			fs.mkdir('./playlists');
+		} catch(e) {}
+
 		this.loadFromFile();
 		this.play();
 	};
