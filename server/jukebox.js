@@ -68,14 +68,20 @@ class JukeBox {
 	};
 
 	control(action) {
+		process.exec('echo "' + action + '" | netcat localhost 11337 ', function (error, stdout, stderr) {
 
-		switch (action) {
-			case 'play':	this.setStatus(JukeBox.STATUS_PLAYING); break;
-			case 'pause':	this.setStatus(JukeBox.STATUS_PAUSED); break;
-		}
+			if(err !== null) {
+				console.error('CONTROL: Action "' + action + '" failed!');
+				return;
+			}
 
-		process.exec('./download.sh ' + action, function (error, stdout, stderr) {
-		});
+			// Set the correct state
+			switch (action) {
+				case 'play':	this.setStatus(JukeBox.STATUS_PLAYING); break;
+				case 'pause':	this.setStatus(JukeBox.STATUS_PAUSED); break;
+			}
+
+		}.bind(this));
 	};
 
 	playPlaylist() {
