@@ -5,3 +5,5 @@ logs/
 
 songcache.json
 songqueue.json
+songstats.json
+playlists/
