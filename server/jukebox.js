@@ -87,6 +87,10 @@ class JukeBox {
 	playPlaylist() {
 		this.getPlaylist().play();
 	};
+
+	pause() {
+		this.control('pause');
+	};
 }
 
 Object.defineProperty(JukeBox, "STATUS_PLAYING", { value: 'playing' });
