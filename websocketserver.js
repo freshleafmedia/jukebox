@@ -205,84 +205,86 @@ export default class Playlist {
 
 
 
+export default class Song {
 
-var Song = function(songRaw, songStateChangedCallback) {
-    this.youTubeID = songRaw.id;
-    this.thumbnail = 'https://i.ytimg.com/vi/'+this.youTubeID+'/mqdefault.jpg';
-    this.data = {
-        title: songRaw.title
-    };
-    this.songStateChangedCallback = songStateChangedCallback;
-    this.download();
-};
+    const STATUS_PLAYING = 'playing';
+    const STATUS_PLAYING_FAILED = 'playing_failed';
+    const STATUS_PLAYING_FINISHED = 'playing_finished';
+    const STATUS_PAUSED = 'paused';
+    const STATUS_PLAYABLE = 'playable';
+    const STATUS_DOWNLOADING = 'downloading';
+    const STATUS_DOWNLOAD_FAILED = 'download_failed';
+    const STATUS_REMOVING = 'removing';
 
-Object.defineProperty(Song, "STATUS_PLAYING", { value: 'playing' });
-Object.defineProperty(Song, "STATUS_PLAYING_FAILED", { value: 'playing_failed' });
-Object.defineProperty(Song, "STATUS_PLAYING_FINISHED", { value: 'playing_finished' });
-Object.defineProperty(Song, "STATUS_PAUSED", { value: 'paused' });
-Object.defineProperty(Song, "STATUS_PLAYABLE", { value: 'playable' });
-Object.defineProperty(Song, "STATUS_DOWNLOADING", { value: 'downloading' });
-Object.defineProperty(Song, "STATUS_DOWNLOAD_FAILED", { value: 'download_failed' });
-Object.defineProperty(Song, "STATUS_REMOVING", { value: 'removing' });
-
-Song.prototype.setStatus = function(status) {
-
-    console.log('SONG['+this.youTubeID+'] STATE: '+ status);
-
-    if (status === Song.STATUS_REMOVING) {
-        io.emit('songRemove', this);
+    constructor(songRaw, songStateChangedCallback) {
+        this.youTubeID = songRaw.id;
+        this.thumbnail = 'https://i.ytimg.com/vi/' + this.youTubeID + '/mqdefault.jpg';
+        this.data = {
+            title: songRaw.title
+        };
+        this.songStateChangedCallback = songStateChangedCallback;
+        this.download();
     }
 
-    this.state = status;
+    setStatus = function (status) {
 
-    this.songStateChangedCallback(this);
-};
+        console.log('SONG[' + this.youTubeID + '] STATE: ' + status);
 
-Song.prototype.download = function() {
-
-    this.setStatus(Song.STATUS_DOWNLOADING);
-
-    process.exec('./download.sh '+this.youTubeID, function (error, stdout, stderr) {
-
-        if (error !== null) {
-            console.error(error);
-
-            this.setStatus(Song.STATUS_DOWNLOAD_FAILED);
-            return;
+        if (status === Song.STATUS_REMOVING) {
+            io.emit('songRemove', this);
         }
 
-        // Read the info JSON file that should've been generated
-        fs.readFile('./cache/'+this.youTubeID+'.info.json', function(err, f) {
+        this.state = status;
 
-            if (err !== null) {
+        this.songStateChangedCallback(this);
+    };
+
+    download = function () {
+
+        this.setStatus(Song.STATUS_DOWNLOADING);
+
+        process.exec('./download.sh ' + this.youTubeID, function (error, stdout, stderr) {
+
+            if (error !== null) {
+                console.error(error);
+
                 this.setStatus(Song.STATUS_DOWNLOAD_FAILED);
                 return;
             }
 
-            // Add the data we downloaded to the song object
-            this.data = JSON.parse(f.toString());
+            // Read the info JSON file that should've been generated
+            fs.readFile('./cache/' + this.youTubeID + '.info.json', function (err, f) {
 
-            this.setStatus(Song.STATUS_PLAYABLE);
+                if (err !== null) {
+                    this.setStatus(Song.STATUS_DOWNLOAD_FAILED);
+                    return;
+                }
+
+                // Add the data we downloaded to the song object
+                this.data = JSON.parse(f.toString());
+
+                this.setStatus(Song.STATUS_PLAYABLE);
+
+            }.bind(this));
 
         }.bind(this));
+    };
 
-    }.bind(this));
-};
+    play = function () {
 
-Song.prototype.play = function() {
+        this.setStatus(Song.STATUS_PLAYING);
 
-    this.setStatus(Song.STATUS_PLAYING);
+        process.exec('cvlc --play-and-exit -I rc --rc-host localhost:11337 "' + this.data['_filename'] + '"', function (error, stdout, stderr) {
 
-    process.exec('cvlc --play-and-exit -I rc --rc-host localhost:11337 "'+this.data['_filename']+'"', function (error, stdout, stderr) {
+            if (error !== null) {
+                this.setStatus(Song.STATUS_PLAYING_FAILED);
+            }
 
-        if(error !== null) {
-            this.setStatus(Song.STATUS_PLAYING_FAILED);
-        }
+            this.setStatus(Song.STATUS_PLAYING_FINISHED);
 
-        this.setStatus(Song.STATUS_PLAYING_FINISHED);
-
-    }.bind(this));
-};
+        }.bind(this));
+    };
+}
 
 
 Array.prototype.shuffle = function() {
