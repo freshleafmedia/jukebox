@@ -2,218 +2,325 @@ var io = require('socket.io')(3000);
 var fs  = require("fs");
 var process = require('child_process');
 
-var playerState = 'stopped';
+var pathCache = './cache';
+var pathPlaylists = './playlists';
 
-var songCacheFile = 'songcache.json';
-var songQueueFile = 'songqueue.json';
-var songStatFile = 'songstats.json';
-var songCache = {};
-var songStats = {};
-var songQueue = [];
+var JukeBox = function() {
+    this.playlists = {};
+    this.playlistID = 0;
+    this.state = JukeBox.STATUS_STOPPED;
+    this.loadPlaylist(0);
+};
 
-fs.readFile(songStatFile, function(err, f) {
-    var songStatJson = f.toString();
-    songStats = JSON.parse(songStatJson);
-});
+Object.defineProperty(JukeBox, "STATUS_PLAYING", { value: 'playing' });
+Object.defineProperty(JukeBox, "STATUS_STOPPED", { value: 'stopped' });
+Object.defineProperty(JukeBox, "STATUS_PAUSED", { value: 'paused' });
 
-fs.readFile(songCacheFile, function(err, f) {
-    var songCacheJson = f.toString();
-    songCache = JSON.parse(songCacheJson);
-});
+JukeBox.prototype.setStatus = function(status) {
+    console.log('JUKEBOX STATE: '+ status);
+    this.state = status;
+};
 
-fs.readFile(songQueueFile, function(err, f) {
-    var songQueueJson = f.toString();
-    songQueue = JSON.parse(songQueueJson);
+JukeBox.prototype.loadPlaylist = function(playlistID) {
 
-    if(songQueue.length > 0) {
-        playQueue();
+    // Check if we have already loaded this playlist
+    if (typeof this.playlists[playlistID] === 'undefined') {
+        this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this));
     }
-});
 
-function updateControlStatus() {
-    io.emit('controlstatus', {
-        'paused': (playerState === 'paused')
+    this.playlistID = playlistID;
+
+};
+
+JukeBox.prototype.getPlaylist = function() {
+
+    return this.playlists[this.playlistID];
+
+};
+
+JukeBox.prototype.addToPlaylist = function(song) {
+
+    this.getPlaylist().addSong(song);
+
+};
+
+JukeBox.prototype.playlistStateChanged = function(playlist) {
+
+    if (playlist.state === Playlist.STATUS_PLAYING) {
+        this.setStatus(JukeBox.STATUS_PLAYING);
+    }
+
+    if (playlist.state === Playlist.STATUS_LOADED || playlist.state === Playlist.STATUS_READY) {
+        this.playPlaylist();
+    }
+
+    if (playlist.state === Playlist.STATUS_EMPTY) {
+        this.setStatus(JukeBox.STATUS_STOPPED);
+    }
+};
+
+JukeBox.prototype.control = function(action) {
+
+    switch(action) {
+        case 'play': this.setStatus(JukeBox.STATUS_PLAYING); break;
+        case 'pause': this.setStatus(JukeBox.STATUS_PAUSED); break;
+    }
+
+    process.exec('./download.sh '+action, function (error, stdout, stderr) {
     });
-}
+};
 
-function incrementStat(songID,statName) {
-    if (typeof songStats[songID] === 'undefined') {
-        songStats[songID] = {};
-    }
-    if (typeof songStats[statName] === 'undefined') {
-        songStats[statName] = 0;
-    }
+JukeBox.prototype.playPlaylist = function() {
 
-    // Set the stat
-    songStats[songID][statName] += 1;
+    this.getPlaylist().play();
+};
 
-    // Persist
-    fs.writeFile(songStatFile, JSON.stringify(songStats));
-}
 
-function control(action) {
 
-    if (action === 'skip') {
-        process.exec('killall vlc');
-        return;
-    }
-    // Check if were paused
-    if (action === 'pause' && playerState === 'paused') {
-        return;
-    }
 
-    if(action === 'pause') {
-        playerState = 'paused';
-    }
+var Playlist = function(ID, playlistStateChangedCallback) {
+    this.ID = ID;
+    this.songs = [];
+    this.playlistStateChangedCallback = playlistStateChangedCallback;
+    this.state = Playlist.STATUS_EMPTY;
+    this.loadFromFile();
+    this.play();
+};
 
-    if(action === 'play') {
-        playerState = 'playing';
-    }
+Object.defineProperty(Playlist, "STATUS_READY", { value: 'ready' });
+Object.defineProperty(Playlist, "STATUS_PLAYING", { value: 'playing' });
+Object.defineProperty(Playlist, "STATUS_PLAYING_FAILED", { value: 'playing_failed' });
+Object.defineProperty(Playlist, "STATUS_EMPTY", { value: 'empty' });
+Object.defineProperty(Playlist, "STATUS_LOADED", { value: 'loaded' });
 
-    process.exec('./control.sh '+action);
+Playlist.prototype.shuffle = function() {
+    this.songs.shuffle();
+};
 
-    updateControlStatus();
-}
+Playlist.prototype.setState = function(status) {
+    console.log('PLAYLIST['+this.ID+'] STATE: '+ status);
+    this.state = status;
+    this.playlistStateChangedCallback(this);
+};
 
-function commitCache() {
-    fs.writeFile(songCacheFile, JSON.stringify(songCache));
-}
+Playlist.prototype.play = function() {
 
-function commitQueue() {
-    fs.writeFile(songQueueFile, JSON.stringify(songQueue));
-}
-
-function playQueue() {
-
-    // Check there are some queued songs and that we aren't already playing
-    if(songQueue.length === 0 || playerState !== 'stopped') {
+    if (this.state === Playlist.STATUS_PLAYING) {
         return;
     }
 
-    // Get the song to play
-    var songID = songQueue.slice(0,1);
+    for (var i=0; i<this.songs.length; i++) {
 
-    playerState = 'playing';
-    console.log(songID+': Playing');
+        // Get the song
+        var song = this.songs[i];
 
-    // Add some stats
-    incrementStat(songID, 'playCount');
+        // Check the song is playable
+        if(song.state !== Song.STATUS_PLAYABLE) {
+            continue;
+        }
 
-    if (typeof songCache[songID] === 'undefined' || typeof songCache[songID]['URL'] === 'undefined' || songCache[songID]['URL'] === '') {
-        console.error(songID+': Failed to play!');
-        // Remove from queue
-        songQueue.shift();
-        commitQueue();
+        // Play the song!
+        song.play();
+        break;
+    }
+};
+
+Playlist.prototype.loadFromFile = function() {
+
+    // Determine the playlist file name
+    var playlistFile = './playlists/'+this.ID+'.json';
+
+    this.songs = JSON.parse(fs.readFileSync(playlistFile).toString());
+
+    if(this.songs.length === 0) {
+        this.setState(Playlist.STATUS_EMPTY);
         return;
     }
 
-    // Run the player
-    process.exec('./play.sh "'+songCache[songID]['URL']+'"', function (error, stdout, stderr) {
+    this.setState(Playlist.STATUS_LOADED);
+};
 
-        // Remove from queue
-        songQueue.shift();
-        commitQueue();
+Playlist.prototype.removeSong = function(youTubeID) {
+
+    for (var i=0; i<this.songs.length; i++) {
+        var song = this.songs[i];
+
+        if(song.youTubeID === youTubeID) {
+            this.songs[i].setStatus(Song.STATUS_REMOVING);
+
+            this.songs.splice(i,1);
+            break;
+        }
+    }
+
+};
+
+Playlist.prototype.songStateChanged = function(song) {
+
+    if (song.state === Song.STATUS_PLAYING) {
+        this.setState(Playlist.STATUS_PLAYING);
+    }
+
+    if (this.state !== Playlist.STATUS_PLAYING && song.state === Song.STATUS_PLAYABLE) {
+        this.setState(Playlist.STATUS_READY);
+    }
+
+    if (song.state === Song.STATUS_PLAYING_FINISHED) {
+        this.removeSong(song.youTubeID);
+
+        // If this was the last song mark the playlist as empty
+        if(this.songs.length === 0) {
+            this.setState(Playlist.STATUS_EMPTY);
+            return
+        }
+
+        this.setState(Playlist.STATUS_READY);
+
+    }
+};
+
+Playlist.prototype.addSong = function(songRaw) {
+
+    var youTubeID = songRaw.id;
+
+    // Check if the song is already on the playlist
+    var onList = false;
+    for (var i=0; i<this.songs.length; i++) {
+        var song = this.songs[i];
+
+        if(song.youTubeID === youTubeID) {
+            onList = true;
+            break;
+        }
+    }
+
+    if(onList === true) {
+        console.log('SONG['+youTubeID+']: Already on the playlist');
+        return;
+    }
+
+    var song = new Song(songRaw, this.songStateChanged.bind(this));
+    this.songs.push(song);
+
+    io.emit('songAdd', song);
+};
+
+
+
+
+var Song = function(songRaw, songStateChangedCallback) {
+    this.youTubeID = songRaw.id;
+    this.thumbnail = 'https://i.ytimg.com/vi/'+this.youTubeID+'/mqdefault.jpg';
+    this.data = {
+        title: songRaw.title
+    };
+    this.songStateChangedCallback = songStateChangedCallback;
+    this.download();
+};
+
+Object.defineProperty(Song, "STATUS_PLAYING", { value: 'playing' });
+Object.defineProperty(Song, "STATUS_PLAYING_FAILED", { value: 'playing_failed' });
+Object.defineProperty(Song, "STATUS_PLAYING_FINISHED", { value: 'playing_finished' });
+Object.defineProperty(Song, "STATUS_PAUSED", { value: 'paused' });
+Object.defineProperty(Song, "STATUS_PLAYABLE", { value: 'playable' });
+Object.defineProperty(Song, "STATUS_DOWNLOADING", { value: 'downloading' });
+Object.defineProperty(Song, "STATUS_DOWNLOAD_FAILED", { value: 'download_failed' });
+Object.defineProperty(Song, "STATUS_REMOVING", { value: 'removing' });
+
+Song.prototype.setStatus = function(status) {
+
+    console.log('SONG['+this.youTubeID+'] STATE: '+ status);
+
+    if (status === Song.STATUS_REMOVING) {
+        io.emit('songRemove', this);
+    }
+
+    this.state = status;
+
+    this.songStateChangedCallback(this);
+};
+
+Song.prototype.download = function() {
+
+    this.setStatus(Song.STATUS_DOWNLOADING);
+
+    process.exec('./download.sh '+this.youTubeID, function (error, stdout, stderr) {
 
         if (error !== null) {
-            console.error(songID+': Failed to play!');
+            console.error(error);
+
+            this.setStatus(Song.STATUS_DOWNLOAD_FAILED);
             return;
         }
 
-        console.log(songID+': Finished!');
+        // Read the info JSON file that should've been generated
+        fs.readFile('./cache/'+this.youTubeID+'.info.json', function(err, f) {
 
-	io.emit('song finished');
+            if (err !== null) {
+                this.setStatus(Song.STATUS_DOWNLOAD_FAILED);
+                return;
+            }
 
-        playerState = 'stopped';
+            // Add the data we downloaded to the song object
+            this.data = JSON.parse(f.toString());
 
-        // Keep playing
-        if (songQueue.length > 0) {
-            playQueue();
+            this.setStatus(Song.STATUS_PLAYABLE);
+
+        }.bind(this));
+
+    }.bind(this));
+};
+
+Song.prototype.play = function() {
+
+    this.setStatus(Song.STATUS_PLAYING);
+
+    process.exec('cvlc --play-and-exit -I rc --rc-host localhost:11337 "'+this.data['_filename']+'"', function (error, stdout, stderr) {
+
+        if(error !== null) {
+            this.setStatus(Song.STATUS_PLAYING_FAILED);
         }
-    });
-}
 
-function queueSong(song) {
+        this.setStatus(Song.STATUS_PLAYING_FINISHED);
 
-    console.log(song.id+': Adding to the queue');
+    }.bind(this));
+};
 
-    songQueue.push(song.id);
-    commitQueue();
 
-    io.emit('newsong', song);
+Array.prototype.shuffle = function() {
+    var currentIndex = this.length, temporaryValue, randomIndex ;
 
-    if (playerState === 'stopped') {
-        playQueue(song);
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = this[currentIndex];
+        this[currentIndex] = this[randomIndex];
+        this[randomIndex] = temporaryValue;
     }
-}
+};
+
+
+// Initiate the player
+var player = new JukeBox();
+player.playPlaylist();
+
 
 io.on('connection', function(socket){
     console.log('User connected');
 
-    songQueueFull = songQueue.map(function(item) {
-        return songCache[item];
-    });
-    socket.emit('queuelist', songQueueFull);
+    socket.emit('playlist', player.getPlaylist());
 
     socket.on('addsong', function(song) {
 
-        console.log(song.id+': Resolving...');
+        console.log(song.id+': Trying to add');
 
-        // Check if we have already resolved this songs ID
-        if (typeof songCache[song.id] !== 'undefined' && typeof songCache[song.id]['URL'] !== 'undefined') {
-            console.log(song.id+': Already resolved. Using cached URL');
-            queueSong(song);
-            return;
-        }
+        player.addToPlaylist(song);
 
-        // Set the songs state to resolving
-        song['state'] = 'resolving';
-
-        // Add the the song to the cache
-        songCache[song.id] = song;
-        commitCache();
-
-        io.emit('resolving', song);
-
-        // Run the resolver
-        process.exec('./resolve.sh '+song.id, function (error, stdout, stderr) {
-
-
-            if (error !== null || stdout == '') {
-                console.error(song.id+': Failed to resolve!');
-                songCache[song.id]['state'] = 'failed';
-                commitCache();
-                socket.emit('resolve failed', song);
-                return;
-            }
-
-            io.emit('resolved', song);
-
-            // The resolve.sh will return the URL
-            songCache[song.id]['URL'] = stdout;
-            songCache[song.id]['state'] = 'resolved';
-            commitCache();
-
-            console.log(song.id+': Resolved!');
-            queueSong(song);
-        });
+        //io.emit('resolving', song);
     });
-    socket.on('pause', function() {
-        control('pause');
-    });
-    socket.on('play', function() {
-        control('play');
-    });
-    socket.on('skipsong', function() {
-        control('skip');
-    });
-
-    socket.on('volUp', function() {
-        control('volup');
-    });
-
-    socket.on('volDown', function() {
-        control('voldown');
-    });
-    updateControlStatus();
 });
-

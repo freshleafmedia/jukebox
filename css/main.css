@@ -326,11 +326,12 @@ input#search {
 
 .songResult .imageWrapper img {
   position: relative;
-  margin-left: -15px;
+  margin-left: -35px;
+  height: 100%;
   z-index: 2;
   opacity: 0.6; }
 
-.songResult:first-of-type .imageWrapper img {
+.songResult[data-state="playing"] .imageWrapper img {
   -webkit-animation: rotating 6s linear infinite;
   -moz-animation: rotating 6s linear infinite;
   -ms-animation: rotating 6s linear infinite;
@@ -342,7 +343,7 @@ input#search {
   -o-animation-play-state: paused;
   animation-play-state: paused; }
 
-.playing .songResult:first-of-type .imageWrapper img {
+.playing .songResult[data-state="playing"] .imageWrapper img {
   -webkit-animation-play-state: running;
   -moz-animation-play-state: running;
   -ms-animation-play-state: running;
@@ -369,10 +370,10 @@ input#search {
   background-size: cover;
   opacity: 0.8; }
 
-.songResult[data-resolving="true"] {
+.songResult[data-state="downloading"] {
   opacity: 0.6; }
 
-.songResult[data-resolving="true"] .imageWrapper img,
+.songResult[data-state="downloading"] .imageWrapper img,
 #search-container .songResult .imageWrapper img {
   -webkit-animation: none;
   -moz-animation: none;

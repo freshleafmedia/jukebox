@@ -80,7 +80,7 @@ downloaded=false
 for formatID in "${formatIDs[@]}"; do
 
     echo "$youTubeID: Trying format $formatID..." >> "$LOG_FILE"
-    youtube-dl -o "$CACHE_DIR/%(id)s" -f "$formatID" "$youTubeID" >> "$LOG_FILE"
+    youtube-dl -o "$CACHE_DIR/%(id)s" --write-info-json -f "$formatID" "$youTubeID" >> "$LOG_FILE"
 
     # Check the response we got
     if [ $? == 0 ]; then
@@ -97,7 +97,5 @@ done
 # Check a URL was resolved
 if [ "$downloaded" == "false" ]; then
     echo "$youTubeID: ERROR: No formats found" >> "$LOG_FILE"
-else
-    # Write this URL to the queue list
-    echo -n "$CACHE_DIR/$youTubeID"
+    exit 1;
 fi
