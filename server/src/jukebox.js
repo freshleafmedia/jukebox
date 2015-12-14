@@ -1,6 +1,7 @@
-var Playlist = require("./playlist.js").default;
+'use strict';
+var Playlist = require("./playlist.js").Playlist;
 
-export default class JukeBox {
+class JukeBox {
 
 	constructor() {
 		this.playlists = {};
@@ -67,3 +68,5 @@ Object.defineProperty(JukeBox, "STATUS_PLAYING", { value: 'playing' });
 Object.defineProperty(JukeBox, "STATUS_STOPPED", { value: 'stopped' });
 Object.defineProperty(JukeBox, "STATUS_PAUSED", { value: 'paused' });
 
+
+module.exports.JukeBox = JukeBox;

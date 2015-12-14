@@ -1,8 +1,9 @@
+'use strict';
+
 var io = require('socket.io')(3000);
-var fs  = require("fs");
 var process = require('child_process');
 
-var Jukebox = require("./jukebox.js").default;
+var JukeBox = require("./jukebox.js").JukeBox;
 
 var pathCache = './cache';
 var pathPlaylists = './playlists';

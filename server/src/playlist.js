@@ -1,6 +1,8 @@
-var Song = require("./song.js").default;
+'use strict';
+var Song = require("./song.js").Song;
+var fs  = require("fs");
 
-export default class Playlist {
+class Playlist {
 
 	constructor(ID, playlistStateChangedCallback) {
 		this.ID = ID;
@@ -131,3 +133,4 @@ Object.defineProperty(Playlist, "STATUS_EMPTY", { value: 'empty' });
 Object.defineProperty(Playlist, "STATUS_LOADED", { value: 'loaded' });
 
 
+module.exports.Playlist = Playlist;
