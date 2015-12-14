@@ -1,4 +1,4 @@
-import Jukebox from "./jukebox.js";
+var JukeBox = require("./jukebox.js").default;
 
 var socket = io('//:3000');
 socket.on('connect', function(){

@@ -1,10 +1,11 @@
-import Playlist from "./playlist.js";
+var Playlist = require("./playlist.js").default;
 
 export default class JukeBox
 {
     constructor()
     {
         this.playlists = {};
+var playlist = new Playlist(test);
     }
 
     setPlaylist(playlistData)
@@ -29,3 +30,4 @@ export default class JukeBox
     }
 }
 
+var jukebox = new JukeBox();
