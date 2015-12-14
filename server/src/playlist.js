@@ -5,11 +5,18 @@ var fs  = require("fs");
 class Playlist {
 
 	constructor(ID, playlistStateChangedCallback, options) {
-		this.options = options;
+		this.options = options || {};
 		this.ID = ID;
 		this.songs = [];
 		this.playlistStateChangedCallback = playlistStateChangedCallback;
 		this.state = Playlist.STATUS_EMPTY;
+
+		// Set the default options
+		if (typeof this.options.paths !== 'object' || typeof this.options.paths.playlist === 'undefined') {
+			this.options.paths = {
+				playlists: './playlists'
+			}
+		}
 
 		this.loadFromFile();
 		this.play();
@@ -17,7 +24,7 @@ class Playlist {
 
 	getPath() {
 		// Determine the directory the playlist files are
-		var playlistDir = (this.options.paths.playlists != '') ? 'this.options.paths.playlists' : './playlists';
+		var playlistDir = this.options.paths.playlists;
 
 		// Ensure the root directory exists
 		try {
