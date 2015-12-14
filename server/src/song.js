@@ -1,5 +1,6 @@
 'use strict';
 var fs  = require("fs");
+var process = require('child_process');
 
 class Song {
 
@@ -18,7 +19,7 @@ class Song {
 		console.log('SONG[' + this.youTubeID + '] STATE: ' + status);
 
 		if (status === Song.STATUS_REMOVING) {
-			io.emit('songRemove', this);
+			//io.emit('songRemove', this);
 		}
 
 		this.state = status;

@@ -145,7 +145,7 @@ class Playlist {
 		var song = new Song(songRaw, this.songStateChanged.bind(this));
 		this.songs.push(song);
 
-		io.emit('songAdd', song);
+		//io.emit('songAdd', song);
 	};
 }
 

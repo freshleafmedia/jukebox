@@ -1,7 +1,6 @@
 'use strict';
 
 var io = require('socket.io')(3000);
-var process = require('child_process');
 
 var JukeBox = require("./jukebox.js");
 
@@ -17,13 +16,13 @@ server.playPlaylist();
 io.on('connection', function(socket){
 	console.log('User connected');
 
-	socket.emit('playlist', player.getPlaylist());
+	socket.emit('playlist', server.getPlaylist());
 
 	socket.on('addsong', function(song) {
 
 		console.log(song.id+': Trying to add');
 
-		player.addToPlaylist(song);
+		server.addToPlaylist(song);
 
 		//io.emit('resolving', song);
 	});
