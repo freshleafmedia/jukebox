@@ -24,7 +24,7 @@ var dest = {
 
 // Basic usage
 gulp.task('scripts', function() {
-    browserify('./js/source/app.js')
+    browserify('./js/source/app.js', { debug: true })
         .transform("babelify", { presets: ["es2015"] })
         .bundle()
         .pipe(source('app.min.js'))
