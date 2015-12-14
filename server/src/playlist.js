@@ -26,6 +26,13 @@ class Playlist {
 	setState(status) {
 		console.log('PLAYLIST[' + this.ID + '] STATE: ' + status);
 
+		// Persist the changes
+		fs.writeFile(this.file, JSON.stringify(this.songs), function(err) {
+			if (err !== null) {
+				throw err;
+			}
+		});
+
 		this.state = status;
 		this.playlistStateChangedCallback(this);
 	};
