@@ -1,3 +1,5 @@
+import Playlist from "./playlist.js";
+
 export default class JukeBox
 {
     constructor()
