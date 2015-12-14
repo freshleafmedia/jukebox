@@ -11,7 +11,8 @@ var pathPlaylists = './playlists';
 var options = {
 	paths: {
 		cache: './cache',
-		playlists: './playlists'
+		playlists: './playlists',
+		logs: './logs'
 	}
 };
 

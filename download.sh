@@ -1,38 +1,15 @@
 #!/bin/bash
 
-# Get the source directory
-DIR="${BASH_SOURCE%/*}"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-
-# Set the library root path
-LIBRARY_PATH_ROOT="$DIR/libs"
-
-# Option file config
-OPT_FILE="$HOME/.jukebox"
-
-# Include all libraries
-for f in "$LIBRARY_PATH_ROOT"/*.sh; do
-	# Include the directory
-	source "$f"
-done
-
-# Call the option parser
-optParse
-
-LOG_DIR=$(optValue 'LOG_DIR')
-LOG_FILE="$LOG_DIR/resolve"
-
-CACHE_DIR=$(optValue 'CACHE_DIR')
-
-formatRegex='^([0-9]+)[[:space:]]+([^[:space:]]+).+$'
-
 youTubeID="$1"
+CACHE_DIR="$2"
+
+LOG_DIR="$3"
+LOG_FILE="$LOG_DIR/download"
 
 echo "$youTubeID: Checking file cache..." >> "$LOG_FILE"
 
 if [ -f "$CACHE_DIR/$youTubeID" ]; then
     echo "$youTubeID: Cache file found" >> "$LOG_FILE"
-    echo -n "$CACHE_DIR/$youTubeID"
     exit 0;
 fi
 

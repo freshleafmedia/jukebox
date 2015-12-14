@@ -19,6 +19,9 @@ class JukeBox {
 		if (typeof this.options.paths.cache === 'undefined') {
 			this.options.paths.cache = './cache';
 		}
+		if (typeof this.options.paths.logs === 'undefined') {
+			this.options.paths.cache = './logs';
+		}
 
 		this.loadPlaylist(0);
 	};
