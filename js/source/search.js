@@ -24,7 +24,6 @@ export default class Search
             });
 
             request.execute(function (response) {
-                console.log(response.result);
                 $('#search-container').html('');
                 $.each(response.result.items, function(index, item) {
                     if (item.id.kind == "youtube#video") {
