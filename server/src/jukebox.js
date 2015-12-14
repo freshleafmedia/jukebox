@@ -2,23 +2,19 @@ var Playlist = require("./playlist.js").default;
 
 export default class JukeBox {
 
-	const STATUS_PLAYING = 'playing';
-	const STATUS_STOPPED = 'stopped';
-	const STATUS_PAUSED = 'paused';
-
 	constructor() {
 		this.playlists = {};
 		this.playlistID = 0;
 		this.state = JukeBox.STATUS_STOPPED;
 		this.loadPlaylist(0);
-	}
+	};
 
-	setStatus = function (status) {
+	setStatus(status) {
 		console.log('JUKEBOX STATE: ' + status);
 		this.state = status;
 	};
 
-	loadPlaylist = function (playlistID) {
+	loadPlaylist(playlistID) {
 
 		// Check if we have already loaded this playlist
 		if (typeof this.playlists[playlistID] === 'undefined') {
@@ -28,15 +24,15 @@ export default class JukeBox {
 		this.playlistID = playlistID;
 	};
 
-	getPlaylist = function () {
+	getPlaylist() {
 		return this.playlists[this.playlistID];
 	};
 
-	addToPlaylist = function (song) {
+	addToPlaylist(song) {
 		this.getPlaylist().addSong(song);
 	};
 
-	playlistStateChanged = function (playlist) {
+	playlistStateChanged(playlist) {
 
 		if (playlist.state === Playlist.STATUS_PLAYING) {
 			this.setStatus(JukeBox.STATUS_PLAYING);
@@ -51,7 +47,7 @@ export default class JukeBox {
 		}
 	};
 
-	control = function (action) {
+	control(action) {
 
 		switch (action) {
 			case 'play':	this.setStatus(JukeBox.STATUS_PLAYING); break;
@@ -62,8 +58,12 @@ export default class JukeBox {
 		});
 	};
 
-	playPlaylist = function () {
+	playPlaylist() {
 		this.getPlaylist().play();
 	};
 }
+
+Object.defineProperty(JukeBox, "STATUS_PLAYING", { value: 'playing' });
+Object.defineProperty(JukeBox, "STATUS_STOPPED", { value: 'stopped' });
+Object.defineProperty(JukeBox, "STATUS_PAUSED", { value: 'paused' });
 

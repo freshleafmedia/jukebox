@@ -1,15 +1,6 @@
 
 export default class Song {
 
-	const STATUS_PLAYING = 'playing';
-	const STATUS_PLAYING_FAILED = 'playing_failed';
-	const STATUS_PLAYING_FINISHED = 'playing_finished';
-	const STATUS_PAUSED = 'paused';
-	const STATUS_PLAYABLE = 'playable';
-	const STATUS_DOWNLOADING = 'downloading';
-	const STATUS_DOWNLOAD_FAILED = 'download_failed';
-	const STATUS_REMOVING = 'removing';
-
 	constructor(songRaw, songStateChangedCallback) {
 		this.youTubeID = songRaw.id;
 		this.thumbnail = 'https://i.ytimg.com/vi/' + this.youTubeID + '/mqdefault.jpg';
@@ -18,9 +9,9 @@ export default class Song {
 		};
 		this.songStateChangedCallback = songStateChangedCallback;
 		this.download();
-	}
+	};
 
-	setStatus = function (status) {
+	setStatus(status) {
 
 		console.log('SONG[' + this.youTubeID + '] STATE: ' + status);
 
@@ -33,7 +24,7 @@ export default class Song {
 		this.songStateChangedCallback(this);
 	};
 
-	download = function () {
+	download() {
 
 		this.setStatus(Song.STATUS_DOWNLOADING);
 
@@ -64,7 +55,7 @@ export default class Song {
 		}.bind(this));
 	};
 
-	play = function () {
+	play() {
 
 		this.setStatus(Song.STATUS_PLAYING);
 
@@ -79,3 +70,13 @@ export default class Song {
 		}.bind(this));
 	};
 }
+
+Object.defineProperty(Song, "STATUS_PLAYING", { value: 'playing' });
+Object.defineProperty(Song, "STATUS_PLAYING_FAILED", { value: 'playing_failed' });
+Object.defineProperty(Song, "STATUS_PLAYING_FINISHED", { value: 'playing_finished' });
+Object.defineProperty(Song, "STATUS_PAUSED", { value: 'paused' });
+Object.defineProperty(Song, "STATUS_PLAYABLE", { value: 'playable' });
+Object.defineProperty(Song, "STATUS_DOWNLOADING", { value: 'downloading' });
+Object.defineProperty(Song, "STATUS_DOWNLOAD_FAILED", { value: 'download_failed' });
+Object.defineProperty(Song, "STATUS_REMOVING", { value: 'removing' });
+

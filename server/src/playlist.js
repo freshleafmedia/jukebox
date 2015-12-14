@@ -2,12 +2,6 @@ var Song = require("./song.js").default;
 
 export default class Playlist {
 
-	const STATUS_READY = 'ready';
-	const STATUS_PLAYING = 'playing';
-	const STATUS_PLAYING_FAILED = 'playing_failed';
-	const STATUS_EMPTY = 'empty';
-	const STATUS_LOADED = 'loaded';
-
 	constructor(ID, playlistStateChangedCallback) {
 		this.ID = ID;
 		this.songs = [];
@@ -17,17 +11,17 @@ export default class Playlist {
 		this.play();
 	};
 
-	shuffle = function () {
+	shuffle() {
 		this.songs.shuffle();
 	};
 
-	setState = function (status) {
+	setState(status) {
 		console.log('PLAYLIST[' + this.ID + '] STATE: ' + status);
 		this.state = status;
 		this.playlistStateChangedCallback(this);
 	};
 
-	play = function () {
+	play() {
 
 		if (this.state === Playlist.STATUS_PLAYING) {
 			return;
@@ -49,7 +43,7 @@ export default class Playlist {
 		}
 	};
 
-	loadFromFile = function () {
+	loadFromFile() {
 
 		// Determine the playlist file name
 		var playlistFile = './playlists/' + this.ID + '.json';
@@ -64,7 +58,7 @@ export default class Playlist {
 		this.setState(Playlist.STATUS_LOADED);
 	};
 
-	removeSong = function (youTubeID) {
+	removeSong(youTubeID) {
 
 		for (var i = 0; i < this.songs.length; i++) {
 			var song = this.songs[i];
@@ -79,7 +73,7 @@ export default class Playlist {
 
 	};
 
-	songStateChanged = function (song) {
+	songStateChanged(song) {
 
 		if (song.state === Song.STATUS_PLAYING) {
 			this.setState(Playlist.STATUS_PLAYING);
@@ -103,7 +97,7 @@ export default class Playlist {
 		}
 	};
 
-	addSong = function (songRaw) {
+	addSong(songRaw) {
 
 		var youTubeID = songRaw.id;
 
@@ -129,4 +123,11 @@ export default class Playlist {
 		io.emit('songAdd', song);
 	};
 }
+
+Object.defineProperty(Playlist, "STATUS_READY", { value: 'ready' });
+Object.defineProperty(Playlist, "STATUS_PLAYING", { value: 'playing' });
+Object.defineProperty(Playlist, "STATUS_PLAYING_FAILED", { value: 'playing_failed' });
+Object.defineProperty(Playlist, "STATUS_EMPTY", { value: 'empty' });
+Object.defineProperty(Playlist, "STATUS_LOADED", { value: 'loaded' });
+
 
