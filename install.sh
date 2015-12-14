@@ -6,8 +6,17 @@ echo "                      v0.0.2"
 echo "-------------------------------------------------"
 
 # Install APT packages
-apt-get update
-apt-get install -y apache2 nodejs nodejs-legacy npm vlc
+sudo apt-get update
+sudo apt-get install -y apache2 nodejs nodejs-legacy npm vlc
+
+# Install NVM
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.26.1/install.sh | bash
+
+# Set the Node version to v4.0
+source ~/.nvm/nvm.sh
+nvm install 4.0
+nvm alias default v4.0
+
 
 # Install Youtube DL
 curl https://yt-dl.org/downloads/2015.12.05/youtube-dl -o /usr/local/bin/youtube-dl
