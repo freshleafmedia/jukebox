@@ -50,14 +50,24 @@ class Playlist {
 		// Determine the playlist file name
 		var playlistFile = './playlists/' + this.ID + '.json';
 
-		this.songs = JSON.parse(fs.readFileSync(playlistFile).toString());
+		// Check the file exists
+		fs.stat(playlistFile, function (err, stats) {
 
-		if (this.songs.length === 0) {
-			this.setState(Playlist.STATUS_EMPTY);
-			return;
-		}
+			if (err === null && stats.isFile()) {
+				this.songs = JSON.parse(fs.readFileSync(playlistFile).toString());
+			}
+			else {
+				this.songs = [];
+			}
 
-		this.setState(Playlist.STATUS_LOADED);
+			if (this.songs.length === 0) {
+				this.setState(Playlist.STATUS_EMPTY);
+				return;
+			}
+
+			this.setState(Playlist.STATUS_LOADED);
+
+		}.bind(this));
 	};
 
 	removeSong(youTubeID) {
