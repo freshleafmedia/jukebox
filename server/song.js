@@ -2,9 +2,12 @@
 var fs  = require("fs");
 var process = require('child_process');
 
+var io;
+
 class Song {
 
-	constructor(songRaw, songStateChangedCallback, options) {
+	constructor(songRaw, songStateChangedCallback, options, pio) {
+		io = pio;
 		this.options = options || {};
 		this.youTubeID = songRaw.id;
 		this.thumbnail = 'https://i.ytimg.com/vi/' + this.youTubeID + '/mqdefault.jpg';
@@ -20,7 +23,7 @@ class Song {
 		console.log('SONG[' + this.youTubeID + '] STATE: ' + status);
 
 		if (status === Song.STATUS_REMOVING) {
-			//io.emit('songRemove', this);
+			io.emit('songRemove', this);
 		}
 
 		this.state = status;

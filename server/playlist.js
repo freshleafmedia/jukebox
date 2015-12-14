@@ -1,10 +1,12 @@
 'use strict';
 var Song = require("./song.js");
 var fs  = require("fs");
+var io;
 
 class Playlist {
 
-	constructor(ID, playlistStateChangedCallback, options) {
+	constructor(ID, playlistStateChangedCallback, options, pio) {
+		io = pio;
 		this.options = options || {};
 		this.ID = ID;
 		this.songs = [];
@@ -150,10 +152,10 @@ class Playlist {
 			return;
 		}
 
-		var song = new Song(songRaw, this.songStateChanged.bind(this), this.options);
+		var song = new Song(songRaw, this.songStateChanged.bind(this), this.options, io);
 		this.songs.push(song);
 
-		//io.emit('songAdd', song);
+		io.emit('songAdd', song);
 	};
 }
 

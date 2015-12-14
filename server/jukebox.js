@@ -1,9 +1,12 @@
 'use strict';
 var Playlist = require("./playlist.js");
 
+var io;
+
 class JukeBox {
 
-	constructor(options) {
+	constructor(options, pio) {
+		io = pio;
 		this.options = options || {};
 		this.playlists = {};
 		this.playlistID = 0;
@@ -35,7 +38,7 @@ class JukeBox {
 
 		// Check if we have already loaded this playlist
 		if (typeof this.playlists[playlistID] === 'undefined') {
-			this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this), this.options);
+			this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this), this.options, io);
 		}
 
 		this.playlistID = playlistID;

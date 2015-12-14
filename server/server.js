@@ -17,9 +17,8 @@ var options = {
 };
 
 // Initiate the server
-var server = new JukeBox(options);
+var server = new JukeBox(options, io);
 server.playPlaylist();
-
 
 io.on('connection', function(socket){
 	console.log('User connected');
