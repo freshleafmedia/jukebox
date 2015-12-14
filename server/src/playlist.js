@@ -10,14 +10,21 @@ class Playlist {
 		this.songs = [];
 		this.playlistStateChangedCallback = playlistStateChangedCallback;
 		this.state = Playlist.STATUS_EMPTY;
-		this.file = './playlists/' + this.ID + '.json';
-
-		try {
-			fs.mkdirSync('./playlists');
-		} catch(e) {}
 
 		this.loadFromFile();
 		this.play();
+	};
+
+	getPath() {
+		// Determine the directory the playlist files are
+		var playlistDir = (this.options.paths.playlists != '') ? 'this.options.paths.playlists' : './playlists';
+
+		// Ensure the root directory exists
+		try {
+			fs.mkdirSync(playlistDir);
+		} catch(e) {}
+
+		return playlistDir+'/'+this.ID+'.json';
 	};
 
 	shuffle() {
@@ -33,7 +40,7 @@ class Playlist {
 
 	persist() {
 		// Persist the playlist to disk
-		fs.writeFile(this.file, JSON.stringify(this.songs), function (err) {
+		fs.writeFile(this.getPath(), JSON.stringify(this.songs), function (err) {
 			if (err !== null) {
 				throw err;
 			}
@@ -65,10 +72,10 @@ class Playlist {
 	loadFromFile() {
 
 		// Check the file exists
-		fs.stat(this.file, function (err, stats) {
+		fs.stat(this.getPath(), function (err, stats) {
 
 			if (err === null && stats.isFile()) {
-				this.songs = JSON.parse(fs.readFileSync(this.file).toString());
+				this.songs = JSON.parse(fs.readFileSync(this.getPath()).toString());
 			}
 			else {
 				this.songs = [];
