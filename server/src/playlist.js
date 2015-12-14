@@ -12,7 +12,7 @@ class Playlist {
 		this.file = './playlists/' + this.ID + '.json';
 
 		try {
-			fs.mkdir('./playlists');
+			fs.mkdirSync('./playlists');
 		} catch(e) {}
 
 		this.loadFromFile();
