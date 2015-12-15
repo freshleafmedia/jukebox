@@ -422,7 +422,10 @@ input#search {
   border: 2px solid #fff;
   text-align: center;
   transition: margin .7s .3s linear;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  /* &:hover {
+    margin-left: -260px;
+  } */ }
   .playlist-item span {
     float: left;
     cursor: pointer;
@@ -442,8 +445,6 @@ input#search {
     padding: 0;
     margin: 0;
     cursor: pointer; }
-  .playlist-item:hover {
-    margin-left: -260px; }
 
 .toBeBuilt {
   opacity: 0.1 !important; }
