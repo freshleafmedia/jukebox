@@ -1,14 +1,14 @@
 // Playlists styles
 .playlists {
   position: absolute;
-  right: -360px;
-  width: 400px;
-  top: 0;
+  right: -260px;
+  width: 300px;
+  top:170px;
 }
 .playlist-item {
   position: relative;
   margin-left: -4px;
-  width: 400px;
+  width: 300px;
   background: rgba(255,255,255,0.5);
   cursor: pointer;
   border-top-left-radius: 5px;
@@ -40,6 +40,6 @@
     cursor: pointer;
   }
   &:hover {
-    margin-left: -360px;
+    margin-left: -260px;
   }
 }

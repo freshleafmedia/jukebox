@@ -27,7 +27,8 @@ body {
   text-align: center;
   z-index: 1;
   position: relative;
-  padding-bottom: 50px; }
+  padding-bottom: 50px;
+  min-height: 700px; }
 
 img {
   display: inline-block;
@@ -402,14 +403,14 @@ input#search {
 
 .playlists {
   position: absolute;
-  right: -360px;
-  width: 400px;
-  top: 0; }
+  right: -260px;
+  width: 300px;
+  top: 170px; }
 
 .playlist-item {
   position: relative;
   margin-left: -4px;
-  width: 400px;
+  width: 300px;
   background: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   border-top-left-radius: 5px;
@@ -439,7 +440,7 @@ input#search {
     margin: 0;
     cursor: pointer; }
   .playlist-item:hover {
-    margin-left: -360px; }
+    margin-left: -260px; }
 
 .toBeBuilt {
   opacity: 0.1 !important; }
