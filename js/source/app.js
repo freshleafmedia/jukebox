@@ -57,3 +57,11 @@ socket.on('songRemove', function(song) {
 socket.on('songAdd', function(song) {
     player.getPlaylist().addSong(song);
 });
+
+navigator.serviceWorker.register('/worker.js', {
+    scope: '/'
+}).then(function(reg) {
+    console.log('service worker registered', reg);
+}, function(err) {
+    console.log('service worker NOT registered', err);
+});
