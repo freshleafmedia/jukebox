@@ -33,5 +33,10 @@ io.on('connection', function(socket){
 
 		//io.emit('resolving', song);
 	});
+
+	socket.on('control', function(action) {
+		console.log('CONTROL[' + action + ']: Received request');
+		server.control(action);
+	});
 });
 
