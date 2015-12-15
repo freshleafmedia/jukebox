@@ -421,7 +421,7 @@ input#search {
   height: 40px;
   border: 2px solid #fff;
   text-align: center;
-  transition: margin .7s .3s linear;
+  transition: margin .3s linear;
   margin-bottom: 10px;
   /* &:hover {
     margin-left: -260px;
