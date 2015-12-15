@@ -11,7 +11,7 @@ socket.on('disconnect', function(){
     $('.media-controls .btn, #shutdown').addClass('disabled');
 });
 
-var player = new Jukebox();
+var player = new Jukebox(socket);
 var search = new Search(socket);
 
 function notify(title, content) {
@@ -55,5 +55,14 @@ socket.on('songRemove', function(song) {
 });
 
 socket.on('songAdd', function(song) {
+    player.getPlaylist().addSong(song);
+});
+
+socket.on('stateUpdate', function(newState) {
+
+    if (stateUpdate === 'paused') {
+
+    }
+
     player.getPlaylist().addSong(song);
 });
