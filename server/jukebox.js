@@ -1,5 +1,6 @@
 'use strict';
 var Playlist = require("./playlist.js");
+var process = require('child_process');
 
 var io;
 
@@ -70,8 +71,8 @@ class JukeBox {
 	control(action) {
 		process.exec('echo "' + action + '" | netcat localhost 11337 ', function (error, stdout, stderr) {
 
-			if(err !== null) {
-				console.error('CONTROL: Action "' + action + '" failed!');
+			if(error !== null) {
+				console.error('CONTROL[' + action + ']: Failed!');
 				return;
 			}
 
