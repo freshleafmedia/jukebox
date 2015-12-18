@@ -69,7 +69,7 @@ export default class Playlist {
     updateSongPosition(position)
     {
         var songEl = this.El.find('.songResult[data-state=playing]');
-        songEl.find('.progress').attr('value', position);
+        songEl.find('progress').attr('value', position);
     }
 }
 
