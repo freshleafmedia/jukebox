@@ -71,7 +71,8 @@ input#search {
   line-height: 40px;
   color: #fff;
   padding: 0;
-}
-#addDialogClose:hover {
-  background-color: #6bc874;
+  transition: background 0.3s linear;
+  &:hover {
+    background-color: #6bc874;
+  }
 }

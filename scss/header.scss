@@ -39,8 +39,9 @@ h1 {
   font-size:18px;
   background: #e7466f;
   cursor: pointer;
-  font-family: 'Pacifico', cursive;
-}
-#addButton:hover {
-  background: #6bc874;
+  font-family: $pacifico;
+  transition: background 0.3s linear;
+  &:hover {
+    background: #6bc874;
+  }
 }
