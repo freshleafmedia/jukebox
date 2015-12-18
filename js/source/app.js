@@ -61,7 +61,7 @@ socket.on('songAdd', function(song) {
 });
 
 socket.on('songStatus', function(song) {
-    if(song.status === 'playing') {
+    if(song.state === 'playing') {
         notify('Now Playing', song.data.title);
     }
     player.getPlaylist().updateSongStatus(song);
