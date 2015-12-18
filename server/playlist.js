@@ -79,7 +79,7 @@ class Playlist {
 			var song = this.songs[i];
 
 			// Check the song is playable
-			if (song.state !== Song.STATUS_PLAYABLE) {
+			if (song.state !== Song.STATUS_PLAYABLE && song.state !== Song.STATUS_PLAYING) {
 				continue;
 			}
 
