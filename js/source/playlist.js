@@ -21,13 +21,17 @@ export default class Playlist {
         var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.youTubeID, 'data-state': song.state, 'data-duration': song.data.duration });
 
         var image = $('<img />', { src: song.thumbnail });
-
         var title = $('<p />', { 'class': 'title', text: song.data.title });
+        var progress = $('<progress />', { value: 0, max: song.data.duration });
+
         var imgwrap = $('<div />', { 'class': 'imageWrapper' });
+        var contentwrap = $('<div />', { 'class': 'contentWrapper' });
 
         imgwrap.append(image);
+        contentwrap.append(title);
+        contentwrap.append(progress);
         item.append(imgwrap);
-        item.append(title);
+        item.append(contentwrap);
 
         return item;
     }
