@@ -61,7 +61,7 @@ export default class Playlist {
     {
         var songEl = this.El.find('.songResult#song-' + song.youTubeID);
         songEl.attr('data-state', song.state);
-        songEl.find('.duration').text(song.data.duration);
+        songEl.find('.duration').text((song.data.duration / 60).toFixed(2));
         songEl.find('.progress').attr('value', song.position);
         songEl.find('.progress').attr('max', song.data.duration);
     }
