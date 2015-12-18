@@ -40,9 +40,14 @@ class Playlist {
 		this.playlistStateChangedCallback(this);
 	}
 
+	// Persist the playlist to disk
 	persist() {
-		// Persist the playlist to disk
-		fs.writeFile(this.getPath(), JSON.stringify(this.songs), function (err) {
+
+		// Hack: Remove the playlist file else invalid JSON gets written to it
+		fs.unlinkSync(this.getPath());
+
+		// Write the songs array to the file
+		fs.writeFile(this.getPath(), JSON.stringify(this.songs), { flags: '+w' }, function (err) {
 			if (err !== null) {
 				throw err;
 			}
@@ -76,11 +81,13 @@ class Playlist {
 		// Check the file exists
 		fs.stat(this.getPath(), function (err, stats) {
 
+			// Empty the current song list
+			this.songs = [];
+
 			if (err === null && stats.isFile()) {
-				this.songs = JSON.parse(fs.readFileSync(this.getPath()).toString());
-			}
-			else {
-				this.songs = [];
+				var JSONData = fs.readFileSync(this.getPath(),{ flags: '+w' }).toString();
+
+				this.songs = (JSONData !== '') ? JSON.parse(JSONData):[];
 			}
 
 			if (this.songs.length === 0) {
