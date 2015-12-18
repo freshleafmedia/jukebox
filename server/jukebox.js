@@ -70,8 +70,14 @@ class JukeBox {
 	control(action) {
 
 		switch (action) {
-			case 'play':	this.setStatus(JukeBox.STATUS_PLAYING); break;
-			case 'pause':	this.setStatus(JukeBox.STATUS_PAUSED); break;
+			case 'play':
+                this.setStatus(JukeBox.STATUS_PLAYING);
+                this.getPlaylist().onResume();
+                break;
+			case 'pause':
+                this.setStatus(JukeBox.STATUS_PAUSED);
+                this.getPlaylist().onPause();
+                break;
 		}
 
 		process.exec('./download.sh ' + action, function (error, stdout, stderr) {

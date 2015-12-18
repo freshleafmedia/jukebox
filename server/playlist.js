@@ -12,6 +12,8 @@ class Playlist {
 		this.songs = [];
 		this.playlistStateChangedCallback = playlistStateChangedCallback;
 		this.state = Playlist.STATUS_EMPTY;
+        this.positionTimer = null;
+        this.position = 0;
 
 		this.loadFromFile();
 		this.play();
@@ -67,9 +69,22 @@ class Playlist {
 
 			// Play the song!
 			song.play();
+            this.position = 0;
+            this.onResume();
 			break;
 		}
 	};
+
+    onPause() {
+        clearInterval(this.positionTimer);
+    }
+
+    onResume() {
+        this.positionTimer = setInterval(() => {
+            this.position++;
+            io.emit('songPosition', this.position);
+        }, 1000);
+    }
 
 	loadFromFile() {
 

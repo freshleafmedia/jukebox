@@ -65,6 +65,12 @@ export default class Playlist {
         songEl.find('.progress').attr('value', song.position);
         songEl.find('.progress').attr('max', song.data.duration);
     }
+
+    updateSongPosition(position)
+    {
+        var songEl = this.El.find('.songResult[data-state=playing]');
+        songEl.find('.progress').attr('value', position);
+    }
 }
 
 

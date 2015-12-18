@@ -62,6 +62,10 @@ socket.on('songStatus', function(song) {
     player.getPlaylist().updateSongStatus(song);
 });
 
+socket.on('songPosition', function(position) {
+    player.getPlaylist().updateSongPosition(position);
+});
+
 navigator.serviceWorker.register('/worker.js', {
     scope: '/'
 }).then(function(reg) {
