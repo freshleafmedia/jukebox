@@ -121,6 +121,7 @@ class Playlist {
 
 		if (song.state === Song.STATUS_PLAYING_FINISHED) {
 			this.removeSong(song.youTubeID);
+            io.emit('songRemove', song);
 
 			// If this was the last song mark the playlist as empty
 			if (this.songs.length === 0) {

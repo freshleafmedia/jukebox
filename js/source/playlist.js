@@ -60,9 +60,9 @@ export default class Playlist {
     updateSongStatus(song)
     {
         var songEl = this.El.find('.songResult#song-' + song.youTubeID);
-        songEl.data('state', song.state);
-        songEl.data('duration', song.data.duration);
-        songEl.data('position', song.position);
+        songEl.attr('data-state', song.state);
+        songEl.find('.duration').text(song.data.duration);
+        songEl.find('.progress').attr('value', song.position);
     }
 }
 
