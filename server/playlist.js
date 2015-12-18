@@ -85,6 +85,7 @@ class Playlist {
     }
 
     onResume() {
+        clearInterval(this.positionTimer);
         this.positionTimer = setInterval(() => {
             this.position++;
             io.emit('songPosition', this.position);
