@@ -3,7 +3,5 @@ node_modules/
 logs/
 .DS_Store
 
-songcache.json
-songqueue.json
-songstats.json
 playlists/
+cache/
