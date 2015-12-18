@@ -45,15 +45,25 @@ class Playlist {
 	// Persist the playlist to disk
 	persist() {
 
-		// Hack: Remove the playlist file else invalid JSON gets written to it
-		fs.unlinkSync(this.getPath());
+		// Check the file exists
+		fs.stat(this.getPath(), function (err, stats) {
 
-		// Write the songs array to the file
-		fs.writeFile(this.getPath(), JSON.stringify(this.songs), { flags: '+w' }, function (err) {
 			if (err !== null) {
-				throw err;
+				console.error('PlAYLIST[' + this.ID + ']: No existing playlist');
 			}
-		});
+
+			// Hack: Remove the playlist file else invalid JSON gets written to it
+			else if (stats.isFile()) {
+				fs.unlinkSync(this.getPath());
+			}
+
+			// Write the songs array to the file
+			fs.writeFile(this.getPath(), JSON.stringify(this.songs), { flags: '+w' }, function (err) {
+				if (err !== null) {
+					throw err;
+				}
+			});
+		}.bind(this));
 	};
 
 	play() {
