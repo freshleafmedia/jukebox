@@ -12,6 +12,8 @@ class Playlist {
 		this.songs = [];
 		this.playlistStateChangedCallback = playlistStateChangedCallback;
 		this.state = Playlist.STATUS_EMPTY;
+        this.positionTimer = null;
+        this.position = 0;
 
 		this.loadFromFile();
 		this.play();
@@ -72,9 +74,22 @@ class Playlist {
 
 			// Play the song!
 			song.play();
+            this.position = 0;
+            this.onResume();
 			break;
 		}
 	};
+
+    onPause() {
+        clearInterval(this.positionTimer);
+    }
+
+    onResume() {
+        this.positionTimer = setInterval(() => {
+            this.position++;
+            io.emit('songPosition', this.position);
+        }, 1000);
+    }
 
 	loadFromFile() {
 
@@ -126,10 +141,12 @@ class Playlist {
 
 		if (this.state !== Playlist.STATUS_PLAYING && song.state === Song.STATUS_PLAYABLE) {
 			this.setState(Playlist.STATUS_READY);
+            io.emit('songStatus', song);
 		}
 
 		if (song.state === Song.STATUS_PLAYING_FINISHED) {
 			this.removeSong(song.youTubeID);
+            io.emit('songRemove', song);
 
 			// If this was the last song mark the playlist as empty
 			if (this.songs.length === 0) {

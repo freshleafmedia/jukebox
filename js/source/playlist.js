@@ -18,16 +18,22 @@ export default class Playlist {
 
     buildSong(song)
     {
-        var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.youTubeID, 'data-state': song.state, 'data-duration': song.data.duration });
+        var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.youTubeID, 'data-state': song.state });
 
         var image = $('<img />', { src: song.thumbnail });
-
+        var duration = $('<p />', { 'class': 'duration', text: song.data.duration });
         var title = $('<p />', { 'class': 'title', text: song.data.title });
+        var progress = $('<progress />', { value: song.position, max: song.data.duration });
+
         var imgwrap = $('<div />', { 'class': 'imageWrapper' });
+        var contentwrap = $('<div />', { 'class': 'contentWrapper' });
 
         imgwrap.append(image);
+        contentwrap.append(title);
+        contentwrap.append(progress);
         item.append(imgwrap);
-        item.append(title);
+        item.append(contentwrap);
+        item.append(duration);
 
         return item;
     }
@@ -49,6 +55,21 @@ export default class Playlist {
     addSong(song)
     {
         this.El.append(this.buildSong(song));
+    }
+
+    updateSongStatus(song)
+    {
+        var songEl = this.El.find('.songResult#song-' + song.youTubeID);
+        songEl.attr('data-state', song.state);
+        songEl.find('.duration').text((song.data.duration / 60).toFixed(2));
+        songEl.find('progress').attr('value', song.position);
+        songEl.find('progress').attr('max', song.data.duration);
+    }
+
+    updateSongPosition(position)
+    {
+        var songEl = this.El.find('.songResult[data-state=playing]');
+        songEl.find('progress').attr('value', position);
     }
 }
 
