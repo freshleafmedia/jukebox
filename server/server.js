@@ -23,7 +23,12 @@ server.playPlaylist();
 io.on('connection', function(socket){
 	console.log('User connected');
 
-	socket.emit('playlist', server.getPlaylist());
+    var playlist = server.getPlaylist();
+    var playlistObj = {
+        ID: playlist.ID,
+        songs: playlist.songs
+    };
+	socket.emit('playlist', playlistObj);
 
 	socket.on('addsong', function(song) {
 
