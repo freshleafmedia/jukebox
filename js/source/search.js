@@ -14,13 +14,13 @@ export default class Search
 
     initUser()
     {
-        if(localstorage.get('username')) {
+        if(localStorage.getItem('username')) {
             this.userSetupEl.hide();
             this.searchControlsEl.show();
         }
         $('#addUser').click(function() {
             if ($('#username').val() != "") {
-                localstorage.set('username', $('#username').val());
+                localStorage.setItem('username', $('#username').val());
                 this.userSetupEl.hide();
                 this.searchControlsEl.show();
             }
