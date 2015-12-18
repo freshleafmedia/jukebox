@@ -89,6 +89,9 @@ class Playlist {
 
 				this.songs = (JSONData !== '') ? JSON.parse(JSONData):[];
 			}
+			else {
+				console.error('PLAYLIST['+this.ID+']: Failed to load from file');
+			}
 
 			if (this.songs.length === 0) {
 				this.setState(Playlist.STATUS_EMPTY);
