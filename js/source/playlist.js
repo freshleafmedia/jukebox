@@ -24,6 +24,7 @@ export default class Playlist {
         var duration = $('<p />', { 'class': 'duration', text: (song.data.duration / 60).toFixed(2) });
         var title = $('<p />', { 'class': 'title', text: song.data.title });
         var progress = $('<progress />', { value: song.position, max: song.data.duration });
+        var username = $('<p />', { 'class': 'username', text: song.username });
 
         var imgwrap = $('<div />', { 'class': 'imageWrapper' });
         var contentwrap = $('<div />', { 'class': 'contentWrapper' });
@@ -33,6 +34,7 @@ export default class Playlist {
         contentwrap.append(progress);
         item.append(imgwrap);
         item.append(contentwrap);
+        item.append(username);
         item.append(duration);
 
         return item;

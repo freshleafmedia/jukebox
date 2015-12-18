@@ -3,10 +3,28 @@ export default class Search
     constructor(socket) {
         this.socket = socket;
         this.dialogEl = $('#addDialog');
+        this.userSetupEl = $('#user-setup');
+        this.searchControlsEl = $('#search-controls');
 
+        this.initUser();
         this.initGoogleApi(this.searchReady);
         this.initKeyEvents();
         this.initClickEvents();
+    }
+
+    initUser()
+    {
+        if(localStorage.getItem('username')) {
+            this.userSetupEl.hide();
+            this.searchControlsEl.show();
+        }
+        $('#addUser').click(() => {
+            if ($('#username').val() != "") {
+                localStorage.setItem('username', $('#username').val());
+                this.userSetupEl.hide();
+                this.searchControlsEl.show();
+            }
+        });
     }
 
     searchReady()
@@ -122,7 +140,8 @@ export default class Search
             var song = {
                 id: $(event.currentTarget).data('url'),
                 title: $(event.currentTarget).find('p.title').text(),
-                thumbnail: $(event.currentTarget).find('img').attr('src')
+                thumbnail: $(event.currentTarget).find('img').attr('src'),
+                username: localStorage.getItem('username')
             };
             this.addSongToPlaylist(song);
             $(event.currentTarget).addClass('added');
