@@ -399,3 +399,13 @@ input#search {
     background-color: #6bc874; }
     #shuffleSongs.active.disabled, #shuffleSongs:hover.disabled {
       background-color: #227fde; }
+
+.songResult .duration {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 10px; }

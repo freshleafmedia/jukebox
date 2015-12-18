@@ -29,11 +29,11 @@ export default class Playlist {
         var contentwrap = $('<div />', { 'class': 'contentWrapper' });
 
         imgwrap.append(image);
-        imgwrap.append(duration);
         contentwrap.append(title);
         contentwrap.append(progress);
         item.append(imgwrap);
         item.append(contentwrap);
+        item.append(duration);
 
         return item;
     }
