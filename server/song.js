@@ -11,9 +11,9 @@ class Song {
 		this.options = options || {};
 		this.youTubeID = songRaw.id;
 		this.thumbnail = 'https://i.ytimg.com/vi/' + this.youTubeID + '/mqdefault.jpg';
+        this.position = 0;
 		this.data = {
-			title: songRaw.title,
-            duration: 3
+			title: songRaw.title
 		};
 		this.songStateChangedCallback = songStateChangedCallback;
 		this.download();

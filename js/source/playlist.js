@@ -18,16 +18,18 @@ export default class Playlist {
 
     buildSong(song)
     {
-        var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.youTubeID, 'data-state': song.state, 'data-duration': song.data.duration });
+        var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.youTubeID, 'data-state': song.state });
 
         var image = $('<img />', { src: song.thumbnail });
+        var duration = $('<p />', { 'class': 'duration', text: song.data.duration });
         var title = $('<p />', { 'class': 'title', text: song.data.title });
-        var progress = $('<progress />', { value: 0, max: song.data.duration });
+        var progress = $('<progress />', { value: song.position, max: song.data.duration });
 
         var imgwrap = $('<div />', { 'class': 'imageWrapper' });
         var contentwrap = $('<div />', { 'class': 'contentWrapper' });
 
         imgwrap.append(image);
+        imgwrap.append(duration);
         contentwrap.append(title);
         contentwrap.append(progress);
         item.append(imgwrap);
@@ -53,6 +55,14 @@ export default class Playlist {
     addSong(song)
     {
         this.El.append(this.buildSong(song));
+    }
+
+    updateSongStatus(song)
+    {
+        var songEl = this.El.find('.songResult#song-' + song.youTubeID);
+        songEl.data('state', song.state);
+        songEl.data('duration', song.data.duration);
+        songEl.data('position', song.position);
     }
 }
 
