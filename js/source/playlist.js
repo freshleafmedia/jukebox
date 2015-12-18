@@ -63,6 +63,7 @@ export default class Playlist {
         songEl.attr('data-state', song.state);
         songEl.find('.duration').text(song.data.duration);
         songEl.find('.progress').attr('value', song.position);
+        songEl.find('.progress').attr('max', song.data.duration);
     }
 }
 
