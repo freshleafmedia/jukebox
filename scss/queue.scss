@@ -57,7 +57,7 @@
   z-index: 2;
   opacity: 0.6;
 }
-.songResult[data-state="playing"] .imageWrapper img{
+.songResult[data-state="paused"] .imageWrapper img{
   -webkit-animation: rotating 6s linear infinite;
   -moz-animation: rotating 6s linear infinite;
   -ms-animation: rotating 6s linear infinite;
@@ -69,7 +69,12 @@
   -o-animation-play-state: paused;
   animation-play-state: paused;
 }
-.playing .songResult[data-state="playing"] .imageWrapper img {
+.songResult[data-state="playing"] .imageWrapper img {
+  -webkit-animation: rotating 6s linear infinite;
+  -moz-animation: rotating 6s linear infinite;
+  -ms-animation: rotating 6s linear infinite;
+  -o-animation: rotating 6s linear infinite;
+  animation: rotating 6s linear infinite;
   -webkit-animation-play-state: running;
   -moz-animation-play-state: running;
   -ms-animation-play-state: running;
@@ -98,14 +103,6 @@
 }
 .songResult[data-state="downloading"] {
   opacity: 0.6;
-}
-.songResult[data-state="downloading"] .imageWrapper img,
-#search-container .songResult .imageWrapper img{
-  -webkit-animation: none;
-  -moz-animation: none;
-  -ms-animation: none;
-  -o-animation: none;
-  animation: none;
 }
 #shuffleSongs {
   width: 40px;
