@@ -3,10 +3,28 @@ export default class Search
     constructor(socket) {
         this.socket = socket;
         this.dialogEl = $('#addDialog');
+        this.userSetupEl = $('#user-setup');
+        this.searchControlsEl = $('#search-controls');
 
+        this.initUser();
         this.initGoogleApi(this.searchReady);
         this.initKeyEvents();
         this.initClickEvents();
+    }
+
+    initUser()
+    {
+        if(localstorage.get('username')) {
+            this.userSetupEl.hide();
+            this.searchControlsEl.show();
+        }
+        $('#addUser').click(function() {
+            if ($('#username').val() != "") {
+                localstorage.set('username', $('#username').val());
+                this.userSetupEl.hide();
+                this.searchControlsEl.show();
+            }
+        });
     }
 
     searchReady()
