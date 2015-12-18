@@ -15,6 +15,7 @@ class Song {
 			title: songRaw.title
 		};
 		this.songStateChangedCallback = songStateChangedCallback;
+        this.username = songRaw.username;
 		this.download();
 	};
 

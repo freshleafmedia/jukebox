@@ -140,7 +140,8 @@ export default class Search
             var song = {
                 id: $(event.currentTarget).data('url'),
                 title: $(event.currentTarget).find('p.title').text(),
-                thumbnail: $(event.currentTarget).find('img').attr('src')
+                thumbnail: $(event.currentTarget).find('img').attr('src'),
+                username: localStorage.getItem('username')
             };
             this.addSongToPlaylist(song);
             $(event.currentTarget).addClass('added');
