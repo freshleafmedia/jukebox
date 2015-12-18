@@ -60,9 +60,10 @@ class Playlist {
 			// Write the songs array to the file
 			fs.writeFile(this.getPath(), JSON.stringify(this.songs), { flags: '+w' }, function (err) {
 				if (err !== null) {
+					console.error('PlAYLIST[' + this.ID + ']: Failed to write');
 					throw err;
 				}
-			});
+			}.bind(this));
 		}.bind(this));
 	};
 
@@ -78,7 +79,7 @@ class Playlist {
 			var song = this.songs[i];
 
 			// Check the song is playable
-			if (song.state !== Song.STATUS_PLAYABLE) {
+			if (song.state !== Song.STATUS_PLAYABLE && song.state !== Song.STATUS_PLAYING) {
 				continue;
 			}
 

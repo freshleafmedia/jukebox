@@ -4,6 +4,7 @@ var Search = require("./search.js").default;
 var socket = io('//:3000');
 socket.on('connect', function(){
     console.log('connected to websocket server');
+    $('#playButton, #pauseButton, #volupButton, #voldownButton').removeClass('disabled');
 });
 
 socket.on('disconnect', function(){
@@ -55,10 +56,14 @@ socket.on('songRemove', function(song) {
 });
 
 socket.on('songAdd', function(song) {
+    notify('Song Added', song.data.title);
     player.getPlaylist().addSong(song);
 });
 
 socket.on('songStatus', function(song) {
+    if(song.status === 'playing') {
+        notify('Now Playing', song.data.title);
+    }
     player.getPlaylist().updateSongStatus(song);
 });
 
