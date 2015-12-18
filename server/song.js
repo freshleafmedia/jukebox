@@ -36,7 +36,7 @@ class Song {
 
 		this.setStatus(Song.STATUS_DOWNLOADING);
 
-		process.exec('./download.sh ' + this.youTubeID + ' "'+this.options.paths.cache+'" "'+this.options.paths.logs+'"', function (error, stdout, stderr) {
+		process.execFile('./download.sh', [ this.youTubeID, this.options.paths.cache, this.options.paths.logs ], function (error, stdout, stderr) {
 
 			if (error !== null) {
 				console.error(error);
