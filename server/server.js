@@ -10,9 +10,9 @@ var pathPlaylists = './playlists';
 // Define the server options
 var options = {
 	paths: {
-		cache: './cache',
-		playlists: './playlists',
-		logs: './logs'
+		cache: 'cache',
+		playlists: 'playlists',
+		logs: 'logs'
 	}
 };
 
