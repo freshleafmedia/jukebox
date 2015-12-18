@@ -50,7 +50,7 @@ export default class Search
             }
             // Esc closes dialog
             if (event.keyCode == 27) {
-                this.closeAddDialog();
+                this.closeDialog();
             }
             // Run search on keydown in search box
             if ($(event.target).is('#search')) {
@@ -64,7 +64,7 @@ export default class Search
             if (!$(event.target).is('input')) {
                 // A or Enter triggers dialog
                 if (event.keyCode == 65 || event.keyCode == 13) {
-                    this.showAddDialog();
+                    this.showDialog();
                 }
             }
         });

@@ -11,7 +11,7 @@ socket.on('disconnect', function(){
     $('.media-controls .btn, #shutdown').addClass('disabled');
 });
 
-var player = new Jukebox(socket);
+var player = new Jukebox();
 var search = new Search(socket);
 
 function notify(title, content) {
@@ -58,11 +58,10 @@ socket.on('songAdd', function(song) {
     player.getPlaylist().addSong(song);
 });
 
-socket.on('stateUpdate', function(newState) {
-
-    if (stateUpdate === 'paused') {
-
-    }
-
-    player.getPlaylist().addSong(song);
+navigator.serviceWorker.register('/worker.js', {
+    scope: '/'
+}).then(function(reg) {
+    console.log('service worker registered', reg);
+}, function(err) {
+    console.log('service worker NOT registered', err);
 });

@@ -18,6 +18,8 @@ echo "$youTubeID: Resolving" >> "$LOG_FILE"
 
 echo "$youTubeID: Fetching available formats..." >> "$LOG_FILE"
 
+formatRegex='^([0-9]+)[[:space:]]+([^[:space:]]+).+$'
+
 # Get all the formats this video can be played in reverse order
 formats=$(youtube-dl -F "$youTubeID" | grep 'audio only' | tac)
 
