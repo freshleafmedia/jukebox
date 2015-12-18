@@ -336,6 +336,9 @@ input#search {
   z-index: 2;
   opacity: 0.6; }
 
+progress {
+  display: none; }
+
 .songResult[data-state="paused"] .imageWrapper img {
   -webkit-animation: rotating 6s linear infinite;
   -moz-animation: rotating 6s linear infinite;
@@ -347,6 +350,8 @@ input#search {
   -ms-animation-play-state: paused;
   -o-animation-play-state: paused;
   animation-play-state: paused; }
+  .songResult[data-state="paused"] .imageWrapper img progress {
+    display: block; }
 
 .songResult[data-state="playing"] .imageWrapper img {
   -webkit-animation: rotating 6s linear infinite;
@@ -359,6 +364,8 @@ input#search {
   -ms-animation-play-state: running;
   -o-animation-play-state: running;
   animation-play-state: running; }
+  .songResult[data-state="playing"] .imageWrapper img progress {
+    display: block; }
 
 .songResult .imageWrapper::before,
 .songResult .imageWrapper::after {
