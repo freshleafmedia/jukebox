@@ -153,8 +153,8 @@ class Playlist {
 
 		if (this.state !== Playlist.STATUS_PLAYING && song.state === Song.STATUS_PLAYABLE) {
 			this.setState(Playlist.STATUS_READY);
-            io.emit('songStatus', song);
 		}
+        io.emit('songStatus', song);
 
 		if (song.state === Song.STATUS_PLAYING_FINISHED) {
 			this.removeSong(song.youTubeID);
