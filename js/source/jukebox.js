@@ -2,9 +2,31 @@ var Playlist = require("./playlist.js").default;
 
 export default class Jukebox
 {
-    constructor()
+    constructor(socket)
     {
+        this.socket = socket;
         this.playlists = {};
+        this.setEventHandlers();
+    }
+
+    setEventHandlers() {
+        $('.media-controls').on('click', '.btn', (e) => {
+            if ($(e.currentTarget).hasClass('disabled')) {
+                console.warn('Button disabled');
+                return;
+            }
+
+            // Get the action to send
+            var action = $(e.currentTarget).attr('data-action');
+
+            this.control(action);
+        });
+
+    }
+
+    control(action) {
+        console.log('Sending action: '+action);
+        this.socket.emit('control', action);
     }
 
     setPlaylist(playlistData)
@@ -28,3 +50,5 @@ export default class Jukebox
         return this.playlists[this.playlistID];
     }
 }
+
+
