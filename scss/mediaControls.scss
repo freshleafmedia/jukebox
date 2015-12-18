@@ -17,15 +17,16 @@
   cursor: pointer;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #227fde;
+  background-color: $blue;
+  transition: background 0.3s linear;
   &.active,
   &:hover {
-    background-color: #6bc874;
+    background-color: $green;
   }
   &.disabled {
     &.active,
     &:hover {
-      background-color: #227fde;
+      background-color: $blue;
       cursor: default;
     }
   }

@@ -1,5 +1,6 @@
 'use strict';
 var Playlist = require("./playlist.js");
+var process = require('child_process');
 
 var io;
 
@@ -68,24 +69,37 @@ class JukeBox {
 	};
 
 	control(action) {
+		process.exec('echo "' + action + '" | netcat localhost 11337 ', function (error, stdout, stderr) {
 
-		switch (action) {
-			case 'play':
-                this.setStatus(JukeBox.STATUS_PLAYING);
-                this.getPlaylist().onResume();
-                break;
-			case 'pause':
-                this.setStatus(JukeBox.STATUS_PAUSED);
-                this.getPlaylist().onPause();
-                break;
-		}
+			if(error !== null) {
+				console.error('CONTROL[' + action + ']: Failed!');
+				return;
+			}
+            // Set the correct state
+            switch (action) {
+                case 'play':
+                    this.setStatus(JukeBox.STATUS_PLAYING);
+                    this.getPlaylist().onResume();
+                    break;
+                case 'pause':
+                    this.setStatus(JukeBox.STATUS_PAUSED);
+                    this.getPlaylist().onPause();
+                    break;
+            }
 
-		process.exec('./download.sh ' + action, function (error, stdout, stderr) {
-		});
+		}.bind(this));
 	};
 
 	playPlaylist() {
 		this.getPlaylist().play();
+	};
+
+	play() {
+		this.control('play');
+	};
+
+	pause() {
+		this.control('pause');
 	};
 }
 

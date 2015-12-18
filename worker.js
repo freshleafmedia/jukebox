@@ -1,5 +1,5 @@
 self.addEventListener('install', function(event) {
-    console.log('Worker: installing v13');
+    console.log('Worker: installing v14');
     event.waitUntil(
         caches.open('offline').then(function(cache) {
             fetch('/offline.html').then(function(response) {
