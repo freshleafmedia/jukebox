@@ -56,10 +56,14 @@ socket.on('songRemove', function(song) {
 });
 
 socket.on('songAdd', function(song) {
+    notify('Song Added', song.title);
     player.getPlaylist().addSong(song);
 });
 
 socket.on('songStatus', function(song) {
+    if(song.status === 'playing') {
+        notify('Now Playing', song.title);
+    }
     player.getPlaylist().updateSongStatus(song);
 });
 
