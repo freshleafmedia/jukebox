@@ -353,6 +353,9 @@ progress {
   .songResult[data-state="paused"] .imageWrapper img progress {
     display: block; }
 
+.songResult[data-state="playing"] progress {
+  display: block; }
+
 .songResult[data-state="playing"] .imageWrapper img {
   -webkit-animation: rotating 6s linear infinite;
   -moz-animation: rotating 6s linear infinite;
@@ -364,8 +367,6 @@ progress {
   -ms-animation-play-state: running;
   -o-animation-play-state: running;
   animation-play-state: running; }
-  .songResult[data-state="playing"] .imageWrapper img progress {
-    display: block; }
 
 .songResult .imageWrapper::before,
 .songResult .imageWrapper::after {
