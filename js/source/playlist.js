@@ -21,7 +21,7 @@ export default class Playlist {
         var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.youTubeID, 'data-state': song.state });
 
         var image = $('<img />', { src: song.thumbnail });
-        var duration = $('<p />', { 'class': 'duration', text: song.data.duration });
+        var duration = $('<p />', { 'class': 'duration', text: (song.data.duration / 60).toFixed(2) });
         var title = $('<p />', { 'class': 'title', text: song.data.title });
         var progress = $('<progress />', { value: song.position, max: song.data.duration });
 
