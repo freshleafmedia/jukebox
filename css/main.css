@@ -308,6 +308,7 @@ input#search {
   display: flex;
   text-align: left;
   position: relative;
+  z-index: 1;
   margin-bottom: 10px;
   border-top-left-radius: 45px;
   border-bottom-left-radius: 45px; }
@@ -412,6 +413,7 @@ progress {
 
 .songResult .duration {
   position: absolute;
+  z-index: 2;
   bottom: 0;
   left: 0;
   margin: 0;
