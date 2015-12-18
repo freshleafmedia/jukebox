@@ -18,7 +18,7 @@ export default class Search
             this.userSetupEl.hide();
             this.searchControlsEl.show();
         }
-        $('#addUser').click(function() {
+        $('#addUser').click(() => {
             if ($('#username').val() != "") {
                 localStorage.setItem('username', $('#username').val());
                 this.userSetupEl.hide();
