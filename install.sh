@@ -14,8 +14,6 @@ curl https://raw.githubusercontent.com/creationix/nvm/v0.11.1/install.sh | bash
 source ~/.nvm/nvm.sh
 
 nvm install v5.0
-nvm use v5.0
-nvm alias default v5.0
 
 # Install Youtube DL
 curl https://yt-dl.org/downloads/2015.12.05/youtube-dl -o /usr/local/bin/youtube-dl
