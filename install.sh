@@ -7,7 +7,7 @@ echo "-------------------------------------------------"
 
 # Install APT packages
 sudo apt-get update
-sudo apt-get install -y apache2 nodejs nodejs-legacy npm vlc
+sudo apt-get install -y apache2 npm vlc
 
 # Install NVM
 curl https://raw.githubusercontent.com/creationix/nvm/v0.11.1/install.sh | bash
