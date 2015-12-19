@@ -15,6 +15,9 @@ source ~/.nvm/nvm.sh
 
 nvm install v5.0
 
+# NPM install
+npm install
+
 # Install Youtube DL
 sudo curl https://yt-dl.org/latest/youtube-dl -o /usr/local/bin/youtube-dl
 sudo chmod a+rx /usr/local/bin/youtube-dl
