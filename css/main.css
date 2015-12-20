@@ -306,6 +306,7 @@ input#search {
 
 .songResult {
   display: flex;
+  align-items: flex-start;
   text-align: left;
   position: relative;
   z-index: 1;
@@ -410,6 +411,9 @@ progress {
     background-color: #6bc874; }
     #shuffleSongs.active.disabled, #shuffleSongs:hover.disabled {
       background-color: #227fde; }
+
+.songResult .contentWrapper {
+  flex: 1; }
 
 .songResult .duration {
   position: absolute;
