@@ -18,7 +18,7 @@ export default class Playlist {
 
     buildSong(song)
     {
-        var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.youTubeID, 'data-state': song.state });
+        var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.id, 'data-state': song.state });
 
         var image = $('<img />', { src: song.thumbnail });
         var duration = $('<p />', { 'class': 'duration', text: (song.data.duration / 60).toFixed(2) });
@@ -42,12 +42,12 @@ export default class Playlist {
 
     removeSong(songToRemove)
     {
-        this.El.children('#song-'+songToRemove.youTubeID).remove();
+        this.El.children('#song-'+songToRemove.id).remove();
 
         for (var i=0; i<this.songs.length; i++) {
             var song = this.songs[i];
 
-            if(song.youTubeID === songToRemove.youTubeID) {
+            if(song.id === songToRemove.id) {
                 this.songs.splice(i,1);
                 break;
             }
@@ -61,7 +61,7 @@ export default class Playlist {
 
     updateSongStatus(song)
     {
-        var songEl = this.El.find('.songResult#song-' + song.youTubeID);
+        var songEl = this.El.find('.songResult#song-' + song.id);
         songEl.attr('data-state', song.state);
         songEl.find('.duration').text((song.data.duration / 60).toFixed(2));
         songEl.find('progress').attr('value', song.position);

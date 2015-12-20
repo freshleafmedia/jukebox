@@ -4,9 +4,6 @@ var io = require('socket.io')(3000);
 
 var JukeBox = require("./jukebox.js");
 
-var pathCache = './cache';
-var pathPlaylists = './playlists';
-
 // Define the server options
 var options = {
 	paths: {

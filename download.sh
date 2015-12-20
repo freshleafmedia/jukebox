@@ -6,6 +6,16 @@ CACHE_DIR="$2"
 LOG_DIR="$3"
 LOG_FILE="$LOG_DIR/download"
 
+# Check the logging directory has been created
+if [ ! -d "$LOG_DIR" ]; then
+    mkdir -p "$LOG_DIR"
+fi
+
+# Check the cache directory has been created
+if [ ! -d "$CACHE_DIR" ]; then
+    mkdir -p "$CACHE_DIR"
+fi
+
 echo "$youTubeID: Checking file cache..." >> "$LOG_FILE"
 
 if [ -f "$CACHE_DIR/$youTubeID" ]; then

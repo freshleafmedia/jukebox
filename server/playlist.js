@@ -111,10 +111,23 @@ class Playlist {
 			// Empty the current song list
 			this.songs = [];
 
+			// if were were able to read the playlist file ok then try and load it
 			if (err === null && stats.isFile()) {
+
+				// This will either read the file if it exists or if not create one
 				var JSONData = fs.readFileSync(this.getPath(),{ flags: '+w' }).toString();
 
-				this.songs = (JSONData !== '') ? JSON.parse(JSONData):[];
+				var songsData = (JSONData !== '') ? JSON.parse(JSONData):[];
+
+				for (var i = 0; i < songsData.length; i++) {
+
+					// Get the song data
+					var songData = songsData[i];
+
+					this.addSong(songData);
+				}
+
+
 			}
 			else {
 				console.error('PLAYLIST['+this.ID+']: Failed to load from file');
@@ -130,12 +143,12 @@ class Playlist {
 		}.bind(this));
 	};
 
-	removeSong(youTubeID) {
+	removeSong(id) {
 
 		for (var i = 0; i < this.songs.length; i++) {
 			var song = this.songs[i];
 
-			if (song.youTubeID === youTubeID) {
+			if (song.id === id) {
 				this.songs[i].setStatus(Song.STATUS_REMOVING);
 
 				this.songs.splice(i, 1);
@@ -157,7 +170,7 @@ class Playlist {
         io.emit('songStatus', song);
 
 		if (song.state === Song.STATUS_PLAYING_FINISHED) {
-			this.removeSong(song.youTubeID);
+			this.removeSong(song.id);
             io.emit('songRemove', song);
 
 			// If this was the last song mark the playlist as empty
@@ -173,21 +186,19 @@ class Playlist {
 
 	addSong(songRaw) {
 
-		var youTubeID = songRaw.id;
-
 		// Check if the song is already on the playlist
 		var onList = false;
 		for (var i = 0; i < this.songs.length; i++) {
 			var song = this.songs[i];
 
-			if (song.youTubeID === youTubeID) {
+			if (song.id === songRaw.id) {
 				onList = true;
 				break;
 			}
 		}
 
 		if (onList === true) {
-			console.log('SONG[' + youTubeID + ']: Already on the playlist');
+			console.log('SONG[' + songRaw.id + ']: Already on the playlist');
 			return;
 		}
 
