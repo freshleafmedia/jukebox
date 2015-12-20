@@ -111,7 +111,10 @@ class Playlist {
 			// Empty the current song list
 			this.songs = [];
 
+			// if were were able to read the playlist file ok then try and load it
 			if (err === null && stats.isFile()) {
+
+				// This will either read the file if it exists or if not create one
 				var JSONData = fs.readFileSync(this.getPath(),{ flags: '+w' }).toString();
 
 				this.songs = (JSONData !== '') ? JSON.parse(JSONData):[];
