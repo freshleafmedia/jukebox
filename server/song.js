@@ -15,7 +15,7 @@ class Song {
 
 		// Add any data that's passed in
 		if(typeof songRaw.data !== 'undefined') {
-			this.data = data;
+			this.data = songRaw.data;
 		}
 
 		// Conditionally set the title
