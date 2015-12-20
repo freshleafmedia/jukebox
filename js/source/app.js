@@ -71,10 +71,12 @@ socket.on('songPosition', function(position) {
     player.getPlaylist().updateSongPosition(position);
 });
 
-navigator.serviceWorker.register('/worker.js', {
-    scope: '/'
-}).then(function(reg) {
-    console.log('service worker registered', reg);
-}, function(err) {
-    console.log('service worker NOT registered', err);
-});
+if (typeof navigator.serviceWorker !== 'undefined') {
+    navigator.serviceWorker.register('/worker.js', {
+        scope: '/'
+    }).then(function (reg) {
+        console.log('service worker registered', reg);
+    }, function (err) {
+        console.log('service worker NOT registered', err);
+    });
+}
