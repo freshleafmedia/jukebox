@@ -11,9 +11,11 @@ class Song {
 		this.options = options || {};
 		this.id = songRaw.id;
 		this.thumbnail = 'https://i.ytimg.com/vi/' + this.id + '/mqdefault.jpg';
-		this.data = {
-			title: songRaw.title
-		};
+		this.data = {};
+
+		if (typeof songRaw.title !== 'undefined') {
+			this.data.title = songRaw.title
+		}
 		this.songStateChangedCallback = songStateChangedCallback;
         this.username = songRaw.username;
 		this.download();
