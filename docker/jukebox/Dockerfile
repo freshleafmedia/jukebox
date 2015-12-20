@@ -24,7 +24,7 @@ RUN chmod a+rx /usr/local/bin/youtube-dl
 RUN mkdir logs
 
 # Allow VLC to run as root
-sed -i 's/geteuid/getppid/' /usr/bin/vlc
+RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
 
 EXPOSE 80
 EXPOSE 443
