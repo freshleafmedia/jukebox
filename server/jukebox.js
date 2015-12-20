@@ -71,7 +71,7 @@ class JukeBox {
 	control(action) {
 
 		if (action === 'randomise') {
-			this.getPlaylist().randomise();
+			this.getPlaylist().shuffle();
 
 			io.emit('playlist', {ID: this.getPlaylist().ID,songs: this.getPlaylist().songs});
 			return;
