@@ -9,6 +9,9 @@ export default class Playlist {
 
     build(playlistData)
     {
+        //Clear the current playlist
+        this.El.html('');
+
         $.each(playlistData.songs, function(index, song) {
 
             this.addSong(song);
