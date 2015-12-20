@@ -4,12 +4,12 @@ var Search = require("./search.js").default;
 var socket = io('//:3000');
 socket.on('connect', function(){
     console.log('connected to websocket server');
-    $('#playButton, #pauseButton, #volupButton, #voldownButton').removeClass('disabled');
+    $('#playButton, #pauseButton, #volupButton, #voldownButton, #shuffleSongs').removeClass('disabled');
 });
 
 socket.on('disconnect', function(){
     console.log('disconnected');
-    $('.media-controls .btn, #shutdown').addClass('disabled');
+    $('.media-controls .btn, #shutdown, #shuffleSongs').addClass('disabled');
 });
 
 var player = new Jukebox(socket);
