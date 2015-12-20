@@ -69,6 +69,14 @@ class JukeBox {
 	};
 
 	control(action) {
+
+		if (action === 'randomise') {
+			this.getPlaylist().shuffle();
+
+			io.emit('playlist', {ID: this.getPlaylist().ID,songs: this.getPlaylist().songs});
+			return;
+		}
+
 		process.exec('echo "' + action + '" | netcat localhost 11337 ', function (error, stdout, stderr) {
 
 			if(error !== null) {

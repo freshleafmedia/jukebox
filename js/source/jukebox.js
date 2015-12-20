@@ -10,7 +10,7 @@ export default class Jukebox
     }
 
     setEventHandlers() {
-        $('.media-controls').on('click', '.btn', (e) => {
+        $(document).on('click', 'button[data-action]', (e) => {
             if ($(e.currentTarget).hasClass('disabled')) {
                 console.warn('Button disabled');
                 return;
@@ -32,7 +32,7 @@ export default class Jukebox
     setPlaylist(playlistData)
     {
         // Try and add this playlist
-        this.addPlaylist(playlistData);
+        this.addPlaylist(playlistData, true);
 
         this.playlistID = playlistData.ID;
     }
