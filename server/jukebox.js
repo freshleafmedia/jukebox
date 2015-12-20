@@ -39,7 +39,7 @@ class JukeBox {
 
 		// Check if we have already loaded this playlist
 		if (typeof this.playlists[playlistID] === 'undefined') {
-			this.playlists[playlistID] = new Playlist(playlistID, this.playlistStateChanged.bind(this), this.options, io);
+			this.playlists[playlistID] = new Playlist(playlistID, this.options, io, this);
 		}
 
 		this.playlistID = playlistID;

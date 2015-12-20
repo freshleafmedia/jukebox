@@ -6,12 +6,13 @@ var io;
 
 class Song {
 
-	constructor(songRaw, songStateChangedCallback, options, pio) {
+	constructor(songRaw, options, pio, playlist) {
 		io = pio;
 		this.options = options || {};
 		this.id = songRaw.id;
 		this.thumbnail = 'https://i.ytimg.com/vi/' + this.id + '/mqdefault.jpg';
 		this.data = {};
+		this.playlist = playlist;
 
 		// Add any data that's passed in
 		if(typeof songRaw.data !== 'undefined') {
@@ -26,7 +27,6 @@ class Song {
 		// Conditionally set the songs state
 		this.state = (typeof songRaw.state !== 'undefined') ? songRaw.state:Song.STATUS_TO_BE_DOWNLOADED;
 
-		this.songStateChangedCallback = songStateChangedCallback;
         this.username = songRaw.username;
 		this.download();
 	};
@@ -41,7 +41,7 @@ class Song {
 
 		this.state = status;
 
-		this.songStateChangedCallback(this);
+		this.playlist.songStateChanged(this);
 	};
 
 	download() {

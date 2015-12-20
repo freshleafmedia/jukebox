@@ -5,15 +5,15 @@ var io;
 
 class Playlist {
 
-	constructor(ID, playlistStateChangedCallback, options, pio) {
+	constructor(ID, options, pio, jukebox) {
 		io = pio;
 		this.options = options || {};
 		this.ID = ID;
 		this.songs = [];
-		this.playlistStateChangedCallback = playlistStateChangedCallback;
 		this.state = Playlist.STATUS_EMPTY;
         this.positionTimer = null;
         this.position = 0;
+        this.jukebox = jukebox;
 
 		this.loadFromFile();
 		this.play();
@@ -39,7 +39,7 @@ class Playlist {
 		console.log('PLAYLIST[' + this.ID + '] STATE: ' + status);
 		this.persist();
 		this.state = status;
-		this.playlistStateChangedCallback(this);
+		this.jukebox.playlistStateChanged(this);
 	}
 
 	// Persist the playlist to disk
@@ -192,7 +192,7 @@ class Playlist {
 			return;
 		}
 
-		var song = new Song(songRaw, this.songStateChanged.bind(this), this.options, io);
+		var song = new Song(songRaw, this.options, io, this);
 		this.songs.push(song);
 
 		io.emit('songAdd', song);
