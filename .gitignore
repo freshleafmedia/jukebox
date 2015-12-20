@@ -5,7 +5,3 @@ logs/
 
 playlists/
 cache/
-
-songcache.json
-songqueue.json
-songstats.json
