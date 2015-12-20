@@ -212,6 +212,23 @@ class Playlist {
 		}
 		return false;
 	};
+
+	randomise() {
+		var currentIndex = this.songs.length, temporaryValue, randomIndex ;
+
+		// While there remain elements to shuffle...
+		while (0 !== currentIndex) {
+
+			// Pick a remaining element...
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+
+			// And swap it with the current element.
+			temporaryValue = this.songs[currentIndex];
+			this.songs[currentIndex] = this.songs[randomIndex];
+			this.songs[randomIndex] = temporaryValue;
+		}
+	};
 }
 
 Object.defineProperty(Playlist, "STATUS_READY", { value: 'ready' });
