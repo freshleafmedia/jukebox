@@ -133,6 +133,8 @@ class Playlist {
 				console.error('PLAYLIST['+this.ID+']: Failed to load from file');
 			}
 
+			console.log('PLAYLIST['+this.ID+']: '+this.songs.length+' song(s) loaded');
+
 			if (this.songs.length === 0) {
 				this.setState(Playlist.STATUS_EMPTY);
 				return;
