@@ -23,10 +23,8 @@ class Song {
 			this.data.title = songRaw.title
 		}
 
-		// Conditionally set the status
-		if (typeof songRaw.state !== 'undefined') {
-			this.state = songRaw.state
-		}
+		// Conditionally set the songs state
+		this.state =  (typeof songRaw.state !== 'undefined') ? songRaw.state:Song.STATUS_TO_BE_DOWNLOADED;
 
 		this.songStateChangedCallback = songStateChangedCallback;
         this.username = songRaw.username;
@@ -98,6 +96,7 @@ Object.defineProperty(Song, "STATUS_PLAYING_FAILED", { value: 'playing_failed' }
 Object.defineProperty(Song, "STATUS_PLAYING_FINISHED", { value: 'playing_finished' });
 Object.defineProperty(Song, "STATUS_PAUSED", { value: 'paused' });
 Object.defineProperty(Song, "STATUS_PLAYABLE", { value: 'playable' });
+Object.defineProperty(Song, "STATUS_TO_BE_DOWNLOADED", { value: 'to_be_downloaded' });
 Object.defineProperty(Song, "STATUS_DOWNLOADING", { value: 'downloading' });
 Object.defineProperty(Song, "STATUS_DOWNLOAD_FAILED", { value: 'download_failed' });
 Object.defineProperty(Song, "STATUS_REMOVING", { value: 'removing' });
