@@ -18,7 +18,8 @@ export default class Search
             this.userSetupEl.hide();
             this.searchControlsEl.show();
         }
-        $('#addUser').click(() => {
+        $('#addUser').submit((e) => {
+            e.preventDefault();
             if ($('#username').val() != "") {
                 localStorage.setItem('username', $('#username').val());
                 this.userSetupEl.hide();
@@ -120,7 +121,11 @@ export default class Search
 
     showDialog() {
         this.dialogEl.show();
-        $('#search').focus().val('');
+        if (localStorage.getItem('username')) {
+            $('#search').focus().val('');
+        } else {
+            $('#username').focus().val('');
+        }
     }
 
     closeDialog()
