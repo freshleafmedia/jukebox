@@ -143,12 +143,12 @@ class Playlist {
 		}.bind(this));
 	};
 
-	removeSong(youTubeID) {
+	removeSong(id) {
 
 		for (var i = 0; i < this.songs.length; i++) {
 			var song = this.songs[i];
 
-			if (song.youTubeID === youTubeID) {
+			if (song.id === id) {
 				this.songs[i].setStatus(Song.STATUS_REMOVING);
 
 				this.songs.splice(i, 1);
@@ -170,7 +170,7 @@ class Playlist {
         io.emit('songStatus', song);
 
 		if (song.state === Song.STATUS_PLAYING_FINISHED) {
-			this.removeSong(song.youTubeID);
+			this.removeSong(song.id);
             io.emit('songRemove', song);
 
 			// If this was the last song mark the playlist as empty
