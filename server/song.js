@@ -9,8 +9,8 @@ class Song {
 	constructor(songRaw, songStateChangedCallback, options, pio) {
 		io = pio;
 		this.options = options || {};
-		this.youTubeID = songRaw.id;
-		this.thumbnail = 'https://i.ytimg.com/vi/' + this.youTubeID + '/mqdefault.jpg';
+		this.id = songRaw.id;
+		this.thumbnail = 'https://i.ytimg.com/vi/' + this.id + '/mqdefault.jpg';
 		this.data = {
 			title: songRaw.title
 		};
@@ -21,7 +21,7 @@ class Song {
 
 	setStatus(status) {
 
-		console.log('SONG[' + this.youTubeID + '] STATE: ' + status);
+		console.log('SONG[' + this.id + '] STATE: ' + status);
 
 		if (status === Song.STATUS_REMOVING) {
 			io.emit('songRemove', this);
@@ -36,7 +36,7 @@ class Song {
 
 		this.setStatus(Song.STATUS_DOWNLOADING);
 
-		process.execFile('./download.sh', [ this.youTubeID, this.options.paths.cache, this.options.paths.logs ], function (error, stdout, stderr) {
+		process.execFile('./download.sh', [ this.id, this.options.paths.cache, this.options.paths.logs ], function (error, stdout, stderr) {
 
 			if (error !== null) {
 				console.error(error);
@@ -46,7 +46,7 @@ class Song {
 			}
 
 			// Read the info JSON file that should've been generated
-			fs.readFile('./cache/' + this.youTubeID + '.info.json', function (err, f) {
+			fs.readFile('./cache/' + this.id + '.info.json', function (err, f) {
 
 				if (err !== null) {
 					this.setStatus(Song.STATUS_DOWNLOAD_FAILED);

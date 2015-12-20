@@ -186,21 +186,19 @@ class Playlist {
 
 	addSong(songRaw) {
 
-		var youTubeID = songRaw.id;
-
 		// Check if the song is already on the playlist
 		var onList = false;
 		for (var i = 0; i < this.songs.length; i++) {
 			var song = this.songs[i];
 
-			if (song.youTubeID === youTubeID) {
+			if (song.id === songRaw.id) {
 				onList = true;
 				break;
 			}
 		}
 
 		if (onList === true) {
-			console.log('SONG[' + youTubeID + ']: Already on the playlist');
+			console.log('SONG[' + songRaw.id + ']: Already on the playlist');
 			return;
 		}
 
