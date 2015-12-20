@@ -32,7 +32,7 @@ export default class Jukebox
     setPlaylist(playlistData)
     {
         // Try and add this playlist
-        this.addPlaylist(playlistData);
+        this.addPlaylist(playlistData, true);
 
         this.playlistID = playlistData.ID;
     }
