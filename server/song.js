@@ -13,9 +13,16 @@ class Song {
 		this.thumbnail = 'https://i.ytimg.com/vi/' + this.id + '/mqdefault.jpg';
 		this.data = {};
 
+		// Add any data that's passed in
+		if(typeof songRaw.data !== 'undefined') {
+			this.data = data;
+		}
+
+		// Conditionally set the title
 		if (typeof songRaw.title !== 'undefined') {
 			this.data.title = songRaw.title
 		}
+
 		this.songStateChangedCallback = songStateChangedCallback;
         this.username = songRaw.username;
 		this.download();
