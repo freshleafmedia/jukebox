@@ -10,7 +10,7 @@ export default class Jukebox
     }
 
     setEventHandlers() {
-        $('.media-controls').on('click', '.btn', (e) => {
+        $(document).on('click', 'button[data-action]', (e) => {
             if ($(e.currentTarget).hasClass('disabled')) {
                 console.warn('Button disabled');
                 return;
