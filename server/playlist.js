@@ -187,6 +187,9 @@ class Playlist {
 	};
 
 	addSong(songRaw) {
+
+		console.log('SONG[' + songRaw.id + ']: Adding...');
+
 		if (this.isOnPlaylist(songRaw) === true) {
 			console.log('SONG[' + songRaw.id + ']: Already on the playlist');
 			return;

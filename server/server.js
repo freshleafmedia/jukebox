@@ -29,8 +29,6 @@ io.on('connection', function(socket){
 
 	socket.on('addsong', function(song) {
 
-		console.log(song.id+': Trying to add');
-
 		server.addToPlaylist(song);
 
 		//io.emit('resolving', song);
