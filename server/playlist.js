@@ -117,7 +117,17 @@ class Playlist {
 				// This will either read the file if it exists or if not create one
 				var JSONData = fs.readFileSync(this.getPath(),{ flags: '+w' }).toString();
 
-				this.songs = (JSONData !== '') ? JSON.parse(JSONData):[];
+				var songsData = (JSONData !== '') ? JSON.parse(JSONData):[];
+
+				for (var i = 0; i < songsData.length; i++) {
+
+					// Get the song data
+					var songData = songsData[i];
+
+					this.addSong(songData);
+				}
+
+
 			}
 			else {
 				console.error('PLAYLIST['+this.ID+']: Failed to load from file');
