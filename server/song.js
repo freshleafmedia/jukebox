@@ -23,6 +23,11 @@ class Song {
 			this.data.title = songRaw.title
 		}
 
+		// Conditionally set the status
+		if (typeof songRaw.state !== 'undefined') {
+			this.state = songRaw.state
+		}
+
 		this.songStateChangedCallback = songStateChangedCallback;
         this.username = songRaw.username;
 		this.download();
