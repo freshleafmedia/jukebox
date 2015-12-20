@@ -24,7 +24,7 @@ class Song {
 		}
 
 		// Conditionally set the songs state
-		this.state =  (typeof songRaw.state !== 'undefined') ? songRaw.state:Song.STATUS_TO_BE_DOWNLOADED;
+		this.state = (typeof songRaw.state !== 'undefined') ? songRaw.state:Song.STATUS_TO_BE_DOWNLOADED;
 
 		this.songStateChangedCallback = songStateChangedCallback;
         this.username = songRaw.username;
