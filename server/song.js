@@ -46,6 +46,11 @@ class Song {
 
 	download() {
 
+		// Check if this song is to be downloaded
+		if (this.state !== Song.STATUS_TO_BE_DOWNLOADED) {
+			return;
+		}
+
 		this.setStatus(Song.STATUS_DOWNLOADING);
 
 		process.execFile('./download.sh', [ this.id, this.options.paths.cache, this.options.paths.logs ], function (error, stdout, stderr) {
