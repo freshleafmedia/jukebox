@@ -187,19 +187,7 @@ class Playlist {
 	};
 
 	addSong(songRaw) {
-
-		// Check if the song is already on the playlist
-		var onList = false;
-		for (var i = 0; i < this.songs.length; i++) {
-			var song = this.songs[i];
-
-			if (song.id === songRaw.id) {
-				onList = true;
-				break;
-			}
-		}
-
-		if (onList === true) {
+		if (this.isOnPlaylist(songRaw) === true) {
 			console.log('SONG[' + songRaw.id + ']: Already on the playlist');
 			return;
 		}
@@ -208,6 +196,18 @@ class Playlist {
 		this.songs.push(song);
 
 		io.emit('songAdd', song);
+	}
+
+	isOnPlaylist(song) {
+
+		// Check if the song is already on the playlist
+		for (var i = 0; i < this.songs.length; i++) {
+
+			if (this.songs[i].id === song.id) {
+				return true;
+			}
+		}
+		return false;
 	};
 }
 
