@@ -4,12 +4,12 @@ var Search = require("./search.js").default;
 var socket = io('//:3000');
 socket.on('connect', function(){
     console.log('connected to websocket server');
-    $('#playButton, #pauseButton, #volupButton, #voldownButton').removeClass('disabled');
+    $('#playButton, #pauseButton, #volupButton, #voldownButton, #shuffleSongs').removeClass('disabled');
 });
 
 socket.on('disconnect', function(){
     console.log('disconnected');
-    $('.media-controls .btn, #shutdown').addClass('disabled');
+    $('.media-controls .btn, #shutdown, #shuffleSongs').addClass('disabled');
 });
 
 var player = new Jukebox(socket);
@@ -71,10 +71,12 @@ socket.on('songPosition', function(position) {
     player.getPlaylist().updateSongPosition(position);
 });
 
-navigator.serviceWorker.register('/worker.js', {
-    scope: '/'
-}).then(function(reg) {
-    console.log('service worker registered', reg);
-}, function(err) {
-    console.log('service worker NOT registered', err);
-});
+if (typeof navigator.serviceWorker !== 'undefined') {
+    navigator.serviceWorker.register('/worker.js', {
+        scope: '/'
+    }).then(function (reg) {
+        console.log('service worker registered', reg);
+    }, function (err) {
+        console.log('service worker NOT registered', err);
+    });
+}

@@ -29,8 +29,6 @@ io.on('connection', function(socket){
 
 	socket.on('addsong', function(song) {
 
-		console.log(song.id+': Trying to add');
-
 		server.addToPlaylist(song);
 
 		//io.emit('resolving', song);
@@ -42,3 +40,19 @@ io.on('connection', function(socket){
 	});
 });
 
+Array.prototype.shuffle = function() {
+	var currentIndex = this.length, temporaryValue, randomIndex ;
+
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		// And swap it with the current element.
+		temporaryValue = this[currentIndex];
+		this[currentIndex] = this[randomIndex];
+		this[randomIndex] = temporaryValue;
+	}
+};
