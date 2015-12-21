@@ -32,8 +32,33 @@ class Playlist {
 	};
 
 	shuffle() {
-		this.songs.shuffle();
+        this.interleave(true);
 	};
+
+    interleave(shuffle) {
+        var userSongs = this.songs.reduce((userSongs, song) => {
+            if (!userSongs[song.username]) {
+                userSongs[song.username] = [];
+            }
+            userSongs[song.username].push(song);
+            return userSongs;
+        }, {});
+        if (shuffle) {
+            Object.keys(userSongs).forEach((user) => {
+                userSongs[user].shuffle();
+            });
+        }
+        var listLength = Object.keys(userSongs).reduce((listLength, user) => {
+            return Math.max(listLength, user.length);
+        }, 0);
+        var newSongs = [];
+        for (var i = 0; i < listLength; i++) {
+            Object.keys(userSongs).forEach((user) => {
+                newSongs.push(userSongs[user][i]);
+            });
+        }
+        this.songs = newSongs;
+    }
 
 	setState(status) {
 		console.log('PLAYLIST[' + this.ID + '] STATE: ' + status);
