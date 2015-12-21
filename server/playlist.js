@@ -49,12 +49,14 @@ class Playlist {
             });
         }
         var listLength = Object.keys(userSongs).reduce((listLength, user) => {
-            return Math.max(listLength, user.length);
+            return Math.max(listLength, userSongs[user].length);
         }, 0);
         var newSongs = [];
         for (var i = 0; i < listLength; i++) {
             Object.keys(userSongs).forEach((user) => {
-                newSongs.push(userSongs[user][i]);
+				if (userSongs[user][i]) {
+					newSongs.push(userSongs[user][i]);
+				}
             });
         }
         this.songs = newSongs;
