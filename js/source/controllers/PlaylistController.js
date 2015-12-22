@@ -1,4 +1,4 @@
-export default class Playlist {
+export default class PlaylistController {
 
     constructor(playlistData) {
         this.ID = playlistData.ID;
