@@ -205,6 +205,8 @@ class Playlist {
 		}
         io.emit('songStatus', song);
 
+		this.persist();
+
 		if (song.state === Song.STATUS_PLAYING_FINISHED) {
 			this.removeSong(song.id);
             io.emit('songRemove', song);
