@@ -51,6 +51,7 @@ class JukeBox {
 
 	addToPlaylist(song) {
 		this.getPlaylist().addSong(song);
+		io.emit('playlist', {ID: this.getPlaylist().ID ,songs: this.getPlaylist().songs});
 	};
 
 	playlistStateChanged(playlist) {
