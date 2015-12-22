@@ -1,4 +1,4 @@
-export default class Search
+export default class SearchController
 {
     constructor(socket) {
         this.socket = socket;

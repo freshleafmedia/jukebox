@@ -233,6 +233,7 @@ class Playlist {
 
 		var song = new Song(songRaw, this.songStateChanged.bind(this), this.options, io);
 		this.songs.push(song);
+        io.emit('songAdd', song);
 		this.interleave();
 	}
 

@@ -1,39 +1,9 @@
-var Jukebox = require("./jukebox.js").default;
-var Search = require("./search.js").default;
-
+var JukeboxController = require("./controllers/ApplicationController.js").default;
 var socket = io('//:3000');
-socket.on('connect', function(){
-    console.log('connected to websocket server');
-    $('#playButton, #pauseButton, #volupButton, #voldownButton, #shuffleSongs').removeClass('disabled');
-});
 
-socket.on('disconnect', function(){
-    console.log('disconnected');
-    $('.media-controls .btn, #shutdown, #shuffleSongs').addClass('disabled');
-});
+new JukeboxController(socket);
 
-var player = new Jukebox(socket);
-var search = new Search(socket);
-
-function notify(title, content) {
-    if (window.Notification) {
-        if (Notification.permission === "granted") {
-            var notification = new Notification(title, { 'body': content, 'icon': '/favicon.ico' });
-        } else {
-            Notification.requestPermission(function(permission) {
-                var notification = new Notification(title, { 'body': content, 'icon': '/favicon.ico' });
-            });
-        }
-    }
-}
-
-function updateNowPlaying(title) {
-    if (title == '') {
-        $('title').text('Freshleaf Jukebox');
-    } else {
-        $('title').text(title + ' - Freshleaf Jukebox');
-    }
-}
+// ----
 
 $(window).on('scroll', function() {
     var y_scroll_pos = window.pageYOffset;
@@ -45,30 +15,6 @@ $(window).on('scroll', function() {
     else {
         $('header').removeClass('scrolled');
     }
-});
-
-socket.on('playlist', function(playlistData) {
-    player.setPlaylist(playlistData);
-});
-
-socket.on('songRemove', function(song) {
-    player.getPlaylist().removeSong(song);
-});
-
-socket.on('songAdd', function(song) {
-    notify('Song Added', song.data.title);
-    player.getPlaylist().addSong(song);
-});
-
-socket.on('songStatus', function(song) {
-    if(song.state === 'playing') {
-        notify('Now Playing', song.data.title);
-    }
-    player.getPlaylist().updateSongStatus(song);
-});
-
-socket.on('songPosition', function(position) {
-    player.getPlaylist().updateSongPosition(position);
 });
 
 if (typeof navigator.serviceWorker !== 'undefined') {
