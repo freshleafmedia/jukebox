@@ -32,8 +32,42 @@ class Playlist {
 	};
 
 	shuffle() {
-		this.songs.shuffle();
+        this.interleave(true);
 	};
+
+    interleave(shuffle) {
+        var userSongs = this.songs.reduce((userSongs, song) => {
+            if (!userSongs[song.username]) {
+                userSongs[song.username] = [];
+            }
+            userSongs[song.username].push(song);
+            return userSongs;
+        }, {});
+        if (shuffle) {
+            Object.keys(userSongs).forEach((user) => {
+				var activeSong;
+				if (userSongs[user][0] && userSongs[user][0].state === 'playing' || userSongs[user][0].state === 'paused') {
+					activeSong = userSongs[user].shift();
+				}
+                userSongs[user].shuffle();
+				if (activeSong) {
+					userSongs[user].unshift(activeSong);
+				}
+            });
+        }
+        var listLength = Object.keys(userSongs).reduce((listLength, user) => {
+            return Math.max(listLength, userSongs[user].length);
+        }, 0);
+        var newSongs = [];
+        for (var i = 0; i < listLength; i++) {
+            Object.keys(userSongs).forEach((user) => {
+				if (userSongs[user][i]) {
+					newSongs.push(userSongs[user][i]);
+				}
+            });
+        }
+        this.songs = newSongs;
+    }
 
 	setState(status) {
 		console.log('PLAYLIST[' + this.ID + '] STATE: ' + status);
@@ -197,8 +231,7 @@ class Playlist {
 
 		var song = new Song(songRaw, this.songStateChanged.bind(this), this.options, io);
 		this.songs.push(song);
-
-		io.emit('songAdd', song);
+		this.interleave();
 	}
 
 	isOnPlaylist(song) {
