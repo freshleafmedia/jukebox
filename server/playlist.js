@@ -45,7 +45,14 @@ class Playlist {
         }, {});
         if (shuffle) {
             Object.keys(userSongs).forEach((user) => {
+				var activeSong;
+				if (userSongs[user][0] && userSongs[user][0].state === 'playing' || userSongs[user][0].state === 'paused') {
+					activeSong = userSongs[user].shift();
+				}
                 userSongs[user].shuffle();
+				if (activeSong) {
+					userSongs[user].unshift(activeSong);
+				}
             });
         }
         var listLength = Object.keys(userSongs).reduce((listLength, user) => {
