@@ -10,7 +10,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install \
     apache2 \
     nodejs \
     vlc \
-    supervisor
+    supervisor \
+    netcat
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 

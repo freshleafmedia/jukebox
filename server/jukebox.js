@@ -78,6 +78,10 @@ class JukeBox {
 			return;
 		}
 
+        if (action === 'next') {
+            action = 'shutdown';
+        }
+
 		process.exec('echo "' + action + '" | netcat localhost 11337 ', function (error, stdout, stderr) {
 
 			if(error !== null) {

@@ -4,7 +4,7 @@ var Search = require("./search.js").default;
 var socket = io('//:3000');
 socket.on('connect', function(){
     console.log('connected to websocket server');
-    $('#playButton, #pauseButton, #volupButton, #voldownButton, #shuffleSongs').removeClass('disabled');
+    $('#playButton, #pauseButton, #volupButton, #voldownButton, #shuffleSongs, #forwardButton').removeClass('disabled');
 });
 
 socket.on('disconnect', function(){
