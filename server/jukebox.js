@@ -78,6 +78,14 @@ class JukeBox {
 			return;
 		}
 
+		if (action === 'pause' && this.state === this.STATUS_PAUSED) {
+			return false;
+		}
+
+		if (action === 'play' && this.state === this.STATUS_PLAYING) {
+			return false;
+		}
+
 		process.exec('echo "' + action + '" | netcat localhost 11337 ', function (error, stdout, stderr) {
 
 			if(error !== null) {
