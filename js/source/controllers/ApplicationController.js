@@ -17,7 +17,7 @@ export default class ApplicationController
     {
         this.socket.on('connect', () => {
             console.log('connected to websocket server');
-            $('#playButton, #pauseButton, #volupButton, #voldownButton, #shuffleSongs').removeClass('disabled');
+            $('#playButton, #pauseButton, #volupButton, #voldownButton, #shuffleSongs, #forwardButton').removeClass('disabled');
         });
 
         this.socket.on('disconnect', () => {
