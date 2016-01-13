@@ -31,7 +31,7 @@ echo "$youTubeID: Fetching available formats..." >> "$LOG_FILE"
 formatRegex='^([0-9]+)[[:space:]]+([^[:space:]]+).+$'
 
 # Get all the formats this video can be played in reverse order
-formats=$(youtube-dl -F "$youTubeID" | grep 'audio only' | tac)
+formats=$(youtube-dl -F "https://www.youtube.com/watch?v=$youTubeID" | grep 'audio only' | tac)
 
 # Count the number of returned formats
 formatCount=$(echo "$formats" | wc -l)
@@ -69,7 +69,7 @@ downloaded=false
 for formatID in "${formatIDs[@]}"; do
 
     echo "$youTubeID: Trying format $formatID..." >> "$LOG_FILE"
-    youtube-dl -o "$CACHE_DIR/%(id)s" --write-info-json -f "$formatID" "$youTubeID" >> "$LOG_FILE"
+    youtube-dl -o "$CACHE_DIR/%(id)s" --write-info-json -f "$formatID" "https://www.youtube.com/watch?v=$youTubeID" >> "$LOG_FILE"
 
     # Check the response we got
     if [ $? == 0 ]; then
