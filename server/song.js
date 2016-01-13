@@ -53,7 +53,7 @@ class Song {
 
 		this.setStatus(Song.STATUS_DOWNLOADING);
 
-		process.execFile('./download.sh', [ 'https://www.youtube.com/watch?v='+this.id, this.options.paths.cache, this.options.paths.logs ], function (error, stdout, stderr) {
+		process.execFile('./download.sh', [ this.id, this.options.paths.cache, this.options.paths.logs ], function (error, stdout, stderr) {
 			if (error !== null) {
 				console.error(error);
 
