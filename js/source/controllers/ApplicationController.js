@@ -12,7 +12,7 @@ export default class ApplicationController
         this.setEventHandlers();
         new SearchController(socket);
         this.setupSockets();
-        new SoundbitesController();
+        new SoundbitesController(socket);
     }
 
     setupSockets()

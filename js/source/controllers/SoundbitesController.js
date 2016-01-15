@@ -5,8 +5,9 @@ let config = require('../config/config.js').default;
 export default class SoundbitesController
 {
 
-    constructor()
+    constructor(socket)
     {
+        this.socket = socket;
         this.buildControls();
     }
 
@@ -39,6 +40,6 @@ export default class SoundbitesController
 
     play(id)
     {
-        console.log(id);
+        this.socket.emit('soundbite', id);
     }
 }
