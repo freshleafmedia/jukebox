@@ -1,5 +1,6 @@
 var SearchController = require("./SearchController.js").default;
 var Playlist = require("./PlaylistController.js").default;
+let SoundbitesController = require("./SoundbitesController.js").default;
 var notify = require("../helpers/notifications.js").notify;
 
 export default class ApplicationController
@@ -11,6 +12,7 @@ export default class ApplicationController
         this.setEventHandlers();
         new SearchController(socket);
         this.setupSockets();
+        new SoundbitesController();
     }
 
     setupSockets()

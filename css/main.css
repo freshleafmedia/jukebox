@@ -482,5 +482,26 @@ progress {
     margin: 0;
     cursor: pointer; }
 
+.soundbites {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0; }
+
+.soundbite {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 5px;
+  margin-right: 5px; }
+
 .toBeBuilt {
   opacity: 0.1 !important; }
