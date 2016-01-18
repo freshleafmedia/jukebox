@@ -78,11 +78,11 @@ class JukeBox {
 			return;
 		}
 
-		if (action === 'pause' && this.state === this.STATUS_PAUSED) {
+		if (action === 'pause' && this.state === JukeBox.STATUS_PAUSED) {
 			return false;
 		}
 
-		if (action === 'play' && this.state === this.STATUS_PLAYING) {
+		if (action === 'play' && this.state === JukeBox.STATUS_PLAYING) {
 			return false;
 		}
 
