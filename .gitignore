@@ -5,3 +5,6 @@ logs/
 
 playlists/
 cache/
+
+.tags*
+nohup*
