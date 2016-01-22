@@ -36,7 +36,9 @@ class Song {
 		console.log('SONG[' + this.id + '] STATE: ' + status);
 
 		if (status === Song.STATUS_REMOVING) {
-			io.emit('songRemove', this);
+			if (io) {
+				io.emit('songRemove', this);
+			}
 		}
 
 		this.state = status;
