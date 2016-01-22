@@ -38,6 +38,10 @@ io.on('connection', function(socket){
 		console.log('CONTROL[' + action + ']: Received request');
 		server.control(action);
 	});
+
+    socket.on('soundbite', function(id) {
+        server.playSoundbite(id);
+    });
 });
 
 Array.prototype.shuffle = function() {

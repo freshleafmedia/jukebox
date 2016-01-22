@@ -13,7 +13,7 @@ var livereload = require('gulp-livereload');
 
 var paths = {
     sass: 'scss/*.scss',
-    javascript: 'js/source/*.js',
+    javascript: 'js/source/**/*.js'
 };
 
 var dest = {

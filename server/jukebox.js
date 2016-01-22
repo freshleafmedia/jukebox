@@ -1,6 +1,7 @@
 'use strict';
 var Playlist = require("./playlist.js");
 var process = require('child_process');
+let SoundbiteController = require('./controllers/SoundbiteController');
 
 var io;
 
@@ -28,6 +29,8 @@ class JukeBox {
 		}
 
 		this.loadPlaylist(0);
+
+        this.soundbiteController = new SoundbiteController(io, this.options);
 	};
 
 	setStatus(status) {
@@ -122,6 +125,10 @@ class JukeBox {
 	pause() {
 		this.control('pause');
 	};
+
+    playSoundbite(id) {
+        this.soundbiteController.play(id);
+    }
 }
 
 Object.defineProperty(JukeBox, "STATUS_PLAYING", { value: 'playing' });
