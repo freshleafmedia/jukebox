@@ -12,8 +12,11 @@ class SoundbiteController {
 
     play(id) {
         console.log('soundbite play command');
-        let song = new Song({ id: id }, function(){}, this.options);
-        song.play();
+        new Song({ id: id }, function(song){
+            if (song.state == Song.STATUS_PLAYABLE) {
+                song.play();
+            }
+        }, this.options);
     }
 
 }
