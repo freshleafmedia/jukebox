@@ -1,6 +1,8 @@
 var JukeboxController = require("./controllers/ApplicationController.js").default;
 var socket = io('//:3000');
 
+var $ = require('jquery');
+
 new JukeboxController(socket);
 
 // ----
