@@ -30,7 +30,7 @@ class JukeBox {
 
 		this.loadPlaylist(0);
 
-        this.soundbiteController = new SoundbiteController(io);
+        this.soundbiteController = new SoundbiteController(io, this.options);
 	};
 
 	setStatus(status) {
