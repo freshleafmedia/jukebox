@@ -1,3 +1,5 @@
+var $ = require('jquery');
+
 export default class SearchController
 {
     constructor(socket) {

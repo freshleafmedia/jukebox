@@ -1,3 +1,5 @@
+var $ = require('jquery');
+
 export default class PlaylistController {
 
     constructor(playlistData) {
@@ -77,6 +79,3 @@ export default class PlaylistController {
         songEl.find('progress').attr('value', position);
     }
 }
-
-
-

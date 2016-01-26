@@ -486,7 +486,8 @@ progress {
   display: none;
   position: fixed;
   bottom: 0;
-  left: 0; }
+  left: 0;
+  z-index: 1; }
 
 .soundbite {
   display: flex;
