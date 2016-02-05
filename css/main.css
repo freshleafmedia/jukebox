@@ -433,7 +433,8 @@ progress {
   background: rgba(0, 0, 0, 0.6);
   border-radius: 5px;
   padding: 2px 7px;
-  font-size: 10px; }
+  font-size: 10px;
+  color: #fff; }
 
 .songResult .username {
   background: rgba(0, 0, 0, 0.6);

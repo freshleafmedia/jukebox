@@ -1,4 +1,6 @@
 var $ = require('jquery');
+var prettyTime = require("../helpers/songs.js").prettyTime;
+var youtubeDurationToSeconds = require("../helpers/songs.js").youtubeDurationToSeconds;
 
 export default class SearchController
 {
@@ -79,7 +81,9 @@ export default class SearchController
                     $('.highlight').click();
                     return;
                 }
-                this.search($('#search').val());
+                this.search($('#search').val(), (items) => {
+                    this.buildResults(items)
+                });
             }
             // Keys when form input isn't focused
             if (!$(event.target).is('input')) {
@@ -91,7 +95,7 @@ export default class SearchController
         });
     }
 
-    search(query)
+    search(query, callback)
     {
         var request = gapi.client.youtube.search.list({
             q: query,
@@ -100,28 +104,63 @@ export default class SearchController
         });
 
         request.execute((response) => {
-            $('#search-container').html('');
-            $.each(response.result.items, function (index, item) {
-                if (item.id.kind == "youtube#video") {
-                    var el = $('<div />', {'class': 'songResult'});
-                    el.data('url', item.id.videoId);
-                    var image = $('<img />', {src: item.snippet.thumbnails.default.url});
-                    var descWrap = $('<div />');
-                    var title = $('<p />', {text: item.snippet.title, 'class': 'title'});
-                    //var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
-                    descWrap.append(title);
-                    //descWrap.append(author);
-                    var imgwrap = $('<div />', {'class': 'imageWrapper'});
-                    imgwrap.append(image);
-                    el.append(imgwrap);
-                    el.append(descWrap);
-                    $('#search-container').append(el);
-                }
-            })
+            this.getExtraInfo(response.result.items, (items) => {
+                callback(items);
+            });
         });
     }
 
-    showDialog() {
+    getExtraInfo(items, callback)
+    {
+        var ids = items.map(function(item) {
+            return item.id.videoId;
+        });
+        var request = gapi.client.youtube.videos.list({
+            id: ids.join(','),
+            part: 'contentDetails'
+        });
+
+        request.execute((response) => {
+            var extraInfo = response.items;
+            items = items.map((item) => {
+                item.contentDetails = extraInfo.filter((extra) => {
+                    if (extra.id === item.id.videoId) {
+                        return true;
+                    }
+                    return false;
+                })[0].contentDetails;
+                return item;
+            });
+            callback(items);
+        });
+    }
+
+    buildResults(items)
+    {
+        $('#search-container').html('');
+        $.each(items, function (index, item) {
+            if (item.id.kind == "youtube#video") {
+                var el = $('<div />', {'class': 'songResult'});
+                el.data('url', item.id.videoId);
+                var image = $('<img />', {src: item.snippet.thumbnails.default.url});
+                var descWrap = $('<div />');
+                var title = $('<p />', {text: item.snippet.title, 'class': 'title'});
+                var duration = $('<p />', { 'class': 'duration', text: prettyTime(youtubeDurationToSeconds(item.contentDetails.duration)) });
+                //var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
+                descWrap.append(title);
+                //descWrap.append(author);
+                var imgwrap = $('<div />', {'class': 'imageWrapper'});
+                imgwrap.append(image);
+                el.append(imgwrap);
+                el.append(descWrap);
+                el.append(duration);
+                $('#search-container').append(el);
+            }
+        });
+    }
+
+    showDialog()
+    {
         this.dialogEl.show();
         if (localStorage.getItem('username')) {
             $('#search').focus().val('');

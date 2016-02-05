@@ -1,4 +1,5 @@
 var $ = require('jquery');
+var prettyTime = require("../helpers/songs.js").prettyTime;
 
 export default class PlaylistController {
 
@@ -26,7 +27,7 @@ export default class PlaylistController {
         var item = $('<div />', { 'class': 'songResult', 'id': 'song-'+song.id, 'data-state': song.state });
 
         var image = $('<img />', { src: song.thumbnail });
-        var duration = $('<p />', { 'class': 'duration', text: (song.data.duration / 60).toFixed(2) });
+        var duration = $('<p />', { 'class': 'duration', text: prettyTime(song.data.duration) });
         var title = $('<p />', { 'class': 'title', text: song.data.title });
         var progress = $('<progress />', { value: song.position, max: song.data.duration });
         var username = $('<p />', { 'class': 'username', text: song.username });
@@ -68,7 +69,7 @@ export default class PlaylistController {
     {
         var songEl = this.El.find('.songResult#song-' + song.id);
         songEl.attr('data-state', song.state);
-        songEl.find('.duration').text((song.data.duration / 60).toFixed(2));
+        songEl.find('.duration').text(prettyTime(song.data.duration));
         songEl.find('progress').attr('value', song.position);
         songEl.find('progress').attr('max', song.data.duration);
     }
