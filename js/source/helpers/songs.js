@@ -29,3 +29,12 @@ export function prettyTime(seconds)
     }
     return display;
 }
+
+export function youtubeDurationToSeconds(duration)
+{
+    duration = duration.replace('PT', '');
+    var hours = duration.indexOf('H') !== -1 ? parseInt(duration.split('H')[0]) : 0;
+    var minutes = duration.indexOf('M') !== -1 ? parseInt(duration.split('M')[0]) : 0;
+    var seconds = duration.indexOf('S') !== -1 ? parseInt(duration.split('S')[0]) : 0;
+    return (hours * 3600) + (minutes * 60) + seconds;
+}
