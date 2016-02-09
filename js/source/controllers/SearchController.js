@@ -104,10 +104,23 @@ export default class SearchController
         });
 
         request.execute((response) => {
-            this.getExtraInfo(response.result.items, (items) => {
-                callback(items);
+            this.filterVideosOnly(response.result.items, (items) => {
+                this.getExtraInfo(items, (items) => {
+                    callback(items);
+                });
             });
         });
+    }
+
+    filterVideosOnly(items, callback)
+    {
+        items = items.filter((item) => {
+            if (item.id.kind == "youtube#video") {
+                return true;
+            }
+            return false;
+        });
+        callback(items);
     }
 
     getExtraInfo(items, callback)
@@ -139,23 +152,21 @@ export default class SearchController
     {
         $('#search-container').html('');
         $.each(items, function (index, item) {
-            if (item.id.kind == "youtube#video") {
-                var el = $('<div />', {'class': 'songResult'});
-                el.data('url', item.id.videoId);
-                var image = $('<img />', {src: item.snippet.thumbnails.default.url});
-                var descWrap = $('<div />');
-                var title = $('<p />', {text: item.snippet.title, 'class': 'title'});
-                var duration = $('<p />', { 'class': 'duration', text: prettyTime(youtubeDurationToSeconds(item.contentDetails.duration)) });
-                //var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
-                descWrap.append(title);
-                //descWrap.append(author);
-                var imgwrap = $('<div />', {'class': 'imageWrapper'});
-                imgwrap.append(image);
-                el.append(imgwrap);
-                el.append(descWrap);
-                el.append(duration);
-                $('#search-container').append(el);
-            }
+            var el = $('<div />', {'class': 'songResult'});
+            el.data('url', item.id.videoId);
+            var image = $('<img />', {src: item.snippet.thumbnails.default.url});
+            var descWrap = $('<div />');
+            var title = $('<p />', {text: item.snippet.title, 'class': 'title'});
+            var duration = $('<p />', { 'class': 'duration', text: prettyTime(youtubeDurationToSeconds(item.contentDetails.duration)) });
+            //var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
+            descWrap.append(title);
+            //descWrap.append(author);
+            var imgwrap = $('<div />', {'class': 'imageWrapper'});
+            imgwrap.append(image);
+            el.append(imgwrap);
+            el.append(descWrap);
+            el.append(duration);
+            $('#search-container').append(el);
         });
     }
 
