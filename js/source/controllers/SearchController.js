@@ -53,7 +53,7 @@ export default class SearchController
     initKeyEvents() {
         $(document).keyup((event) => {
             // Up/Down and j/k keys to navigate selecting a song
-            if (event.keyCode == 40 || event.keyCode == 74) {
+            if (event.keyCode == 40) {
                 if ($('.highlight').length) {
                     var highlighted = $('.highlight');
                     highlighted.next().addClass('highlight');
@@ -63,7 +63,7 @@ export default class SearchController
                 }
                 return;
             }
-            if (event.keyCode == 38 || event.keyCode == 75) {
+            if (event.keyCode == 38) {
                 if ($('.highlight').length) {
                     var highlighted = $('.highlight');
                     highlighted.prev().addClass('highlight');
