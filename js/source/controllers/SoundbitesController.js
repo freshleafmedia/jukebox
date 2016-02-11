@@ -16,21 +16,30 @@ export default class SoundbitesController
         let sounds = config.soundbites.sounds;
         let container = document.createElement('div');
         container.className = 'soundbites';
-        for (var id in sounds) {
-            if (sounds.hasOwnProperty(id)) {
-                var name = sounds[id];
+        for (var i in sounds) {
+            if (sounds.hasOwnProperty(i)) {
+                var displayNumber = parseInt(i) + 1;
+                displayNumber = (displayNumber > 9) ? 0 : displayNumber;
+                var sound = sounds[i];
                 var element = document.createElement('div');
                 element.className = 'soundbite';
-                element.setAttribute('data-id', id);
-                element.textContent = name;
+                element.setAttribute('data-id', sound.id);
+                element.textContent = displayNumber + ' ' + sound.name;
                 container.appendChild(element);
             }
         }
         document.querySelector('body').appendChild(container);
         document.addEventListener('keyup', (event) => {
-            if (event.keyCode === 83) {
+            if (event.keyCode === 83 && event.target.id !== "search") {
                 container.style.display = 'flex';
                 container.style.flexDirection = 'column';
+            }
+            if (event.keyCode >= 48 && event.keyCode <= 57 && event.target.id !== "search") {
+                let number = event.keyCode - 48 - 1;
+                number = (number < 0) ? 9 : number;
+                if (sounds[number]) {
+                    this.play(sounds[number].id)
+                }
             }
         });
         container.addEventListener('click', (event) => {
