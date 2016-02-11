@@ -491,19 +491,15 @@ progress {
   z-index: 1; }
 
 .soundbite {
-  display: flex;
-  width: 20px;
   height: 20px;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   cursor: pointer;
   position: relative;
   z-index: 2;
-  justify-content: center;
-  align-items: center;
   color: #fff;
-  padding: 5px;
-  margin-right: 5px; }
+  padding: 5px 10px;
+  margin: 0 5px 1px 0; }
 
 .toBeBuilt {
   opacity: 0.1 !important; }

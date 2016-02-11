@@ -18,17 +18,20 @@ export default class SoundbitesController
         container.className = 'soundbites';
         for (var id in sounds) {
             if (sounds.hasOwnProperty(id)) {
-                var youtubeId = sounds[id];
+                var name = sounds[id];
                 var element = document.createElement('div');
                 element.className = 'soundbite';
-                element.setAttribute('data-id', youtubeId);
-                element.textContent = id;
+                element.setAttribute('data-id', id);
+                element.textContent = name;
                 container.appendChild(element);
             }
         }
         document.querySelector('body').appendChild(container);
-        document.addEventListener('keyup', () => {
-            container.style.display = 'flex';
+        document.addEventListener('keyup', (event) => {
+            if (event.keyCode === 83) {
+                container.style.display = 'flex';
+                container.style.flexDirection = 'column';
+            }
         });
         container.addEventListener('click', (event) => {
             if (event.target.className === 'soundbite') {
