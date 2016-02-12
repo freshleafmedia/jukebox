@@ -2,6 +2,7 @@
 var Song = require("./song.js");
 var fs  = require("fs");
 var io;
+let StatsController = require('./controllers/StatsController');
 
 class Playlist {
 
@@ -14,6 +15,7 @@ class Playlist {
 		this.state = Playlist.STATUS_EMPTY;
         this.positionTimer = null;
         this.position = 0;
+		this.statsController = new StatsController();
 
 		this.loadFromFile();
 		this.play();
@@ -118,6 +120,7 @@ class Playlist {
 			}
 
 			// Play the song!
+			this.statsController.songPlay(song);
 			song.play();
             this.position = 0;
             this.onResume();
