@@ -20,7 +20,7 @@ export default class ApplicationController
     {
         this.socket.on('connect', () => {
             console.log('connected to websocket server');
-            $('#playButton, #pauseButton, #volupButton, #voldownButton, #shuffleSongs, #forwardButton').removeClass('disabled');
+            $('#volupButton, #voldownButton, #shuffleSongs, #forwardButton').removeClass('disabled');
         });
 
         this.socket.on('disconnect', () => {
@@ -45,6 +45,17 @@ export default class ApplicationController
                 this.updateNowPlaying(song.data.title);
             }
             this.getPlaylist().updateSongStatus(song);
+        });
+
+        this.socket.on('jukeboxState', (state) => {
+            if(state === 'playing') {
+                $('.media-controls button#playButton').addClass('disabled');
+                $('.media-controls button#pauseButton').removeClass('disabled');
+            }
+            if(state === 'paused') {
+                $('.media-controls button#playButton').removeClass('disabled');
+                $('.media-controls button#pauseButton').addClass('disabled');
+            }
         });
 
         this.socket.on('songPosition', (position) => {
