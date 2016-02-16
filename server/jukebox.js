@@ -36,6 +36,7 @@ class JukeBox {
 	setStatus(status) {
 		console.log('JUKEBOX STATE: ' + status);
 		this.state = status;
+		io.emit('jukeboxState', this.state);
 	};
 
 	loadPlaylist(playlistID) {
