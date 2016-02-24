@@ -251,6 +251,11 @@ class Playlist {
 		}
 		return false;
 	};
+
+	getMostPlayed()
+	{
+		return this.statsController.getMostPlayed();
+	}
 }
 
 Object.defineProperty(Playlist, "STATUS_READY", { value: 'ready' });

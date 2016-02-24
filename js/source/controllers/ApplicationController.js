@@ -2,6 +2,7 @@ var SearchController = require("./SearchController.js").default;
 var Playlist = require("./PlaylistController.js").default;
 var SoundbitesController = require("./SoundbitesController.js").default;
 var TabsController = require("./TabsController.js").default;
+var MostPlayedController = require("./MostPlayedController.js").default;
 var notify = require("../helpers/notifications.js").notify;
 var $ = require('jquery');
 
@@ -14,6 +15,7 @@ export default class ApplicationController
         this.setEventHandlers();
         new TabsController(document.querySelector('.tabs'));
         new SearchController(socket);
+        this.mostPlayedController = new MostPlayedController(socket);
         this.setupSockets();
         new SoundbitesController(socket);
     }
@@ -31,6 +33,9 @@ export default class ApplicationController
         });
         this.socket.on('playlist', (playlistData) => {
             this.setPlaylist(playlistData);
+        });
+        this.socket.on('mostPlayed', (data) => {
+            this.mostPlayedController.updateList(data);
         });
 
         this.socket.on('songRemove', (song) => {

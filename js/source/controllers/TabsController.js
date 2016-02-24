@@ -1,6 +1,7 @@
 "use strict";
 
-export default class TabsController {
+export default class TabsController
+{
 
     constructor(element)
     {

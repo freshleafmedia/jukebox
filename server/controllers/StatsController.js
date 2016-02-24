@@ -50,6 +50,24 @@ class StatsController
             console.log('Saved stats');
         });
     }
+
+    getMostPlayed()
+    {
+        var songArray = [];
+        for (var id in this.songs) {
+            if (this.songs.hasOwnProperty(id)) {
+                var song = this.songs[id];
+                songArray.push({
+                    id: id,
+                    plays: song.plays
+                });
+            }
+        }
+        songArray = songArray.sort((a, b) => {
+            return b.plays - a.plays;
+        });
+        return songArray.slice(0, 25);
+    }
 }
 
 module.exports = StatsController;
