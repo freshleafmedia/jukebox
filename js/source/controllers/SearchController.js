@@ -8,6 +8,7 @@ export default class SearchController
         this.socket = socket;
         this.dialogEl = $('#addDialog');
         this.userSetupEl = $('#user-setup');
+        this.userAreaEl = $('#user-area');
         this.searchControlsEl = $('#search-controls');
 
         this.initUser();
@@ -20,14 +21,14 @@ export default class SearchController
     {
         if(localStorage.getItem('username')) {
             this.userSetupEl.hide();
-            this.searchControlsEl.show();
+            this.userAreaEl.show();
         }
         $('#addUser').submit((e) => {
             e.preventDefault();
             if ($('#username').val() != "") {
                 localStorage.setItem('username', $('#username').val());
                 this.userSetupEl.hide();
-                this.searchControlsEl.show();
+                this.userAreaEl.show();
             }
         });
     }

@@ -1,0 +1,22 @@
+.tabs {
+  ul {
+    margin: 0 0 10px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    li {
+      margin-right: 5px;
+      a {
+        text-decoration: none;
+        font-size: 14px;
+        padding: 2px 4px;
+        color: #aaa;
+        &.current {
+          color: #fff;
+          background: #aaa;
+          border-radius: 2px;
+        }
+      }
+    }
+  }
+}

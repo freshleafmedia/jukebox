@@ -207,6 +207,23 @@ button.disabled {
   background-repeat: no-repeat;
   background-image: url(../images/power.png); }
 
+.tabs ul {
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+  display: flex; }
+  .tabs ul li {
+    margin-right: 5px; }
+    .tabs ul li a {
+      text-decoration: none;
+      font-size: 14px;
+      padding: 2px 4px;
+      color: #aaa; }
+      .tabs ul li a.current {
+        color: #fff;
+        background: #aaa;
+        border-radius: 2px; }
+
 #addDialog {
   position: absolute;
   left: 20%;
