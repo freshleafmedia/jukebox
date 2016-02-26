@@ -4,9 +4,10 @@ let fs = require('fs');
 class StatsController
 {
 
-    constructor()
+    constructor(options)
     {
         this.songs = {};
+        this.options = options || {};
         this.load();
     }
 
@@ -14,7 +15,7 @@ class StatsController
     {
         this.initSong(song);
         this.songs[song.id].plays += 1;
-        this.save();
+        this.onChange();
     }
 
     initSong(song)
@@ -32,6 +33,14 @@ class StatsController
         let loaded = JSON.parse(data);
         this.songs = loaded.songs;
         console.log('Loaded stats');
+    }
+
+    onChange()
+    {
+        if (this.options.onChange) {
+            this.options.onChange();
+        }
+        this.save();
     }
 
     save()
