@@ -58,5 +58,5 @@ export function buildSongMarkup(item)
     el.append(imgwrap);
     el.append(descWrap);
     el.append(duration);
-    return el;
+    return el.get(0);
 }

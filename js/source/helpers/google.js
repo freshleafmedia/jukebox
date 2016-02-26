@@ -39,12 +39,27 @@ export default class GoogleApi
 
     getInfo(ids, callback)
     {
-        var request = this.gapi.client.youtube.videos.list({
+        var snippetRequest = this.gapi.client.youtube.videos.list({
             id: ids.join(','),
             part: 'snippet'
         });
-        request.execute((response) => {
-            callback(response.items);
+        var detailsRequest = this.gapi.client.youtube.videos.list({
+            id: ids.join(','),
+            part: 'contentDetails'
+        });
+        snippetRequest.execute((snippetData) => {
+            detailsRequest.execute((detailsData) => {
+                let items = snippetData.items.map((snippet) => {
+                    snippet.contentDetails = detailsData.items.filter((detail) => {
+                        if (detail.id === snippet.id) {
+                            return true;
+                        }
+                        return false;
+                    })[0].contentDetails;
+                    return snippet;
+                });
+                callback(items);
+            });
         });
     }
 }

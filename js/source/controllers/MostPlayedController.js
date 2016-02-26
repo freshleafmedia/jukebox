@@ -1,4 +1,5 @@
 "use strict";
+let songHelper = require('../helpers/songs.js');
 
 export default class MostPlayedController
 {
@@ -45,9 +46,7 @@ export default class MostPlayedController
             console.log(dataArray);
             for (var i = 0; i < dataArray.length; i++) {
                 var data  = dataArray[i];
-                this.metaDataCache[data.id] = {
-                    title: data.snippet.title
-                };
+                this.metaDataCache[data.id] = data;
             }
             callback();
         }.bind(this));
@@ -57,8 +56,7 @@ export default class MostPlayedController
     {
         this.container.innerHTML = '';
         for (var i = 0; i < songs.length; i++) {
-            var elem = document.createElement('div');
-            elem.textContent = '#' + (i+1) + ' - ' + songs[i].title + ' (' + songs[i].plays + ' plays)';
+            let elem = songHelper.buildSongMarkup(songs[i]);
             this.container.appendChild(elem);
         }
     }

@@ -224,6 +224,9 @@ button.disabled {
         background: #aaa;
         border-radius: 2px; }
 
+#most-played {
+  padding-top: 20px; }
+
 #addDialog {
   position: absolute;
   left: 20%;
