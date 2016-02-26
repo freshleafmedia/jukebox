@@ -1,10 +1,11 @@
 var $ = require('jquery');
-var prettyTime = require("../helpers/songs.js").prettyTime;
-var youtubeDurationToSeconds = require("../helpers/songs.js").youtubeDurationToSeconds;
+var songHelper = require('../helpers/songs.js');
+var prettyTime = songHelper.prettyTime;
+var youtubeDurationToSeconds = songHelper.youtubeDurationToSeconds;
 
 export default class SearchController
 {
-    constructor(socket) {
+    constructor(socket, googleApi) {
         this.socket = socket;
         this.dialogEl = $('#addDialog');
         this.userSetupEl = $('#user-setup');
@@ -12,7 +13,7 @@ export default class SearchController
         this.searchControlsEl = $('#search-controls');
 
         this.initUser();
-        this.initGoogleApi(this.searchReady);
+        googleApi.onInit(this.searchReady);
         this.initKeyEvents();
         this.initClickEvents();
     }
@@ -36,19 +37,6 @@ export default class SearchController
     searchReady()
     {
         $('#search').prop('disabled', false);
-    }
-
-    initGoogleApi(callback)
-    {
-        setTimeout(googleApiClientReady, 1000);
-        function googleApiClientReady() {
-            gapi.client.setApiKey('AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I');
-            gapi.auth.init(function() {
-                gapi.client.load('youtube', 'v3', function () {
-                    callback();
-                });
-            });
-        }
     }
 
     initKeyEvents() {
@@ -153,20 +141,7 @@ export default class SearchController
     {
         $('#search-container').html('');
         $.each(items, function (index, item) {
-            var el = $('<div />', {'class': 'songResult'});
-            el.data('url', item.id.videoId);
-            var image = $('<img />', {src: item.snippet.thumbnails.default.url});
-            var descWrap = $('<div />');
-            var title = $('<p />', {text: item.snippet.title, 'class': 'title'});
-            var duration = $('<p />', { 'class': 'duration', text: prettyTime(youtubeDurationToSeconds(item.contentDetails.duration)) });
-            //var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
-            descWrap.append(title);
-            //descWrap.append(author);
-            var imgwrap = $('<div />', {'class': 'imageWrapper'});
-            imgwrap.append(image);
-            el.append(imgwrap);
-            el.append(descWrap);
-            el.append(duration);
+            var el = songHelper.buildSongMarkup(item);
             $('#search-container').append(el);
         });
     }
