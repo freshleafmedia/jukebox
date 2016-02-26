@@ -1,3 +1,5 @@
+"use strict";
+
 export function prettyTime(seconds)
 {
     var hours = Math.floor(seconds / 3600);
