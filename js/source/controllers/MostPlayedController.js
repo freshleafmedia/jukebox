@@ -14,7 +14,7 @@ export default class MostPlayedController
         this.container.innerHTML = '';
         for (var i = 0; i < data.length; i++) {
             var elem = document.createElement('div');
-            elem.textContent = data[i].id + ' (' + data[i].plays + ' plays)';
+            elem.textContent = '#' + (i+1) + ' - ' + data[i].id + ' (' + data[i].plays + ' plays)';
             this.container.appendChild(elem);
         }
     }
