@@ -50,9 +50,11 @@ export function buildSongMarkup(item)
     var descWrap = $('<div />');
     var title = $('<p />', {text: item.snippet.title, 'class': 'title'});
     var duration = $('<p />', { 'class': 'duration', text: this.prettyTime(youtubeDurationToSeconds(item.contentDetails.duration)) });
-    //var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
     descWrap.append(title);
-    //descWrap.append(author);
+    if (item.plays) {
+        var stats = $('<p />', {text: item.plays + ' plays', 'class': 'description'});
+    }
+    descWrap.append(stats);
     var imgwrap = $('<div />', {'class': 'imageWrapper'});
     imgwrap.append(image);
     el.append(imgwrap);
