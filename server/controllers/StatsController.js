@@ -28,15 +28,10 @@ class StatsController
 
     load()
     {
-        fs.readFile('./stats.json', (err, data) => {
-            if (err) {
-                console.log("Couldn't load stats: " + err.message)
-                return;
-            }
-            let loaded = JSON.parse(data);
-            this.songs = loaded.songs;
-            console.log('Loaded stats');
-        });
+        let data = fs.readFileSync('./stats.json').toString();
+        let loaded = JSON.parse(data);
+        this.songs = loaded.songs;
+        console.log('Loaded stats');
     }
 
     save()
