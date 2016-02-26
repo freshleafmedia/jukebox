@@ -1,5 +1,7 @@
 # Fresh Jukebox
 
+[![Build Status](https://travis-ci.org/freshleafmedia/jukebox.svg?branch=develop)](https://travis-ci.org/freshleafmedia/jukebox)
+
 ## Use
 
 There is a single script used to start the jukebox running: `jukebox.sh`. It will do everything for you.
