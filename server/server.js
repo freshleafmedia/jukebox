@@ -27,6 +27,8 @@ io.on('connection', function(socket){
     };
 	socket.emit('playlist', playlistObj);
 
+	socket.emit('jukeboxState', server.state);
+
 	socket.on('addsong', function(song) {
 
 		server.addToPlaylist(song);
