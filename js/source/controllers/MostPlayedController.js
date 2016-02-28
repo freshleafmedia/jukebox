@@ -45,7 +45,6 @@ export default class MostPlayedController
             return ids;
         }, []);
         this.googleApi.getInfo(songIdsToCache, function (dataArray) {
-            console.log(dataArray);
             for (var i = 0; i < dataArray.length; i++) {
                 var data  = dataArray[i];
                 this.metaDataCache[data.id] = data;
