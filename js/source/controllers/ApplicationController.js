@@ -2,7 +2,6 @@ var GoogleApi = require("../helpers/google.js").default;
 var SearchController = require("./SearchController.js").default;
 var Playlist = require("./PlaylistController.js").default;
 var SoundbitesController = require("./SoundbitesController.js").default;
-var TabsController = require("./TabsController.js").default;
 var MostPlayedController = require("./MostPlayedController.js").default;
 var notify = require("../helpers/notifications.js").notify;
 var $ = require('jquery');
@@ -14,7 +13,6 @@ export default class ApplicationController
         this.socket = socket;
         this.playlists = {};
         this.setEventHandlers();
-        new TabsController(document.querySelector('.tabs'));
         this.googleApi = new GoogleApi();
         new SearchController(socket, this.googleApi);
         this.mostPlayedController = new MostPlayedController(socket, this.googleApi);

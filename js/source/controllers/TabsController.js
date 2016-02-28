@@ -9,7 +9,7 @@ export default class TabsController
         this.contents = this.container.querySelectorAll(':scope > :not(ul)');
         this.links = this.container.querySelectorAll(':scope > ul:first-child > li > a');
         this.addEventListeners();
-        this.container.querySelector(':scope > ul:first-child > li:first-child > a').click();
+        this.goToTab(1);
     }
 
     addEventListeners()
@@ -40,6 +40,14 @@ export default class TabsController
     {
         for (var i = 0; i < this.links.length; i++) {
             this.links[i].className = '';
+        }
+    }
+
+    goToTab(id)
+    {
+        let tab = this.container.querySelector(':scope > ul:first-child > li:nth-child(' + id + ') > a');
+        if (tab) {
+            tab.click();
         }
     }
 }

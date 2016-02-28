@@ -1,4 +1,5 @@
 var $ = require('jquery');
+var TabsController = require("./TabsController.js").default;
 var songHelper = require('../helpers/songs.js');
 var prettyTime = songHelper.prettyTime;
 var youtubeDurationToSeconds = songHelper.youtubeDurationToSeconds;
@@ -8,6 +9,7 @@ export default class SearchController
     constructor(socket, googleApi) {
         this.socket = socket;
         this.dialogEl = $('#addDialog');
+        this.tabsController = new TabsController(document.querySelector('.tabs'));
         this.userSetupEl = $('#user-setup');
         this.userAreaEl = $('#user-area');
         this.searchControlsEl = $('#search-controls');
@@ -149,6 +151,7 @@ export default class SearchController
     showDialog()
     {
         this.dialogEl.show();
+        this.tabsController.goToTab(1);
         if (localStorage.getItem('username')) {
             $('#search').focus().val('');
         } else {
