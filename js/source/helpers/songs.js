@@ -45,7 +45,8 @@ export function youtubeDurationToSeconds(duration)
 export function buildSongMarkup(item)
 {
     var el = $('<div />', {'class': 'songResult'});
-    el.data('url', item.id.videoId);
+    var ytId = item.id.videoId || item.id;
+    el.attr('data-url', ytId);
     var image = $('<img />', {src: item.snippet.thumbnails.default.url});
     var descWrap = $('<div />');
     var title = $('<p />', {text: item.snippet.title, 'class': 'title'});

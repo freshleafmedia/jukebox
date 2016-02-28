@@ -1,4 +1,5 @@
 "use strict";
+let $ = require('jquery');
 let songHelper = require('../helpers/songs.js');
 
 export default class MostPlayedController
@@ -10,6 +11,7 @@ export default class MostPlayedController
         this.googleApi = googleApi;
         this.metaDataCache = {};
         this.container = document.querySelector('#most-played');
+        this.initClickEvents();
     }
 
     updateList(songs)
@@ -59,5 +61,26 @@ export default class MostPlayedController
             let elem = songHelper.buildSongMarkup(songs[i]);
             this.container.appendChild(elem);
         }
+    }
+
+    initClickEvents()
+    {
+        $(this.container).on('click', '> div', (event) => {
+            var song = {
+                id: $(event.currentTarget).data('url'),
+                title: $(event.currentTarget).find('p.title').text(),
+                thumbnail: $(event.currentTarget).find('img').attr('src'),
+                username: localStorage.getItem('username')
+            };
+            this.addSongToPlaylist(song);
+            $(event.currentTarget).addClass('added');
+        });
+
+    }
+
+    addSongToPlaylist(song)
+    {
+        console.log('Adding.. ' + song.id);
+        this.socket.emit('addsong', song);
     }
 }

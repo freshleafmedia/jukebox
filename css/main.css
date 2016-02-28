@@ -224,9 +224,6 @@ button.disabled {
         background: #aaa;
         border-radius: 2px; }
 
-#most-played {
-  padding-top: 20px; }
-
 #addDialog {
   position: absolute;
   left: 20%;
@@ -300,6 +297,15 @@ input#search {
   #addDialogClose:hover {
     background-color: #6bc874; }
 
+#search-container .songResult {
+  cursor: pointer; }
+
+#most-played {
+  padding-top: 20px; }
+
+#most-played .songResult {
+  cursor: pointer; }
+
 input#username {
   width: 75%;
   margin-left: 2%;
@@ -342,9 +348,6 @@ input#username {
   margin-bottom: 10px;
   border-top-left-radius: 45px;
   border-bottom-left-radius: 45px; }
-
-#search-container .songResult {
-  cursor: pointer; }
 
 .songResult .title {
   font-weight: bold;
