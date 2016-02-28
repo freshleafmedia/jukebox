@@ -1,4 +1,5 @@
 "use strict";
+var $ = require('jquery');
 
 export function prettyTime(seconds)
 {
@@ -39,4 +40,26 @@ export function youtubeDurationToSeconds(duration)
     var minutes = duration.indexOf('M') !== -1 ? parseInt(duration.split('M')[0]) : 0;
     var seconds = duration.indexOf('S') !== -1 ? parseInt(duration.split('S')[0]) : 0;
     return (hours * 3600) + (minutes * 60) + seconds;
+}
+
+export function buildSongMarkup(item)
+{
+    var el = $('<div />', {'class': 'songResult'});
+    var ytId = item.id.videoId || item.id;
+    el.attr('data-url', ytId);
+    var image = $('<img />', {src: item.snippet.thumbnails.default.url});
+    var descWrap = $('<div />');
+    var title = $('<p />', {text: item.snippet.title, 'class': 'title'});
+    var duration = $('<p />', { 'class': 'duration', text: this.prettyTime(youtubeDurationToSeconds(item.contentDetails.duration)) });
+    descWrap.append(title);
+    if (item.plays) {
+        var stats = $('<p />', {text: item.plays + ' plays', 'class': 'description'});
+    }
+    descWrap.append(stats);
+    var imgwrap = $('<div />', {'class': 'imageWrapper'});
+    imgwrap.append(image);
+    el.append(imgwrap);
+    el.append(descWrap);
+    el.append(duration);
+    return el.get(0);
 }

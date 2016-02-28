@@ -4,9 +4,10 @@ let fs = require('fs');
 class StatsController
 {
 
-    constructor()
+    constructor(options)
     {
         this.songs = {};
+        this.options = options || {};
         this.load();
     }
 
@@ -14,7 +15,7 @@ class StatsController
     {
         this.initSong(song);
         this.songs[song.id].plays += 1;
-        this.save();
+        this.onChange();
     }
 
     initSong(song)
@@ -34,6 +35,14 @@ class StatsController
         console.log('Loaded stats');
     }
 
+    onChange()
+    {
+        if (this.options.onChange) {
+            this.options.onChange();
+        }
+        this.save();
+    }
+
     save()
     {
         let toSave = { songs: this.songs };
@@ -44,6 +53,24 @@ class StatsController
             }
             console.log('Saved stats');
         });
+    }
+
+    getMostPlayed()
+    {
+        var songArray = [];
+        for (var id in this.songs) {
+            if (this.songs.hasOwnProperty(id)) {
+                var song = this.songs[id];
+                songArray.push({
+                    id: id,
+                    plays: song.plays
+                });
+            }
+        }
+        songArray = songArray.sort((a, b) => {
+            return b.plays - a.plays;
+        });
+        return songArray.slice(0, 25);
     }
 }
 

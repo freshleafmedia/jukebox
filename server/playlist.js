@@ -15,7 +15,12 @@ class Playlist {
 		this.state = Playlist.STATUS_EMPTY;
         this.positionTimer = null;
         this.position = 0;
-		this.statsController = new StatsController();
+		this.statsController = new StatsController({
+            onChange: () => {
+                let mostPlayed = this.statsController.getMostPlayed();
+                io.emit('mostPlayed', mostPlayed);
+            }
+        });
 
 		this.loadFromFile();
 		this.play();
@@ -251,6 +256,11 @@ class Playlist {
 		}
 		return false;
 	};
+
+	getMostPlayed()
+	{
+		return this.statsController.getMostPlayed();
+	}
 }
 
 Object.defineProperty(Playlist, "STATUS_READY", { value: 'ready' });

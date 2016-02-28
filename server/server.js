@@ -21,11 +21,15 @@ io.on('connection', function(socket){
 	console.log('User connected');
 
     var playlist = server.getPlaylist();
+
     var playlistObj = {
         ID: playlist.ID,
         songs: playlist.songs
     };
 	socket.emit('playlist', playlistObj);
+
+	var mostPlayed = playlist.getMostPlayed();
+	socket.emit('mostPlayed', mostPlayed);
 
 	socket.emit('jukeboxState', server.state);
 

@@ -35,12 +35,14 @@
   border-top-left-radius: 45px;
   border-bottom-left-radius: 45px;
 }
-#search-container .songResult {
-  cursor: pointer;
-}
 .songResult .title {
   font-weight: bold;
-  padding-bottom: 10px;
+  margin-bottom: 0;
+}
+.songResult .description {
+  margin: 0;
+  font-size: 12px;
+  color: #555;
 }
 .songResult .imageWrapper {
   position: relative;

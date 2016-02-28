@@ -1,17 +1,21 @@
 var $ = require('jquery');
-var prettyTime = require("../helpers/songs.js").prettyTime;
-var youtubeDurationToSeconds = require("../helpers/songs.js").youtubeDurationToSeconds;
+var TabsController = require("./TabsController.js").default;
+var songHelper = require('../helpers/songs.js');
+var prettyTime = songHelper.prettyTime;
+var youtubeDurationToSeconds = songHelper.youtubeDurationToSeconds;
 
 export default class SearchController
 {
-    constructor(socket) {
+    constructor(socket, googleApi) {
         this.socket = socket;
         this.dialogEl = $('#addDialog');
+        this.tabsController = new TabsController(document.querySelector('.tabs'));
         this.userSetupEl = $('#user-setup');
+        this.userAreaEl = $('#user-area');
         this.searchControlsEl = $('#search-controls');
 
         this.initUser();
-        this.initGoogleApi(this.searchReady);
+        googleApi.onInit(this.searchReady);
         this.initKeyEvents();
         this.initClickEvents();
     }
@@ -20,14 +24,14 @@ export default class SearchController
     {
         if(localStorage.getItem('username')) {
             this.userSetupEl.hide();
-            this.searchControlsEl.show();
+            this.userAreaEl.show();
         }
         $('#addUser').submit((e) => {
             e.preventDefault();
             if ($('#username').val() != "") {
                 localStorage.setItem('username', $('#username').val());
                 this.userSetupEl.hide();
-                this.searchControlsEl.show();
+                this.userAreaEl.show();
             }
         });
     }
@@ -37,22 +41,9 @@ export default class SearchController
         $('#search').prop('disabled', false);
     }
 
-    initGoogleApi(callback)
-    {
-        setTimeout(googleApiClientReady, 1000);
-        function googleApiClientReady() {
-            gapi.client.setApiKey('AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I');
-            gapi.auth.init(function() {
-                gapi.client.load('youtube', 'v3', function () {
-                    callback();
-                });
-            });
-        }
-    }
-
     initKeyEvents() {
         $(document).keyup((event) => {
-            // Up/Down and j/k keys to navigate selecting a song
+            // Up/Down keys to navigate selecting a song
             if (event.keyCode == 40) {
                 if ($('.highlight').length) {
                     var highlighted = $('.highlight');
@@ -70,6 +61,16 @@ export default class SearchController
                     highlighted.removeClass('highlight');
                 }
                 return;
+            }
+            // Left/Right keys to navigate tabs
+            if (this.dialogIsOpen()) {
+                if (event.keyCode == 37) {
+                    this.tabsController.prevTab();
+                    $('#search').focus();
+                }
+                if (event.keyCode == 39) {
+                    this.tabsController.nextTab();
+                }
             }
             // Esc closes dialog
             if (event.keyCode == 27) {
@@ -152,20 +153,7 @@ export default class SearchController
     {
         $('#search-container').html('');
         $.each(items, function (index, item) {
-            var el = $('<div />', {'class': 'songResult'});
-            el.data('url', item.id.videoId);
-            var image = $('<img />', {src: item.snippet.thumbnails.default.url});
-            var descWrap = $('<div />');
-            var title = $('<p />', {text: item.snippet.title, 'class': 'title'});
-            var duration = $('<p />', { 'class': 'duration', text: prettyTime(youtubeDurationToSeconds(item.contentDetails.duration)) });
-            //var author = $('<p />', { text: item.snippet.channelTitle, 'class': 'description' });
-            descWrap.append(title);
-            //descWrap.append(author);
-            var imgwrap = $('<div />', {'class': 'imageWrapper'});
-            imgwrap.append(image);
-            el.append(imgwrap);
-            el.append(descWrap);
-            el.append(duration);
+            var el = songHelper.buildSongMarkup(item);
             $('#search-container').append(el);
         });
     }
@@ -173,6 +161,7 @@ export default class SearchController
     showDialog()
     {
         this.dialogEl.show();
+        this.tabsController.goToTab(1);
         if (localStorage.getItem('username')) {
             $('#search').focus().val('');
         } else {
@@ -183,6 +172,11 @@ export default class SearchController
     closeDialog()
     {
         this.dialogEl.hide();
+    }
+
+    dialogIsOpen()
+    {
+        return this.dialogEl.get(0).style.display !== 'none';
     }
 
     initClickEvents()
