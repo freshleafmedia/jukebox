@@ -50,4 +50,14 @@ export default class TabsController
             tab.click();
         }
     }
+
+    prevTab()
+    {
+        this.goToTab(1);
+    }
+
+    nextTab()
+    {
+        this.goToTab(2);
+    }
 }

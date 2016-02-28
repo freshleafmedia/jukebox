@@ -43,7 +43,7 @@ export default class SearchController
 
     initKeyEvents() {
         $(document).keyup((event) => {
-            // Up/Down and j/k keys to navigate selecting a song
+            // Up/Down keys to navigate selecting a song
             if (event.keyCode == 40) {
                 if ($('.highlight').length) {
                     var highlighted = $('.highlight');
@@ -61,6 +61,16 @@ export default class SearchController
                     highlighted.removeClass('highlight');
                 }
                 return;
+            }
+            // Left/Right keys to navigate tabs
+            if (this.dialogIsOpen()) {
+                if (event.keyCode == 37) {
+                    this.tabsController.prevTab();
+                    $('#search').focus();
+                }
+                if (event.keyCode == 39) {
+                    this.tabsController.nextTab();
+                }
             }
             // Esc closes dialog
             if (event.keyCode == 27) {
@@ -162,6 +172,11 @@ export default class SearchController
     closeDialog()
     {
         this.dialogEl.hide();
+    }
+
+    dialogIsOpen()
+    {
+        return this.dialogEl.get(0).style.display !== 'none';
     }
 
     initClickEvents()
