@@ -31,6 +31,8 @@ io.on('connection', function(socket){
 	var mostPlayed = playlist.getMostPlayed();
 	socket.emit('mostPlayed', mostPlayed);
 
+	socket.emit('jukeboxState', server.state);
+
 	socket.on('addsong', function(song) {
 
 		server.addToPlaylist(song);
