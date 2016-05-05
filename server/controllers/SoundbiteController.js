@@ -1,7 +1,7 @@
 "use strict";
 
 var process = require('child_process');
-var Song = require("../song.js");
+var Soundbite = require("../soundbite.js");
 
 class SoundbiteController {
 
@@ -12,7 +12,7 @@ class SoundbiteController {
 
     play(id) {
         console.log('soundbite play command');
-        new Song({ id: id }, function(song){
+        new Soundbite({ id: id }, function(song){
             if (song.state == Song.STATUS_PLAYABLE) {
                 song.play();
             }
