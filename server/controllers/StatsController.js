@@ -31,8 +31,7 @@ class StatsController
     load()
     {
         let data = fs.readFileSync(this.statsFile).toString();
-        let loaded = JSON.parse(data);
-        this.stats = loaded.songs;
+		this.stats = JSON.parse(data).songs;
         console.log('Loaded stats');
     }
 
