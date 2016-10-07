@@ -8,7 +8,8 @@ class StatsController
     {
         this.songs = {};
         this.options = options || {};
-        this.load();
+		this.statsFile = './stats.json';
+		this.load();
     }
 
     songPlay(song)
@@ -29,7 +30,7 @@ class StatsController
 
     load()
     {
-        let data = fs.readFileSync('./stats.json').toString();
+        let data = fs.readFileSync(this.statsFile).toString();
         let loaded = JSON.parse(data);
         this.songs = loaded.songs;
         console.log('Loaded stats');
@@ -46,7 +47,7 @@ class StatsController
     save()
     {
         let toSave = { songs: this.songs };
-        fs.writeFile('./stats.json', JSON.stringify(toSave), (err) => {
+        fs.writeFile(this.statsFile, JSON.stringify(toSave), (err) => {
             if (err) {
                 console.log("Couldn't save stats: " + err.message);
                 return;
