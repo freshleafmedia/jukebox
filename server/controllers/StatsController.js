@@ -6,7 +6,7 @@ class StatsController
 
     constructor(options)
     {
-        this.songs = {};
+        this.stats = {};
         this.options = options || {};
 		this.statsFile = './stats.json';
 		this.load();
@@ -15,14 +15,14 @@ class StatsController
     songPlay(song)
     {
         this.initSong(song);
-        this.songs[song.id].plays += 1;
+        this.stats[song.id].plays += 1;
         this.onChange();
     }
 
     initSong(song)
     {
-        if (!this.songs[song.id]) {
-            this.songs[song.id] = {
+        if (!this.stats[song.id]) {
+            this.stats[song.id] = {
                 plays: 0
             };
         }
@@ -32,7 +32,7 @@ class StatsController
     {
         let data = fs.readFileSync(this.statsFile).toString();
         let loaded = JSON.parse(data);
-        this.songs = loaded.songs;
+        this.stats = loaded.songs;
         console.log('Loaded stats');
     }
 
@@ -46,7 +46,7 @@ class StatsController
 
     save()
     {
-        let toSave = { songs: this.songs };
+        let toSave = { songs: this.stats };
         fs.writeFile(this.statsFile, JSON.stringify(toSave), (err) => {
             if (err) {
                 console.log("Couldn't save stats: " + err.message);
@@ -59,9 +59,9 @@ class StatsController
     getMostPlayed()
     {
         var songArray = [];
-        for (var id in this.songs) {
-            if (this.songs.hasOwnProperty(id)) {
-                var song = this.songs[id];
+        for (var id in this.stats) {
+            if (this.stats.hasOwnProperty(id)) {
+                var song = this.stats[id];
                 songArray.push({
                     id: id,
                     plays: song.plays
