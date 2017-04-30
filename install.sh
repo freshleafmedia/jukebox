@@ -32,3 +32,15 @@ chmod a+rx /usr/local/bin/youtube-dl
 mkdir -p /var/www/vhosts/jukebox
 
 git clone https://github.com/freshleafmedia/jukebox.git /var/www/vhosts/jukebox/
+
+# Apache
+cat << 'EOF' > /etc/apache2/sites-available/jukebox.conf
+<VirtualHost *:80>
+	DocumentRoot /var/www/vhosts/jukebox
+</VirtualHost>
+EOF
+
+a2dissite 000-default
+a2ensite jukebox
+
+service apache2 reload
