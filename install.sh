@@ -12,7 +12,7 @@ fi
 
 # Install APT packages
 apt-get update
-apt-get install -y apache2 vlc
+apt-get install -y apache2 vlc-nox
 
 # Install NVM
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
