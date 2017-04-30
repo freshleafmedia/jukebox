@@ -10,10 +10,11 @@ sudo apt-get update
 sudo apt-get install -y apache2 vlc
 
 # Install NVM
-curl https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
-source ~/.nvm/nvm.sh
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
 
-nvm install v5.0
+source ~/.bashrc
+
+nvm install v7
 
 # NPM install
 npm install
