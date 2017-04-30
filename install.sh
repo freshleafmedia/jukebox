@@ -37,6 +37,8 @@ mkdir -p /var/www/vhosts/jukebox
 
 git clone https://github.com/freshleafmedia/jukebox.git /var/www/vhosts/jukebox/
 
+chown -R pi:www-data /var/www/vhosts/jukebox
+
 # Apache
 cat << 'EOF' > /etc/apache2/sites-available/jukebox.conf
 <VirtualHost *:80>
