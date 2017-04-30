@@ -10,9 +10,13 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# Add Yarn repo
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+
 # Install APT packages
 apt-get update
-apt-get install -y git apache2 vlc-nox
+apt-get install -y git apache2 vlc-nox yarn
 
 # Install NVM
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
