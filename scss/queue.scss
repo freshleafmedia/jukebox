@@ -65,7 +65,7 @@
 progress {
   display: none;
 }
-.songResult[data-state="paused"] {
+body.paused .songResult[data-state="playing"] {
   .imageWrapper img {
     -webkit-animation: rotating 6s linear infinite;
     -moz-animation: rotating 6s linear infinite;

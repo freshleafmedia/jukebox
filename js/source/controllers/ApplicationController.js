@@ -63,6 +63,7 @@ export default class ApplicationController
                 $('.media-controls button#playButton').removeClass('disabled');
                 $('.media-controls button#pauseButton').addClass('disabled');
             }
+            $('body').attr('class', state);
         });
 
         this.socket.on('songPosition', (position) => {
