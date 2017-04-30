@@ -36,7 +36,7 @@ git clone https://github.com/freshleafmedia/jukebox.git /var/www/vhosts/jukebox/
 # Apache
 cat << 'EOF' > /etc/apache2/sites-available/jukebox.conf
 <VirtualHost *:80>
-	DocumentRoot /var/www/vhosts/jukebox
+    DocumentRoot /var/www/vhosts/jukebox
 </VirtualHost>
 EOF
 
