@@ -29,6 +29,10 @@ class StatsController
 
     load()
     {
+        if(!fs.existsSync('./stats.json')) {
+            fs.writeFileSync('./stats.json', '{"songs":{}}')
+        }
+
         let data = fs.readFileSync('./stats.json').toString();
         let loaded = JSON.parse(data);
         this.songs = loaded.songs;
