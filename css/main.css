@@ -76,7 +76,7 @@ button:focus {
   z-index: 4; }
 
 /* Keyframes for animation */
-@-webkit-keyframes rotating {
+@-webkit-keyframes rotating /* Safari and Chrome */ {
   from {
     -ms-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
@@ -378,7 +378,7 @@ input#username {
 progress {
   display: none; }
 
-.songResult[data-state="paused"] .imageWrapper img {
+body.paused .songResult[data-state="playing"] .imageWrapper img {
   -webkit-animation: rotating 6s linear infinite;
   -moz-animation: rotating 6s linear infinite;
   -ms-animation: rotating 6s linear infinite;
@@ -389,7 +389,7 @@ progress {
   -ms-animation-play-state: paused;
   -o-animation-play-state: paused;
   animation-play-state: paused; }
-  .songResult[data-state="paused"] .imageWrapper img progress {
+  body.paused .songResult[data-state="playing"] .imageWrapper img progress {
     display: block; }
 
 .songResult[data-state="playing"] progress {
