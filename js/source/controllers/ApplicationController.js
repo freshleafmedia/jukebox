@@ -40,6 +40,7 @@ export default class ApplicationController
 
         this.socket.on('songRemove', (song) => {
             this.getPlaylist().removeSong(song);
+            this.updateNowPlaying('');
         });
 
         this.socket.on('songAdd', (song) => {
