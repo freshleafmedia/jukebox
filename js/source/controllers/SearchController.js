@@ -63,7 +63,7 @@ export default class SearchController
                 return;
             }
             // Left/Right keys to navigate tabs
-            if (this.dialogIsOpen()) {
+            if (this.dialogIsOpen() && !$(event.target).is('input')) {
                 if (event.keyCode == 37) {
                     this.tabsController.prevTab();
                     $('#search').focus();
