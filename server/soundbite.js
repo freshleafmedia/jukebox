@@ -9,7 +9,7 @@ class Soundbite extends Song {
 
         this.setStatus(Song.STATUS_PLAYING);
 
-        process.exec('cvlc --play-and-exit -I rc --rc-host localhost:11338 "' + this.data['_filename'] + '"', function (error, stdout, stderr) {
+        process.exec('cvlc --play-and-exit --no-volume-save "' + this.data['_filename'] + '"', function (error, stdout, stderr) {
 
                 if (error !== null) {
                         this.setStatus(Song.STATUS_PLAYING_FAILED);
