@@ -40,6 +40,7 @@ export default class ApplicationController
 
         this.socket.on('songRemove', (song) => {
             this.getPlaylist().removeSong(song);
+            this.updateNowPlaying('');
         });
 
         this.socket.on('songAdd', (song) => {
@@ -63,6 +64,7 @@ export default class ApplicationController
                 $('.media-controls button#playButton').removeClass('disabled');
                 $('.media-controls button#pauseButton').addClass('disabled');
             }
+            $('body').attr('class', state);
         });
 
         this.socket.on('songPosition', (position) => {

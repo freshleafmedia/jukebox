@@ -13,6 +13,7 @@ export default class SearchController
         this.userSetupEl = $('#user-setup');
         this.userAreaEl = $('#user-area');
         this.searchControlsEl = $('#search-controls');
+        this.debounceTimeout = null;
 
         this.initUser();
         googleApi.onInit(this.searchReady);
@@ -63,7 +64,7 @@ export default class SearchController
                 return;
             }
             // Left/Right keys to navigate tabs
-            if (this.dialogIsOpen()) {
+            if (this.dialogIsOpen() && !$(event.target).is('input')) {
                 if (event.keyCode == 37) {
                     this.tabsController.prevTab();
                     $('#search').focus();
@@ -82,9 +83,11 @@ export default class SearchController
                     $('.highlight').click();
                     return;
                 }
-                this.search($('#search').val(), (items) => {
-                    this.buildResults(items)
-                });
+                this.debounce(_ => {
+                  this.search($('#search').val(), (items) => {
+                      this.buildResults(items)
+                  });
+                }, 400);
             }
             // Keys when form input isn't focused
             if (!$(event.target).is('input')) {
@@ -204,5 +207,13 @@ export default class SearchController
     {
         console.log('Adding.. ' + song.id);
         this.socket.emit('addsong', song);
+    }
+
+    debounce(callback, delay) {
+        if (this.debounceTimeout) {
+            window.clearTimeout(this.debounceTimeout);
+            this.debounceTimeout = null;
+        }
+        this.debounceTimeout = window.setTimeout(callback, delay);
     }
 }

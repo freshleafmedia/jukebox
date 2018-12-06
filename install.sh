@@ -5,19 +5,48 @@ echo "                JUKEBOX INSTALLER"
 echo "                      v0.1.0"
 echo "-------------------------------------------------"
 
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root"
+    exit 1
+fi
+
+# Add Yarn repo
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+
 # Install APT packages
-sudo apt-get update
-sudo apt-get install -y apache2 vlc
+apt-get update
+apt-get install -y git apache2 vlc-nox yarn
 
 # Install NVM
-curl https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
-source ~/.nvm/nvm.sh
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
 
-nvm install v5.0
+source ~/.bashrc
+
+nvm install v7
 
 # NPM install
 npm install
 
 # Install Youtube DL
-sudo curl https://yt-dl.org/latest/youtube-dl -o /usr/local/bin/youtube-dl
-sudo chmod a+rx /usr/local/bin/youtube-dl
+curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
+chmod a+rx /usr/local/bin/youtube-dl
+
+# Get the code
+mkdir -p /var/www/vhosts/jukebox
+
+git clone https://github.com/freshleafmedia/jukebox.git /var/www/vhosts/jukebox/
+
+chown -R pi:www-data /var/www/vhosts/jukebox
+
+# Apache
+cat << 'EOF' > /etc/apache2/sites-available/jukebox.conf
+<VirtualHost *:80>
+    DocumentRoot /var/www/vhosts/jukebox
+</VirtualHost>
+EOF
+
+a2dissite 000-default
+a2ensite jukebox
+
+service apache2 reload

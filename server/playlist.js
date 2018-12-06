@@ -99,12 +99,7 @@ class Playlist {
 			}
 
 			// Write the songs array to the file
-			fs.writeFile(this.getPath(), JSON.stringify(this.songs), { flags: '+w' }, function (err) {
-				if (err !== null) {
-					console.error('PlAYLIST[' + this.ID + ']: Failed to write');
-					throw err;
-				}
-			}.bind(this));
+			fs.writeFileSync(this.getPath(), JSON.stringify(this.songs), { flags: '+w' });
 		}.bind(this));
 	};
 
