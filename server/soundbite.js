@@ -1,6 +1,7 @@
 'use strict';
 
 var Song = require('./song.js');
+var process = require('child_process');
 
 class Soundbite extends Song {
 
