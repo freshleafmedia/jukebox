@@ -12,9 +12,9 @@ class SoundbiteController {
 
     play(id) {
         console.log('soundbite play command');
-        new Soundbite({ id: id }, function(song){
-            if (song.state == Song.STATUS_PLAYABLE) {
-                song.play();
+        new Soundbite({ id: id }, function(soundbite){
+            if (soundbite.state == Soundbite.STATUS_PLAYABLE) {
+                soundbite.play();
             }
         }, this.options);
     }
