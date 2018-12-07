@@ -85,7 +85,7 @@ class Song {
 
 		this.setStatus(Song.STATUS_PLAYING);
 
-		process.exec('cvlc --play-and-exit -I rc --rc-host localhost:11337 "' + this.data['_filename'] + '"', function (error, stdout, stderr) {
+		process.exec('cvlc --play-and-exit -A alsa --alsa-audio-device sysdefault:CARD=PCH --volume-save -I rc --rc-host localhost:11337 "' + this.data['_filename'] + '"', function (error, stdout, stderr) {
 
 			if (error !== null) {
 				this.setStatus(Song.STATUS_PLAYING_FAILED);
