@@ -13,7 +13,7 @@ var livereload = require('gulp-livereload');
 
 var paths = {
     sass: 'scss/*.scss',
-    javascript: 'js/source/**/*.js'
+    javascript: 'js/**/*.js'
 };
 
 var dest = {
@@ -24,18 +24,27 @@ var dest = {
 
 // Basic usage
 gulp.task('scripts', function() {
-    browserify('./js/source/app.js', { debug: true })
+    return browserify('./js/app.js', { debug: true })
         .transform("babelify", { presets: ["es2015"] })
         .bundle()
-        .pipe(source('app.min.js'))
+        .pipe(source('../public/js/app.min.js'))
         //.pipe(uglify())
         .pipe(gulp.dest(dest.javascript))
         .pipe(notify({title: "Browserify complete", message: "All of the shiny things!!"}))
         .pipe(livereload());
 });
 
+gulp.task('publish', function () {
+    gulp.src('./node_modules/socket\.io-client/dist/socket.io.js')
+        .pipe(gulp.dest('./../public/js/test.js'))
+        .on('error', notify.onError({
+            message: "Error: <%= error.message %>",
+            title: "Gulp SASS failed"
+        }));
+});
+
 gulp.task('sass', function() {
-    return gulp.src('scss/main.scss')
+    return gulp.src('./scss/main.scss')
         .pipe(sass())
         .on('error', notify.onError({
             message: "Error: <%= error.message %>",

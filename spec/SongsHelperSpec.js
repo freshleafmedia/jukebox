@@ -1,7 +1,7 @@
 "use strict";
 
 describe("SongsHelper", function() {
-  var songHelper = require('../js/source/helpers/songs');
+  var songHelper = require('../client/js/source/helpers/songs');
   var prettyTime;
 
   beforeEach(function() {

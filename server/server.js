@@ -7,9 +7,9 @@ var JukeBox = require("./jukebox.js");
 // Define the server options
 var options = {
 	paths: {
-		cache: 'cache',
-		playlists: 'playlists',
-		logs: 'logs'
+		cache: __dirname + '/cache',
+		playlists: __dirname + '/playlists',
+		logs: __dirname + '/logs'
 	}
 };
 

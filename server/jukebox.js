@@ -19,13 +19,13 @@ class JukeBox {
 			this.options.paths = {};
 		}
 		if (typeof this.options.paths.playlists === 'undefined') {
-			this.options.paths.playlists = './playlists';
+			this.options.paths.playlists = __dirname + '/playlists';
 		}
 		if (typeof this.options.paths.cache === 'undefined') {
-			this.options.paths.cache = './cache';
+			this.options.paths.cache = __dirname + '/cache';
 		}
 		if (typeof this.options.paths.logs === 'undefined') {
-			this.options.paths.cache = './logs';
+			this.options.paths.cache = __dirname + '/logs';
 		}
 
 		this.loadPlaylist(0);

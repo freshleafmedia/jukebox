@@ -10,7 +10,8 @@ services:
             - "3000:3000"
             - "5858:5858"
         volumes:
-            - ./:/var/www/html
+            - ./:/home/jukebox/jukebox
+            - ./client/public:/var/www/html
             - /dev/snd:/dev/snd
             - /etc/machine-id:/etc/machine-id
             - /run/user/1000/pulse:/run/user/1000/pulse

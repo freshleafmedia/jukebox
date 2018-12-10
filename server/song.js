@@ -55,7 +55,7 @@ class Song {
 
 		this.setStatus(Song.STATUS_DOWNLOADING);
 
-		process.execFile('./download.sh', [ this.id, this.options.paths.cache, this.options.paths.logs ], function (error, stdout, stderr) {
+		process.execFile(__dirname + '/download.sh', [ this.id, this.options.paths.cache, this.options.paths.logs ], function (error, stdout, stderr) {
 			if (error !== null) {
 				console.error(error);
 
@@ -64,7 +64,7 @@ class Song {
 			}
 
 			// Read the info JSON file that should've been generated
-			fs.readFile('./cache/' + this.id + '.info.json', function (err, f) {
+			fs.readFile(__dirname + '/cache/' + this.id + '.info.json', function (err, f) {
 
 				if (err !== null) {
 					this.setStatus(Song.STATUS_DOWNLOAD_FAILED);
