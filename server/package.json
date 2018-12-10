@@ -1,0 +1,16 @@
+{
+  "name": "jukebox-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^1.3.7"
+  },
+  "devDependencies": {
+  },
+  "engines": {
+    "node": ">=5.0"
+  }
+}

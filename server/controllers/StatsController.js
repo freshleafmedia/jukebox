@@ -29,11 +29,11 @@ class StatsController
 
     load()
     {
-        if(!fs.existsSync('./stats.json')) {
-            fs.writeFileSync('./stats.json', '{"songs":{}}')
+        if(!fs.existsSync(__dirname + '/../stats.json')) {
+            fs.writeFileSync(__dirname + '/../stats.json', '{"songs":{}}')
         }
 
-        let data = fs.readFileSync('./stats.json').toString();
+        let data = fs.readFileSync(__dirname + '/../stats.json').toString();
         let loaded = JSON.parse(data);
         this.songs = loaded.songs;
         console.log('Loaded stats');
@@ -50,7 +50,7 @@ class StatsController
     save()
     {
         let toSave = { songs: this.songs };
-        fs.writeFile('./stats.json', JSON.stringify(toSave), (err) => {
+        fs.writeFile(__dirname + '/../stats.json', JSON.stringify(toSave), (err) => {
             if (err) {
                 console.log("Couldn't save stats: " + err.message);
                 return;
