@@ -1,10 +1,20 @@
-jukebox:
-    container_name: jukebox
-    build: ./docker/jukebox
-    privileged: true
-    ports:
-        - "8080:80"
-        - "3000:3000"
-        - "5858:5858"
-    volumes:
-        - ./:/var/www/html
+version: '2'
+
+services:
+    jukebox:
+        container_name: jukebox
+        build: ./docker/jukebox
+        privileged: true
+        ports:
+            - "8080:80"
+            - "3000:3000"
+            - "5858:5858"
+        volumes:
+            - ./:/var/www/html
+            - /dev/snd:/dev/snd
+            - /etc/machine-id:/etc/machine-id
+            - /run/user/1000/pulse:/run/user/1000/pulse
+            - ~/.pulse:/home/jukebox/.pulse
+            - /tmp:/tmp
+        environment:
+            - DISPLAY=unix${DISPLAY}
