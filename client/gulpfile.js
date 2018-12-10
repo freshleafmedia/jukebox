@@ -17,8 +17,8 @@ var paths = {
 };
 
 var dest = {
-    css: 'css',
-    javascript: 'js'
+    css: 'public/css',
+    javascript: 'public/js'
 };
 
 
@@ -27,7 +27,7 @@ gulp.task('scripts', function() {
     return browserify('./js/app.js', { debug: true })
         .transform("babelify", { presets: ["es2015"] })
         .bundle()
-        .pipe(source('../public/js/app.min.js'))
+        .pipe(source('../../public/js/app.min.js'))
         //.pipe(uglify())
         .pipe(gulp.dest(dest.javascript))
         .pipe(notify({title: "Browserify complete", message: "All of the shiny things!!"}))
@@ -35,8 +35,8 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('publish', function () {
-    gulp.src('./node_modules/socket\.io-client/dist/socket.io.js')
-        .pipe(gulp.dest('./../public/js/test.js'))
+    gulp.src('./node_modules/socket.io-client/dist/socket.io.min.js')
+        .pipe(gulp.dest(dest.javascript))
         .on('error', notify.onError({
             message: "Error: <%= error.message %>",
             title: "Gulp SASS failed"
@@ -76,4 +76,4 @@ function swallowError (error) {
     this.emit('end');
 }
 
-gulp.task('default', ['sass', 'scripts', 'watch']);
+gulp.task('default', ['sass', 'scripts', 'publish', 'watch']);
