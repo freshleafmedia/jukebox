@@ -1,0 +1,144 @@
+//Variables
+
+$blue: #227fde;
+$green: #6bc874;
+$pacifico: 'Pacifico', cursive;
+
+//Core styles
+
+body {
+  //background: url(../images/planks.jpg) no-repeat center top;
+  //background-attachment: fixed;
+  //background-size: cover;
+  //background-blend-mode: hard-light;
+  //background-color: #227fde;
+  background: none;
+  font-family: 'Nunito', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+#background {
+  position: fixed;
+  background: url(../images/jukebox.png) no-repeat center top;
+  //background-attachment: fixed;
+  background-size: cover;
+  background-blend-mode: hard-light;
+  background-color: #666;
+  top: -5%;
+  left: -5%;
+  height: 110%;
+  width: 110%;
+  -webkit-filter: blur(30px);
+  -moz-filter: blur(30px);
+  -o-filter: blur(30px);
+  -ms-filter: blur(30px);
+  filter: blur(30px);
+}
+#wrapper {
+  overflow: hidden;
+ width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  z-index: 1;
+  position: relative;
+  padding-bottom: 50px;
+  min-height: 700px;
+}
+img {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+
+/* Button styles */
+
+button {
+  cursor: pointer;
+}
+button:focus {
+  outline: none;
+}
+
+/* Footer */
+
+#footer {
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  width: 100%;
+  line-height: 2em;
+  font-family: $pacifico;
+  left:0;
+  color: #fff;
+}
+.github-icon {
+  position: fixed;
+  bottom: 5px;
+  display: none;
+  right: 5px;
+  width: 40px;
+  cursor: pointer;
+  height: 40px;
+  background-color: #333;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-image: url(../images/github.png);
+}
+.github-banner img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  margin-right:0;
+  z-index: 4;
+}
+
+/* Keyframes for animation */
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@import "header";
+@import "mediaControls";
+@import "dialog";
+@import "search";
+@import "mostPlayed";
+@import "users";
+@import "queue";
+@import "playlists";
+@import "soundbites";
+
+.toBeBuilt {
+  opacity: 0.1 !important;
+}
