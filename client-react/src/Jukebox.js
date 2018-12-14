@@ -26,49 +26,6 @@ class Jukebox extends Component {
                     <Queue/>
                 </div>
 
-                <div className="playlists toBeBuilt">
-                    <div className="playlist-item">
-                        <span className="number">Q</span>
-                        <p className="name">The Request list</p>
-                    </div>
-                    <div className="playlist-item">
-                        <span className="number">1</span>
-                        <p className="name">The Awesome playlist</p>
-                    </div>
-                    <div className="playlist-item">
-                        <span className="number">2</span>
-                        <p className="name">The Awesome playlist</p>
-                    </div>
-                    <div className="playlist-item">
-                        <span className="number">3</span>
-                        <p className="name">The Awesome playlist</p>
-                    </div>
-                    <div className="playlist-item">
-                        <span className="number">4</span>
-                        <p className="name">The Awesome playlist</p>
-                    </div>
-                    <div className="playlist-item">
-                        <span className="number">5</span>
-                        <p className="name">The Awesome playlist</p>
-                    </div>
-                    <div className="playlist-item">
-                        <span className="number">6</span>
-                        <p className="name">The Awesome playlist</p>
-                    </div>
-                    <div className="playlist-item">
-                        <span className="number">7</span>
-                        <p className="name">The Awesome playlist</p>
-                    </div>
-                    <div className="playlist-item">
-                        <span className="number">8</span>
-                        <p className="name">The Awesome playlist</p>
-                    </div>
-                    <div className="playlist-item">
-                        <span className="number">9</span>
-                        <p className="name">The Awesome playlist</p>
-                    </div>
-
-                </div>
                 <section id="footer">Lovingly Crafted by Team Freshleaf</section>
             </div>
         );
