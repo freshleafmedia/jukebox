@@ -33,7 +33,7 @@ class SongSearch extends Component {
 
         const searchTerm = e.value;
 
-        fetch("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&key=AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I&q="+searchTerm)
+        fetch("https://www.googleapis.com/youtube/v3/search?type=video&part=snippet&maxResults=25&key=AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I&q="+searchTerm)
             .then(response => response.json())
             .then(response => this.parseResults(response.items));
     }
