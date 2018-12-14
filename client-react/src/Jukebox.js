@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Queue from "./Queue";
+import SongSearch from "./SongSearch";
 
 class Jukebox extends Component {
 
@@ -78,7 +79,7 @@ class Jukebox extends Component {
                 <header>
                     <div className="masthead">
                         <h1>Freshleaf Jukebox</h1>
-                        <button className="btn" id="addButton">Add Song</button>
+                        <SongSearch />
                     </div>
                     <div className="media-controls">
                         <button onClick={this.mediaControlClick} className="btn media disabled" data-action="prev" id="rewindButton"></button>
