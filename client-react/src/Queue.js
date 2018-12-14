@@ -4,7 +4,7 @@ import Song from "./Song";
 class Queue extends Component {
     render() {
         const songElements = this.props.songs.map(song => {
-            return <Song key={song.id} id={song.id} title={song.title} addedBy={song.addedBy} duration={song.duration} playState={song.playState}/>
+            return <Song key={song.id} id={song.id} title={song.title} addedBy={song.addedBy} duration={song.duration} playState={song.playState} secondsElapsed={song.secondsElapsed}/>
         });
 
         return (

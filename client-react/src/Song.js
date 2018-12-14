@@ -1,36 +1,9 @@
 import React, { Component } from 'react';
 
 class Song extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            secondsElapsed: 0,
-        };
-    }
-
-    componentDidMount() {
-        this.timerID = setInterval(
-            () => this.tick(),
-            1000
-        );
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.timerID);
-    }
-
-    tick() {
-        if (this.props.playState === 'playing') {
-            this.setState((state, props) => ({
-                secondsElapsed: state.secondsElapsed + 1
-            }));
-        }
-    }
-
     getDurationInSeconds() {
         let duration = this.props.duration;
 
-        console.log(duration);
         if (typeof duration === 'undefined') {
             return null;
         }
@@ -43,8 +16,7 @@ class Song extends Component {
         return (hours * 3600) + (minutes * 60) + seconds;
     }
 
-    prettyDuration()
-    {
+    prettyDuration() {
         const durationSeconds = this.getDurationInSeconds();
 
         const hours = Math.floor(durationSeconds / 3600);
@@ -87,7 +59,7 @@ class Song extends Component {
                     <p className="title">
                         {this.props.title}
                     </p>
-                    <progress max={this.getDurationInSeconds()} value={this.state.secondsElapsed}></progress>
+                    <progress max={this.getDurationInSeconds()} value={this.props.secondsElapsed}></progress>
                 </div>
                 {this.props.addedBy ? <p className="username">{this.props.addedBy}</p>:null }
                 {typeof this.props.duration !== 'undefined' ? <p className="duration">{this.prettyDuration()}</p>:null }

@@ -31,6 +31,20 @@ class Jukebox extends Component {
             })
         });
 
+        this.socket.on('songPosition', position => {
+            const songs = this.state.songs.map(song => {
+                if (song.playState === 'playing') {
+                    song.secondsElapsed = position;
+                }
+
+                return song;
+            });
+
+            this.setState({
+                songs: songs,
+            })
+        });
+
         this.mediaControlClick = this.mediaControlClick.bind(this);
     }
 
