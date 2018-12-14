@@ -31,6 +31,22 @@ class Jukebox extends Component {
             })
         });
 
+        this.socket.on('jukeboxState', newState => {
+            const oppositeState = newState === 'playing' ? 'paused':'playing';
+
+            const songs = this.state.songs.map(song => {
+                if (song.playState === oppositeState) {
+                    song.playState = newState;
+                }
+
+                return song;
+            });
+
+            this.setState({
+                songs: songs,
+            })
+        });
+
         this.socket.on('songPosition', position => {
             const songs = this.state.songs.map(song => {
                 if (song.playState === 'playing') {
