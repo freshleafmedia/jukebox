@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Queue from "./Queue";
 import SongSearch from "./SongSearch";
 import openSocket from 'socket.io-client';
+import MediaControls from "./MediaControls";
 
 class Jukebox extends Component {
 
@@ -61,50 +62,27 @@ class Jukebox extends Component {
             })
         });
 
+        this.socket.on('songRemove', removedSong => {
+            const songs = this.state.songs.filter(song => {
+                return song.id !== removedSong.id;
+            });
+
+            this.setState({
+                songs: songs,
+            })
+        });
+
+        this.socket.on('songStatus', (song) => {
+            console.log(song);
+        });
+
         this.mediaControlClick = this.mediaControlClick.bind(this);
     }
 
     mediaControlClick(e) {
         const action = e.target.dataset.action;
 
-        switch (action) {
-            case 'play':
-                this.play();
-                break;
-            case 'pause':
-                this.pause();
-                break;
-        }
-    }
-
-    play() {
-        const pausedSongs = this.state.songs.map(song => {
-            if (song.playState === 'paused') {
-                song.playState = 'playing'
-            }
-
-            return song;
-        });
-
-        this.setState({
-            playState: 'playing',
-            songs: pausedSongs,
-        })
-    }
-
-    pause() {
-        const pausedSongs = this.state.songs.map(song => {
-            if (song.playState === 'playing') {
-                song.playState = 'paused'
-            }
-
-            return song;
-        });
-
-        this.setState({
-            playState: 'paused',
-            songs: pausedSongs,
-        })
+        this.socket.emit('control', action);
     }
 
     render() {
@@ -115,14 +93,7 @@ class Jukebox extends Component {
                         <h1>Freshleaf Jukebox</h1>
                         <SongSearch />
                     </div>
-                    <div className="media-controls">
-                        <button onClick={this.mediaControlClick} className="btn media disabled" data-action="prev" id="rewindButton"></button>
-                        <button onClick={this.mediaControlClick} className={'btn media ' + (this.state.playState === 'playing' ? 'disabled':'')} data-action="play" id="playButton"></button>
-                        <button onClick={this.mediaControlClick} className={'btn media ' + (this.state.playState === 'paused' ? 'disabled':'')} data-action="pause" id="pauseButton"></button>
-                        <button onClick={this.mediaControlClick} className="btn media disabled" data-action="voldown" id="voldownButton"></button>
-                        <button onClick={this.mediaControlClick} className="btn media disabled" data-action="volup" id="volupButton"></button>
-                        <button onClick={this.mediaControlClick} className="btn media disabled" data-action="next" id="forwardButton"></button>
-                    </div>
+                    <MediaControls onClick={this.mediaControlClick} songs={this.state.songs}/>
                 </header>
 
                 <div className="queue">

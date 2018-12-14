@@ -19,6 +19,7 @@
   background-repeat: no-repeat;
   background-color: $blue;
   transition: background 0.3s linear;
+  margin: 0 2px;
   &.active,
   &:hover {
     background-color: $green;
