@@ -9,13 +9,15 @@ class SongSearch extends Component {
         super(props);
 
         this.state = {
-            modalIsOpen: false
+            modalIsOpen: false,
+            results: [],
         };
 
         this.openModal = this.openModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.search = this.search.bind(this);
+        this.loadAdditionalDetails = this.loadAdditionalDetails.bind(this);
     }
 
     openModal() {
@@ -33,22 +35,58 @@ class SongSearch extends Component {
 
         const searchTerm = e.value;
 
-        fetch("https://www.googleapis.com/youtube/v3/search?type=video&part=snippet&maxResults=25&key=AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I&q="+searchTerm)
+        fetch("https://www.googleapis.com/youtube/v3/search?type=video,contentDetails&part=snippet&maxResults=25&key=AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I&q="+searchTerm)
             .then(response => response.json())
-            .then(response => this.parseResults(response.items));
+            .then(response => {
+
+                const results = response.items.map(item => {
+                    return {
+                        id: item.id.videoId,
+                        title: item.snippet.title,
+                    }
+                });
+
+                this.setState({
+                    results: results,
+                });
+
+                this.loadAdditionalDetails();
+            })
+            .catch(e => {
+                console.error(e);
+            });
     }
 
-    parseResults(results) {
-        const resultElements = results.map(result => {
-            return <Song key={result.id.videoId} id={result.id.videoId} title={result.snippet.title} />
-        });
+    loadAdditionalDetails() {
+        const ids = this.state.results.map(result => result.id);
 
-        this.setState({
-            results: resultElements,
-        })
+        fetch("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&maxResults=25&key=AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I&id="+ids.join(','))
+            .then(response => response.json())
+            .then(response => {
+
+                const detailedResults = this.state.results.map(result => {
+                    const details = response.items.find(item => item.id === result.id).contentDetails;
+
+                    result.duration = details.duration;
+
+                    return result;
+                });
+
+                this.setState({
+                    results: detailedResults,
+                })
+            })
+            .catch(e => {
+                console.error(e);
+            });
+
     }
 
     render() {
+        const resultElements = this.state.results.map(result => {
+            return <Song key={result.id} id={result.id} title={result.title} duration={result.duration} />
+        });
+
         return (
             <div>
                 <button className="btn" id="addButton" onClick={this.openModal}>Add Song</button>
@@ -67,7 +105,7 @@ class SongSearch extends Component {
                                 <input type="text" id="search" onInput={this.search} autoFocus={true}/>
                             </div>
                             <div id="search-container">
-                                {this.state.results}
+                                {resultElements}
                             </div>
                         </div>
                     </div>
