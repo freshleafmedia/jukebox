@@ -53,7 +53,7 @@ class Song extends Component {
         return (
             <div className="songResult" id={'song-' + this.props.id} data-state={this.props.playState}>
                 <div className="imageWrapper">
-                    <img src={'https://i.ytimg.com/vi/' + this.props.id + '/mqdefault.jpg'} />
+                    <img src={'https://i.ytimg.com/vi/' + this.props.id + '/mqdefault.jpg'} alt={this.props.title} />
                 </div>
                 <div className="contentWrapper">
                     <p className="title">
