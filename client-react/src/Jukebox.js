@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Queue from "./Queue";
 import SongSearch from "./SongSearch";
+import openSocket from 'socket.io-client';
 
 class Jukebox extends Component {
 
@@ -9,23 +10,26 @@ class Jukebox extends Component {
 
         this.state = {
             playState: 'playing',
-            songs: [
-                {
-                    id: '6aheloAA-TA',
-                    title: 'Thomas',
-                    addedBy: 'Alpha',
-                    duration: 'PT100S',
-                    playState: 'playing',
-                },
-                {
-                    id: 'ZVxkKpkoN38',
-                    title: 'Thomas II',
-                    addedBy: 'Bravo',
-                    duration: 'PT60S',
-                    playState: 'playable',
-                },
-            ],
+            songs: [],
         };
+
+        this.socket = openSocket('//:3000');
+
+        this.socket.on('playlist', playlistData => {
+            const songs = playlistData.songs.map(song => {
+                return {
+                    id: song.id,
+                    title: song.data.title,
+                    addedBy: song.username,
+                    duration: 'PT' + song.data.duration + 'S',
+                    playState: song.state,
+                }
+            });
+
+            this.setState({
+                songs: songs,
+            })
+        });
 
         this.mediaControlClick = this.mediaControlClick.bind(this);
     }
