@@ -77,6 +77,7 @@ class Jukebox extends Component {
         });
 
         this.mediaControlClick = this.mediaControlClick.bind(this);
+        this.addSong = this.addSong.bind(this);
     }
 
     mediaControlClick(e) {
@@ -85,13 +86,17 @@ class Jukebox extends Component {
         this.socket.emit('control', action);
     }
 
+    addSong(songId) {
+        this.socket.emit('addsong', {id: songId});
+    }
+
     render() {
         return (
             <div id="wrapper">
                 <header>
                     <div className="masthead">
                         <h1>Freshleaf Jukebox</h1>
-                        <SongSearch />
+                        <SongSearch resultSelect={this.addSong} />
                     </div>
                     <MediaControls onClick={this.mediaControlClick} songs={this.state.songs}/>
                 </header>

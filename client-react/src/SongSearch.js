@@ -18,6 +18,7 @@ class SongSearch extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.search = this.search.bind(this);
         this.loadAdditionalDetails = this.loadAdditionalDetails.bind(this);
+        this.resultClick = this.resultClick.bind(this);
     }
 
     openModal() {
@@ -79,7 +80,12 @@ class SongSearch extends Component {
             .catch(e => {
                 console.error(e);
             });
+    }
 
+    resultClick(e) {
+        const songId = e.target.closest('.songResult').getAttribute('id').replace('song-', '');
+
+        this.props.resultSelect(songId);
     }
 
     render() {
@@ -104,7 +110,7 @@ class SongSearch extends Component {
                                 <strong>Search YouTube </strong>
                                 <input type="text" id="search" onInput={this.search} autoFocus={true}/>
                             </div>
-                            <div id="search-container">
+                            <div id="search-container" onClick={this.resultClick}>
                                 {resultElements}
                             </div>
                         </div>
