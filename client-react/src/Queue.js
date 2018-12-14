@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import Song from "./Song";
 
 class Queue extends Component {
-    render(props) {
+    render() {
+        const songElements = this.props.songs.map(song => {
+            return <Song key={song.id} id={song.id} title={song.title} addedBy={song.addedBy} duration={song.duration} playState={song.playState}/>
+        });
+
         return (
             <div className="queue-container">
-                <Song id='6aheloAA-TA' title='Thomas' addedBy='Alpha' duration='100' state='playing'/>
+                {songElements}
             </div>
         );
     }

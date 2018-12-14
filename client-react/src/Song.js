@@ -5,7 +5,6 @@ class Song extends Component {
         super(props);
         this.state = {
             secondsElapsed: 0,
-            playState: 'PLAYING',
         };
     }
 
@@ -21,7 +20,7 @@ class Song extends Component {
     }
 
     tick() {
-        if (this.state.playState === 'PLAYING') {
+        if (this.props.playState === 'playing') {
             this.setState((state, props) => ({
                 secondsElapsed: state.secondsElapsed + 1
             }));
@@ -30,7 +29,7 @@ class Song extends Component {
 
     render() {
         return (
-            <div className="songResult" id={'song-' + this.props.id} data-state={this.props.state}>
+            <div className="songResult" id={'song-' + this.props.id} data-state={this.props.playState}>
                 <div className="imageWrapper">
                     <img src={'https://i.ytimg.com/vi/' + this.props.id + '/mqdefault.jpg'} />
                 </div>
