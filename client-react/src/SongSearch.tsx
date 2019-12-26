@@ -5,6 +5,14 @@ import Song from "./Song";
 Modal.setAppElement('#root');
 
 class SongSearch extends Component {
+    public props: {
+        resultSelect: Function
+    };
+    public state: {
+        results: {id: string, duration: string, title: string}[],
+        modalIsOpen: boolean,
+    };
+
     constructor(props) {
         super(props);
 
@@ -32,11 +40,9 @@ class SongSearch extends Component {
         this.setState({modalIsOpen: false});
     }
 
-    search(e) {
+    search(term: string) {
 
-        const searchTerm = e.value;
-
-        fetch("https://www.googleapis.com/youtube/v3/search?type=video,contentDetails&part=snippet&maxResults=25&key=AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I&q="+searchTerm)
+        fetch("https://www.googleapis.com/youtube/v3/search?type=video,contentDetails&part=snippet&maxResults=25&key=AIzaSyAb6cFueDaWaZkNE6iEpYSHGj31k7aFiFg&q="+term)
             .then(response => response.json())
             .then(response => {
 
@@ -61,7 +67,7 @@ class SongSearch extends Component {
     loadAdditionalDetails() {
         const ids = this.state.results.map(result => result.id);
 
-        fetch("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&maxResults=25&key=AIzaSyC5ZNaxUE7HwOxi6r5xMq9aeRlUVdJXU7I&id="+ids.join(','))
+        fetch("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&maxResults=25&key=AIzaSyAb6cFueDaWaZkNE6iEpYSHGj31k7aFiFg&id="+ids.join(','))
             .then(response => response.json())
             .then(response => {
 
@@ -108,7 +114,7 @@ class SongSearch extends Component {
                         <div id="search-controls">
                             <div className="search-header">
                                 <strong>Search YouTube </strong>
-                                <input type="text" id="search" onInput={this.search} autoFocus={true}/>
+                                <input type="text" id="search" onInput={e => this.search(e.currentTarget.value)} autoFocus={true}/>
                             </div>
                             <div id="search-container" onClick={this.resultClick}>
                                 {resultElements}

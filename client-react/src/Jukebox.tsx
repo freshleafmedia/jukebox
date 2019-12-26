@@ -3,10 +3,13 @@ import Queue from "./Queue";
 import SongSearch from "./SongSearch";
 import openSocket from 'socket.io-client';
 import MediaControls from "./MediaControls";
+import Song from "./Song";
 
 class Jukebox extends Component {
+    protected socket: SocketIOClient.Socket;
+    public state: {playState: string, songs: Song[]};
 
-    constructor(props) {
+    constructor(props: []) {
         super(props);
 
         this.state = {
@@ -16,8 +19,8 @@ class Jukebox extends Component {
 
         this.socket = openSocket('//:3000');
 
-        this.socket.on('playlist', playlistData => {
-            const songs = playlistData.songs.map(song => {
+        this.socket.on('playlist', (playlistData: any) => {
+            const songs = playlistData.songs.map((song: any) => {
                 return {
                     id: song.id,
                     title: song.data.title,
@@ -32,10 +35,10 @@ class Jukebox extends Component {
             })
         });
 
-        this.socket.on('jukeboxState', newState => {
+        this.socket.on('jukeboxState', (newState: string) => {
             const oppositeState = newState === 'playing' ? 'paused':'playing';
 
-            const songs = this.state.songs.map(song => {
+            const songs = this.state.songs.map((song: any) => {
                 if (song.playState === oppositeState) {
                     song.playState = newState;
                 }
@@ -48,8 +51,8 @@ class Jukebox extends Component {
             })
         });
 
-        this.socket.on('songPosition', position => {
-            const songs = this.state.songs.map(song => {
+        this.socket.on('songPosition', (position: number) => {
+            const songs = this.state.songs.map((song: any) => {
                 if (song.playState === 'playing') {
                     song.secondsElapsed = position;
                 }
@@ -62,8 +65,8 @@ class Jukebox extends Component {
             })
         });
 
-        this.socket.on('songRemove', removedSong => {
-            const songs = this.state.songs.filter(song => {
+        this.socket.on('songRemove', (removedSong: any) => {
+            const songs = this.state.songs.filter((song: any) => {
                 return song.id !== removedSong.id;
             });
 
@@ -72,7 +75,7 @@ class Jukebox extends Component {
             })
         });
 
-        this.socket.on('songStatus', (song) => {
+        this.socket.on('songStatus', (song: Song) => {
             console.log(song);
         });
 

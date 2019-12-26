@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 
 class Song extends Component {
+    public props: {
+        id: string,
+        title: string,
+        addedBy?: string,
+        duration: string,
+        playState?: string,
+        secondsElapsed?: number,
+    };
+
     getDurationInSeconds() {
         let duration = this.props.duration;
 
