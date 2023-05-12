@@ -3,6 +3,8 @@ Description=Jukebox Queue Worker
 
 [Service]
 Type=simple
+User={{ UID }}
+Group={{ UID }}
 WorkingDirectory={{ PWD }}
 ExecStart=php artisan queue:work --timeout 300
 Restart=on-failure

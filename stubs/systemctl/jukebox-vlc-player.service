@@ -3,6 +3,8 @@ Description=Jukebox VLC Player
 
 [Service]
 Type=simple
+User={{ UID }}
+Group={{ UID }}
 WorkingDirectory={{ PWD }}
 ExecStart=php artisan run-vlc-player
 Restart=on-failure
