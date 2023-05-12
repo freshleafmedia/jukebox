@@ -29,3 +29,7 @@ yarn-error.log
 # Dependencies
 /node_modules/
 /vendor/
+
+# Octane
+rr
+.rr.yaml
