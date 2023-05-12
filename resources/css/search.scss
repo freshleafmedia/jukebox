@@ -1,0 +1,93 @@
+//Search
+
+#addDialog {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 20px;
+  padding: 0px;
+}
+#addDialogClose {
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+}
+.search-container {
+  padding-top: 20px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 6;
+  cursor: pointer;
+}
+.overlay-wrapper{
+  position: relative;
+  z-index: 7;
+  background: #fff;
+  border-radius: 10px;
+  padding: 40px 40px 20px;
+
+}
+.search-header {
+  width: 100%;
+  border-bottom: 1px solid #00aced;
+  padding-bottom: 40px;
+}
+input#search {
+  width: 75%;
+  margin-left: 2%;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid #e7466f;
+  font-size: 16px;
+  text-indent: 20px;
+}
+#search-container {
+  padding-top: 20px;
+    .inqueue {
+        background: lightgreen;
+        pointer-events: none;
+        cursor: pointer;
+    }
+
+    .songResult[data-state="downloading"],
+    .songResult[data-state="download_required"] {
+        opacity: 1;
+    }
+
+    .songResult .status {
+        display: none;
+    }
+
+}
+.highlight {
+  border-right: 5px solid #227fde;
+}
+#addDialogClose {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #227fde;
+  font-family: 'Pacifico', cursive;
+  line-height: 40px;
+  color: #fff;
+  padding: 0;
+  transition: background 0.3s linear;
+  &:hover {
+    background-color: #6bc874;
+  }
+}
+#search-container .songResult {
+  cursor: pointer;
+}
