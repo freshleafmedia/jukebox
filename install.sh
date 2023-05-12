@@ -12,7 +12,7 @@ fi
 
 # Install APT packages
 apt-get install -y software-properties-common
-add-apt-repository ppa:ondrej/php
+add-apt-repository -y ppa:ondrej/php
 apt-get update
 apt-get install -y vlc ffmpeg php8.2 php8.2-sqlite git unzip
 
