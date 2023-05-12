@@ -2,7 +2,7 @@
 
 echo "-------------------------------------------------"
 echo "                JUKEBOX INSTALLER"
-echo "                      v1.0.0"
+echo "                      v2.0.0"
 echo "-------------------------------------------------"
 
 if [ "$EUID" -ne 0 ]; then
@@ -11,8 +11,10 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Install APT packages
+apt-get install -y software-properties-common
+add-apt-repository ppa:ondrej/php
 apt-get update
-apt-get install -y vlc ffmpeg
+apt-get install -y vlc ffmpeg php8.2 php8.2-sqlite
 
 # Install Yt-dlp
 curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux -o /usr/local/bin/yt-dlp
