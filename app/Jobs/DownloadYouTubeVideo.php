@@ -34,7 +34,7 @@ class DownloadYouTubeVideo implements ShouldQueue
 
         if (Storage::disk('songs')->exists($this->song->youtube_id) === false) {
             Process::forever()
-                ->run('/tmp/yt-dlp_linux --no-overwrites --extract-audio --audio-format mp3 --format bestaudio* --paths ' . Storage::disk('songs')->path('') . ' --output ' . $this->song->youtube_id . ' -- ' . $this->song->youtube_id)
+                ->run('yt-dlp --no-overwrites --extract-audio --audio-format mp3 --format bestaudio* --paths ' . Storage::disk('songs')->path('') . ' --output ' . $this->song->youtube_id . ' -- ' . $this->song->youtube_id)
                 ->throw();
 
             Storage::disk('songs')->move($this->song->youtube_id . '.mp3', $this->song->youtube_id);
