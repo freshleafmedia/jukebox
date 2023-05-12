@@ -3,8 +3,6 @@ Description=Jukebox HTTP server
 
 [Service]
 Type=simple
-User={{ UID }}
-Group={{ UID }}
 WorkingDirectory={{ PWD }}
 ExecStart=php artisan octane:start
 Restart=on-failure
