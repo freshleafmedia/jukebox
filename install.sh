@@ -53,19 +53,19 @@ fi
 
 # Install services
 sudo sed -i "s|{{ PWD }}|${__DIR__}|g" "${__DIR__}/stubs/systemctl/jukebox-queue-worker.service"
-sudo sed "s|{{ UID }}|${UID}|g" "${__DIR__}/stubs/systemctl/jukebox-queue-worker.service"
+sudo sed -i "s|{{ UID }}|${UID}|g" "${__DIR__}/stubs/systemctl/jukebox-queue-worker.service"
 sudo cp "${__DIR__}/stubs/systemctl/jukebox-queue-worker.service" /etc/systemd/system/
 
 sudo sed -i "s|{{ PWD }}|${__DIR__}|g" "${__DIR__}/stubs/systemctl/jukebox-server-artisan.service"
-sudo sed "s|{{ UID }}|${UID}|g" "${__DIR__}/stubs/systemctl/jukebox-server-artisan.service"
+sudo sed -i "s|{{ UID }}|${UID}|g" "${__DIR__}/stubs/systemctl/jukebox-server-artisan.service"
 sudo cp "${__DIR__}/stubs/systemctl/jukebox-server-artisan.service" /etc/systemd/system/
 
 sudo sed -i "s|{{ PWD }}|${__DIR__}|g" "${__DIR__}/stubs/systemctl/jukebox-server-octane.service"
-sudo sed "s|{{ UID }}|${UID}|g" "${__DIR__}/stubs/systemctl/jukebox-server-octane.service"
+sudo sed -i "s|{{ UID }}|${UID}|g" "${__DIR__}/stubs/systemctl/jukebox-server-octane.service"
 sudo cp "${__DIR__}/stubs/systemctl/jukebox-server-octane.service" /etc/systemd/system/
 
 sudo sed -i "s|{{ PWD }}|${__DIR__}|g" "${__DIR__}/stubs/systemctl/jukebox-vlc-player.service"
-sudo sed "s|{{ UID }}|${UID}|g" "${__DIR__}/stubs/systemctl/jukebox-vlc-player.service"
+sudo sed -i "s|{{ UID }}|${UID}|g" "${__DIR__}/stubs/systemctl/jukebox-vlc-player.service"
 sudo cp "${__DIR__}/stubs/systemctl/jukebox-vlc-player.service" /etc/systemd/system/
 
 sudo chmod 644 /etc/systemd/system/jukebox-*.service
