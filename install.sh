@@ -16,7 +16,7 @@ fi
 apt-get install -y software-properties-common
 add-apt-repository -y ppa:ondrej/php
 apt-get update
-apt-get install -y vlc ffmpeg php8.2-cli php8.2-sqlite php8.2-curl php8.2-xml git unzip
+apt-get install -y vlc ffmpeg php8.2-cli php8.2-sqlite php8.2-curl php8.2-xml php8.2-mbstring git unzip
 
 # Install Yt-dlp
 if [[ ! -f /usr/local/bin/yt-dlp ]]; then
