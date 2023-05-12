@@ -164,10 +164,16 @@ class QueueService
             ->groupBy('queued_by')
             ->sortKeys();
 
+        try {
+            $activeSong = $this->getActiveSong();
+        } catch (ItemNotFoundException) {
+            $activeSong = null;
+        }
+
         while ($songsGroupedByUser->flatten()->isNotEmpty()) {
             $songsGroupedByUser
-                ->each(function (Collection $group, ?string $queued_by) use ($all, $queue): void {
-                    if ($queue->isEmpty() && $queued_by !== $this->getActiveSong()->queued_by) {
+                ->each(function (Collection $group, ?string $queued_by) use ($activeSong, $all, $queue): void {
+                    if ($queue->isEmpty() && $queued_by !== $activeSong?->queued_by) {
                         return;
                     }
 
