@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+__DIR__="$(realpath $(dirname "${BASH_SOURCE[0]}"))"
+
 echo "-------------------------------------------------"
 echo "                JUKEBOX INSTALLER"
 echo "                      v2.0.0"
@@ -32,3 +34,35 @@ chmod a+rx /usr/local/bin/yt-dlp
 # Install Composer
 curl -sS https://getcomposer.org/installer | /usr/bin/php -- --install-dir=/usr/bin --filename=composer
 chmod 0755 /usr/bin/composer
+
+# Install dependencies
+composer install
+#php artisan octane:install
+
+# Configure project
+cp .env.example .env
+php artisan key:generate
+
+# Initiate database
+touch database/database.sqlite
+php artisan migrate
+
+# Install services
+sed "s|{{ PWD }}|${__DIR__}|g" "${__DIR__}/stubs/systemctl/jukebox-queue-worker.service" > /etc/systemd/system/jukebox-queue-worker.service
+sed "s|{{ PWD }}|${__DIR__}|g" "${__DIR__}/stubs/systemctl/jukebox-server-artisan.service" > /etc/systemd/system/jukebox-server-artisan.service
+sed "s|{{ PWD }}|${__DIR__}|g" "${__DIR__}/stubs/systemctl/jukebox-server-octane.service" > /etc/systemd/system/jukebox-server-octane.service
+sed "s|{{ PWD }}|${__DIR__}|g" "${__DIR__}/stubs/systemctl/jukebox-vlc-player.service" > /etc/systemd/system/jukebox-vlc-player.service
+chmod 644 /etc/systemd/system/jukebox-*.service
+systemctl daemon-reload
+
+# Enable services
+systemctl enable jukebox-queue-worker
+systemctl enable jukebox-server-artisan
+#systemctl enable jukebox-server-octane
+systemctl enable jukebox-vlc-player
+
+# Start services
+systemctl start jukebox-queue-worker
+systemctl start jukebox-server-artisan
+#systemctl start jukebox-server-octane
+systemctl start jukebox-vlc-player

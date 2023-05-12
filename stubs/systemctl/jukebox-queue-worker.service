@@ -1,0 +1,13 @@
+[Unit]
+Description=Jukebox Queue Worker
+
+[Service]
+Type=simple
+WorkingDirectory={{ PWD }}
+ExecStart=php artisan queue:work --timeout 300
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
