@@ -1,4 +1,4 @@
-<div id="search-controls" wire:poll.1s>
+<div id="search-controls" wire:poll.visible.1s>
     <div class="search-header">
         <strong>Search YouTube</strong>
         <input type="text" id="search" wire:model.lazy="searchTerm">

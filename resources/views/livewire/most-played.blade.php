@@ -1,4 +1,4 @@
-<div wire:poll.1s>
+<div wire:poll.visible.1s>
     @foreach($songs as $song)
         <div wire:click="queueSong('{{ $song->youTubeId  }}')" style="display: flex; align-items: center; cursor: pointer">
             <div @style(['width: 80px; text-align: center', 'font-size: 2.2rem' => $loop->index === 0, 'font-size: 1.8rem' => $loop->index === 1, 'font-size: 1.5rem' => $loop->index === 2])>
