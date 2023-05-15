@@ -1,0 +1,13 @@
+[Unit]
+Description=Jukebox HTTP server
+
+[Service]
+Type=simple
+WorkingDirectory={{ PWD }}
+ExecStart=php artisan serve --host 0.0.0.0 --port 80
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

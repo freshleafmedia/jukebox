@@ -1,8 +1,35 @@
-.idea/
-node_modules/
-logs/
-.DS_Store
+# Caches
+.phpunit.result.cache
+/.phpunit.cache
 
-/server/playlists/
-/server/cache/
-/server/stats.json
+# Secrets
+auth.json
+.env
+/storage/*.key
+
+# Logs
+npm-debug.log
+yarn-error.log
+
+# PHPStorm Personal Settings
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/aws.xml
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# Dependencies
+/node_modules/
+/vendor/
+
+# Octane
+rr
+.rr.yaml

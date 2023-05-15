@@ -1,0 +1,15 @@
+[Unit]
+Description=Jukebox VLC Player
+
+[Service]
+Type=simple
+User={{ UID }}
+Group={{ UID }}
+WorkingDirectory={{ PWD }}
+ExecStart=php artisan run-vlc-player
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

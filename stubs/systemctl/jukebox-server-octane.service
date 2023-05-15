@@ -1,0 +1,13 @@
+[Unit]
+Description=Jukebox HTTP server
+
+[Service]
+Type=simple
+WorkingDirectory={{ PWD }}
+ExecStart=php artisan octane:start
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
