@@ -35,14 +35,6 @@ class Song extends Model
     {
         parent::booted();
 
-        static::retrieved(function (self $song): void {
-            if ($song->state !== SongState::DOWNLOAD_REQUIRED && Storage::disk('songs')->exists($song->youtube_id) === false) {
-                $song->update([
-                    'state' => SongState::DOWNLOAD_REQUIRED,
-                ]);
-            }
-        });
-
         static::created(function (self $song): void {
             DownloadYouTubeVideo::dispatch($song);
         });
