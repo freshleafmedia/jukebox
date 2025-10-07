@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('song_history', function (Blueprint $table) {
             $table->id()->index();
-            $table->foreignId('song_id')->constrained('songs');
+            $table->foreignId('song_id')->index()->constrained('songs');
             $table->text('played_by');
             $table->timestamps();
         });
