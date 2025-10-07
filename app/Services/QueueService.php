@@ -153,40 +153,10 @@ class QueueService
 
     protected function setQueueOrder(bool $shuffle = false): void
     {
-        $queue = new Collection();
-
-        $all = $this
-            ->getQueuedSongs()
-            ->when($shuffle, fn (Collection $songs): Collection => $songs->shuffle())
-            ->sort(fn (Song $a, Song $b): int => $a->getSortValue() <=> $b->getSortValue());
-
-        $songsGroupedByUser = $all
-            ->groupBy('queued_by')
-            ->sortKeys();
-
-        try {
-            $activeSong = $this->getActiveSong();
-        } catch (ItemNotFoundException) {
-            $activeSong = null;
-        }
-
-        while ($songsGroupedByUser->flatten()->isNotEmpty()) {
-            $songsGroupedByUser
-                ->each(function (Collection $group, ?string $queued_by) use ($activeSong, $all, $queue): void {
-                    if ($queue->isEmpty() && $queued_by !== $activeSong?->queued_by) {
-                        return;
-                    }
-
-                    if ($group->isEmpty()) {
-                        return;
-                    }
-
-                    $queue->push($group->shift());
-                });
-        }
-
         $i = 0;
-        $queue
+        $this
+            ->getQueuedSongs()
+            ->shuffle()
             ->each(function (Song $song) use (&$i): void {
                 $song->update([
                     'sort' => $i++,

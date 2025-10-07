@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('songs', function (Blueprint $table) {
-            $table->id();
+            $table->id()->index();
             $table->text('youtube_id')->unique();
             $table->text('title');
             $table->integer('duration');

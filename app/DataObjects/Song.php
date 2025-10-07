@@ -16,7 +16,6 @@ class Song
         public readonly CarbonInterval $duration,
         public readonly SongState|null $state,
         public readonly string|null    $queuedBy,
-        public readonly int            $plays,
     )
     {
     }
@@ -31,7 +30,6 @@ class Song
             duration: CarbonInterval::fromString($data->contentDetails->duration),
             state: $queuedSong === null ? SongState::DOWNLOAD_REQUIRED : $queuedSong->state,
             queuedBy: $queuedSong?->queued_by,
-            plays: $queuedSong?->Plays()->count() ?? 0,
         );
     }
 
@@ -43,7 +41,6 @@ class Song
             duration: CarbonInterval::seconds($model->duration)->cascade(),
             state: $model->state,
             queuedBy: $model->queued_by,
-            plays: $model->Plays()->count(),
         );
     }
 

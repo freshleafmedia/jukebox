@@ -3,9 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\DataObjects\Song;
+use App\Enums\SongState;
 use App\Models\Song as SongModel;
 use App\Services\QueueService;
-use Illuminate\Support\ItemNotFoundException;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class Jukebox extends Component
@@ -15,15 +16,31 @@ class Jukebox extends Component
 
     public function render(QueueService $songService)
     {
-        try {
-            $activeSong = Song::fromModel($songService->getPlayableSongAtTopOfQueue());
-        } catch (ItemNotFoundException) {
-            $activeSong = null;
+        $activeSong = null;
+        $nextPlayableSong = null;
+        $queuedSongs = Collection::empty();
+
+        $songService->getQueuedSongs()->each(function (SongModel $songModel) use (&$nextPlayableSong, &$activeSong, $queuedSongs): void {
+            $song = Song::fromModel($songModel);
+
+            if ($song->state === SongState::PLAYING || $song->state === SongState::PAUSED) {
+                $activeSong = $song;
+            }
+
+            if ($song->state === SongState::PLAYABLE && $nextPlayableSong === null) {
+                $nextPlayableSong = $song;
+            }
+
+            $queuedSongs->push($song);
+        });
+
+        if ($activeSong === null && $nextPlayableSong !== null) {
+            $activeSong = $nextPlayableSong;
         }
 
         return view('livewire.jukebox')
             ->with([
-                'queuedSongs' => $songService->getQueuedSongs()->map(fn (SongModel $songModel): Song => Song::fromModel($songModel)),
+                'queuedSongs' => $queuedSongs,
                 'activeSong' => $activeSong,
             ]);
     }
