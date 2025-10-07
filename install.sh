@@ -15,15 +15,7 @@ sudo apt-get install -y vlc ffmpeg php8.2-cli php8.2-sqlite php8.2-curl php8.2-x
 
 # Install Yt-dlp
 if [[ ! -f /usr/local/bin/yt-dlp ]]; then
-    if [[ "$(dpkg --print-architecture)" == "amd64" ]]; then
-        sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux -o /usr/local/bin/yt-dlp
-    elif [[ "$(dpkg --print-architecture)" == "armhf" ]]; then
-        sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux_armv7l -o /usr/local/bin/yt-dlp
-    else
-        echo "Error: unknown arch."
-        echo "Please install Yt-dlp manually: https://github.com/yt-dlp/yt-dlp/releases/latest/"
-        exit 1
-    fi
+    sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
 
     sudo chmod a+rx /usr/local/bin/yt-dlp
 fi
