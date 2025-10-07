@@ -40,6 +40,10 @@ class Song extends Model
         });
 
         static::updated(function (self $song): void {
+            if ($song->isClean('state')) {
+                return;
+            }
+
             if ($song->state === SongState::DOWNLOAD_REQUIRED) {
                 DownloadYouTubeVideo::dispatch($song);
             }
