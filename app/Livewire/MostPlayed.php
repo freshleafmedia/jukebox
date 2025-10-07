@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\DataObjects\Song;
 use App\Models\Song as SongModel;
@@ -27,6 +27,6 @@ class MostPlayed extends Component
         app(QueueService::class)->queueSong($youTubeId);
 
         $song = SongModel::where('youtube_id', '=', $youTubeId)->first();
-        $this->emit('songAdded', Song::fromModel($song));
+        $this->dispatch('songAdded', Song::fromModel($song));
     }
 }

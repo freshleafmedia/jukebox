@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\DataObjects\Song;
 use App\Models\Song as SongModel;
@@ -36,7 +36,7 @@ class Search extends Component
                         'videoDimension' => '2d',
                     );
 
-                    return Collection::make($youTubeApi->searchAdvanced($searchParams))->pluck('id.videoId');
+                    return Collection::make($youTubeApi->searchAdvanced($searchParams))->pluck('id.videoId')->filter();
                 }
             );
 
@@ -66,6 +66,6 @@ class Search extends Component
         app(QueueService::class)->queueSong($youTubeId);
 
         $song = SongModel::where('youtube_id', '=', $youTubeId)->first();
-        $this->emit('songAdded', Song::fromModel($song));
+        $this->dispatch('songAdded', Song::fromModel($song));
     }
 }

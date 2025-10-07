@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\DataObjects\Song;
 use App\Models\Song as SongModel;
