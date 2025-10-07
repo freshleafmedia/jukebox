@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('song_history', function (Blueprint $table) {
-            $table->id();
+            $table->id()->index();
             $table->foreignId('song_id')->constrained('songs');
             $table->text('played_by');
             $table->timestamps();

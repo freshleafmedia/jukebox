@@ -1,3 +1,4 @@
+@php use App\Enums\SongState; @endphp
 <div wire:poll.1s>
     <div id="background"></div>
     <div id="wrapper">
@@ -9,11 +10,11 @@
 
             <!-- Media Control buttons -->
             <div class="media-controls">
-                <button class="btn media" id="playButton" wire:click="play" @disabled($activeSong === null || $activeSong->state === \App\Enums\SongState::PLAYING)></button>
-                <button class="btn media" id="pauseButton" wire:click="pause" @disabled($activeSong === null || $activeSong->state === \App\Enums\SongState::PLAYABLE || $activeSong->state === \App\Enums\SongState::PAUSED)></button>
-                <button class="btn media" id="voldownButton" wire:click="volumeDown" @disabled($activeSong === null || $activeSong->state === \App\Enums\SongState::PLAYABLE)></button>
-                <button class="btn media" id="volupButton" wire:click="volumeUp" @disabled($activeSong === null || $activeSong->state === \App\Enums\SongState::PLAYABLE)></button>
-                <button class="btn media" id="forwardButton" wire:click="skip" @disabled($activeSong === null || $activeSong->state === \App\Enums\SongState::PLAYABLE)></button>
+                <button class="btn media" id="playButton" wire:click="play" @disabled($activeSong === null || $activeSong->state === SongState::PLAYING)></button>
+                <button class="btn media" id="pauseButton" wire:click="pause" @disabled($activeSong === null || $activeSong->state === SongState::PLAYABLE || $activeSong->state === SongState::PAUSED)></button>
+                <button class="btn media" id="voldownButton" wire:click="volumeDown" @disabled($activeSong === null || $activeSong->state === SongState::PLAYABLE)></button>
+                <button class="btn media" id="volupButton" wire:click="volumeUp" @disabled($activeSong === null || $activeSong->state === SongState::PLAYABLE)></button>
+                <button class="btn media" id="forwardButton" wire:click="skip" @disabled($activeSong === null || $activeSong->state === SongState::PLAYABLE)></button>
                 <button class="btn media" id="shuffleButton" wire:click="shuffle" @disabled($queuedSongs->isEmpty())></button>
             </div>
         </header>
@@ -25,7 +26,44 @@
 
             <div class="queue-container">
                 @foreach($queuedSongs as $song)
-                    <x-song :song="$song" :key="'q-'.$song->youTubeId" />
+                    <div
+                        id="song-q-{{ $song->youTubeId }}"
+                        data-state="{{ $song->state?->value }}"
+                        @class([
+                            'songResult',
+                            'inqueue' => $song->queuedBy !== null,
+                        ])
+                    >
+                        <div class="imageWrapper">
+                            <img src="https://i.ytimg.com/vi/{{ $song->youTubeId }}/mqdefault.jpg">
+                        </div>
+
+                        <div class="contentWrapper">
+                            <p class="title">
+                                {{ $song->title }}
+                            </p>
+
+                            <span class="status">
+                                @if($song->state === SongState::DOWNLOADING || $song->state === SongState::DOWNLOAD_REQUIRED)
+                                    Downloading...
+                                @endif
+                                @if($song->state === SongState::DOWNLOAD_FAILED)
+                                    Download Failed
+                                @endif
+                            </span>
+                        </div>
+
+                        @if ($song->queuedBy !== null)
+                            <p class="username">{{ $song->queuedBy }}</p>
+                        @endif
+
+                        <p class="duration">{{ $song->getDurationForHumans() }}</p>
+
+                        @if($song->state === SongState::PLAYING || $song->state === SongState::PAUSED)
+                            <progress max="{{ $song->duration->totalSeconds }}"
+                                      value="{{ $song->getElapsedTime() ?? '0' }}"></progress>
+                        @endif
+                    </div>
                 @endforeach
             </div>
         </div>
