@@ -1,0 +1,17 @@
+[Unit]
+Description=Jukebox VLC Player
+After=network.target sound.target
+
+[Service]
+Type=simple
+User={{ UID }}
+Group={{ UID }}
+WorkingDirectory={{ PWD }}
+Nice=10
+ExecStart=/usr/bin/php bin/vlc-player.php
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
