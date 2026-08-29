@@ -1,11 +1,12 @@
 <?php
 
-$songs = db()
-    ->query('SELECT * FROM songs WHERE queued_by IS NOT NULL ORDER BY sort')
-    ->fetchAll();
+$songs = array_map(
+    Song::fromDbRow(...),
+    db()->query('SELECT * FROM songs WHERE queued_by IS NOT NULL ORDER BY sort')->fetchAll(),
+);
 
 foreach ($songs as $i => $song) {
-    if ($song['state'] === 'playing' || $song['state'] === 'paused') {
+    if ($song->state === SongState::Playing || $song->state === SongState::Paused) {
         array_unshift($songs, ...array_splice($songs, $i, 1));
         break;
     }
@@ -15,10 +16,10 @@ $activeSong = null;
 $nextPlayableSong = null;
 
 foreach ($songs as $song) {
-    if ($song['state'] === 'playing' || $song['state'] === 'paused') {
+    if ($song->state === SongState::Playing || $song->state === SongState::Paused) {
         $activeSong = $song;
     }
-    if ($song['state'] === 'playable' && $nextPlayableSong === null) {
+    if ($song->state === SongState::Playable && $nextPlayableSong === null) {
         $nextPlayableSong = $song;
     }
 }
@@ -50,12 +51,12 @@ http_response_code(200);
             </div>
 
             <div class="media-controls">
-                <button class="btn media" id="playButton" <?= $activeSong === null || $activeSong['state'] === 'playing' ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="pauseButton" <?= $activeSong === null || $activeSong['state'] === 'playable' || $activeSong['state'] === 'paused' ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="voldownButton" <?= $activeSong === null || $activeSong['state'] === 'playable' ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="volupButton" <?= $activeSong === null || $activeSong['state'] === 'playable' ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="forwardButton" <?= $activeSong === null || $activeSong['state'] === 'playable' ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="shuffleButton" <?= count($songs) === 0 ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="playButton" hx-post="/action/play" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::Playing ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="pauseButton" hx-post="/action/pause" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::Playable || $activeSong->state === SongState::Paused ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="voldownButton" hx-post="/action/volume-down" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::Playable ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="volupButton" hx-post="/action/volume-up" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::Playable ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="forwardButton" hx-post="/action/skip" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::Playable ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="shuffleButton" hx-post="/action/shuffle" hx-swap="none" <?= count($songs) === 0 ? 'disabled' : '' ?>></button>
             </div>
         </header>
 
@@ -65,35 +66,35 @@ http_response_code(200);
             <div class="queue-container">
                 <?php foreach ($songs as $song): ?>
                     <div
-                        id="song-q-<?= e($song['youtube_id']) ?>"
-                        data-state="<?= e($song['state']) ?>"
-                        class="songResult<?= $song['queued_by'] !== null ? ' inqueue' : '' ?>"
+                        id="song-q-<?= e($song->youtubeId) ?>"
+                        data-state="<?= e($song->state->value) ?>"
+                        class="songResult<?= $song->queuedBy !== null ? ' inqueue' : '' ?>"
                     >
                         <div class="imageWrapper">
-                            <img src="https://i.ytimg.com/vi/<?= e($song['youtube_id']) ?>/mqdefault.jpg" loading="lazy">
+                            <img src="https://i.ytimg.com/vi/<?= e($song->youtubeId) ?>/mqdefault.jpg" loading="lazy">
                         </div>
 
                         <div class="contentWrapper">
-                            <p class="title"><?= e($song['title']) ?></p>
+                            <p class="title"><?= e($song->title) ?></p>
 
                             <span class="status">
-                                <?php if ($song['state'] === 'downloading' || $song['state'] === 'download_required'): ?>
+                                <?php if ($song->state === SongState::Downloading || $song->state === SongState::DownloadRequired): ?>
                                     Downloading...
                                 <?php endif ?>
-                                <?php if ($song['state'] === 'download_failed'): ?>
+                                <?php if ($song->state === SongState::DownloadFailed): ?>
                                     Download Failed
                                 <?php endif ?>
                             </span>
                         </div>
 
-                        <?php if ($song['queued_by'] !== null): ?>
-                            <p class="username"><?= e($song['queued_by']) ?></p>
+                        <?php if ($song->queuedBy !== null): ?>
+                            <p class="username"><?= e($song->queuedBy) ?></p>
                         <?php endif ?>
 
-                        <p class="duration"><?= formatDuration($song['duration']) ?></p>
+                        <p class="duration"><?= formatDuration($song->duration) ?></p>
 
-                        <?php if ($song['state'] === 'playing' || $song['state'] === 'paused'): ?>
-                            <progress max="<?= $song['duration'] ?>" value="0"></progress>
+                        <?php if ($song->state === SongState::Playing || $song->state === SongState::Paused): ?>
+                            <progress max="<?= $song->duration ?>" value="0"></progress>
                         <?php endif ?>
                     </div>
                 <?php endforeach ?>
