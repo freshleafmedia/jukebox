@@ -45,7 +45,7 @@ if [[ ! -f "${__DIR__}/config.php" ]]; then
     echo ""
 fi
 
-mkdir -p "${__DIR__}/storage/{songs,cache}"
+mkdir -p "${__DIR__}/storage/"{songs,cache}
 
 if [[ ! -f "${__DIR__}/storage/jukebox.sqlite" ]]; then
     touch "${__DIR__}/storage/jukebox.sqlite"
