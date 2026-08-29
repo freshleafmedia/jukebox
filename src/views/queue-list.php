@@ -5,9 +5,9 @@
 $statement = Db::connect()->prepare(
     'SELECT * FROM songs
      WHERE queued_by IS NOT NULL
-     ORDER BY CASE state WHEN ? THEN 0 WHEN ? THEN 0 ELSE 1 END, sort',
+     ORDER BY CASE state WHEN "' . SongState::PLAYING->value . '" THEN 0 WHEN "' . SongState::PAUSED->value . '" THEN 0 ELSE 1 END, sort',
 );
-$statement->execute([SongState::PLAYING->value, SongState::PAUSED->value]);
+$statement->execute();
 
 $songs = array_map(Song::fromDbRow(...), $statement->fetchAll());
 
