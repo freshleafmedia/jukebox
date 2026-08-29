@@ -2,10 +2,14 @@
 /**
  * @var Song[] $songs
  */
-$songs = array_map(
-    Song::fromDbRow(...),
-    Db::connect()->query('SELECT * FROM songs WHERE queued_by IS NOT NULL ORDER BY sort')->fetchAll(),
+$statement = Db::connect()->prepare(
+    'SELECT * FROM songs
+     WHERE queued_by IS NOT NULL
+     ORDER BY CASE state WHEN ? THEN 0 WHEN ? THEN 0 ELSE 1 END, sort',
 );
+$statement->execute([SongState::PLAYING->value, SongState::PAUSED->value]);
+
+$songs = array_map(Song::fromDbRow(...), $statement->fetchAll());
 
 ?>
 <?php foreach ($songs as $song): ?>
