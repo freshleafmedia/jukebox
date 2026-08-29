@@ -8,8 +8,21 @@ echo "-------------------------------------------------"
 echo "                JUKEBOX INSTALLER"
 echo "-------------------------------------------------"
 
-sudo apt-get install -y software-properties-common
-sudo add-apt-repository -y ppa:ondrej/php
+OS_ID="$(. /etc/os-release && echo "${ID}")"
+
+if [[ "${OS_ID}" == "ubuntu" ]]; then
+    sudo apt-get install -y software-properties-common
+    sudo add-apt-repository -y ppa:ondrej/php
+elif [[ "${OS_ID}" == "debian" ]]; then
+    sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+    sudo curl -sSL https://packages.sury.org/php/apt.gpg -o /usr/share/keyrings/deb.sury.org-php.gpg
+    echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list > /dev/null
+else
+    echo "Unsupported OS: ${OS_ID}" >&2
+
+    exit 1
+fi
+
 sudo apt-get update
 sudo apt-get install -y vlc ffmpeg nodejs php8.5-cli php8.5-sqlite3 php8.5-curl sqlite3 curl git
 
