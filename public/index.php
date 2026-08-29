@@ -29,5 +29,6 @@ match (true) {
     $path === '/action/volume-up' => require __DIR__ . '/../src/routes/volume-up.php',
     $path === '/action/volume-down' => require __DIR__ . '/../src/routes/volume-down.php',
     $path === '/action/shuffle' => require __DIR__ . '/../src/routes/shuffle.php',
+    $path === '/sse' => require __DIR__ . '/../src/routes/sse.php',
     default => http_response_code(404),
 };

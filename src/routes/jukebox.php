@@ -1,34 +1,3 @@
-<?php
-
-$songs = array_map(
-    Song::fromDbRow(...),
-    db()->query('SELECT * FROM songs WHERE queued_by IS NOT NULL ORDER BY sort')->fetchAll(),
-);
-
-foreach ($songs as $i => $song) {
-    if ($song->state === SongState::PLAYING || $song->state === SongState::PAUSED) {
-        array_unshift($songs, ...array_splice($songs, $i, 1));
-        break;
-    }
-}
-
-$activeSong = null;
-$nextPlayableSong = null;
-
-foreach ($songs as $song) {
-    if ($song->state === SongState::PLAYING || $song->state === SongState::PAUSED) {
-        $activeSong = $song;
-    }
-    if ($song->state === SongState::PLAYABLE && $nextPlayableSong === null) {
-        $nextPlayableSong = $song;
-    }
-}
-
-$activeSong ??= $nextPlayableSong;
-
-http_response_code(200);
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,8 +9,9 @@ http_response_code(200);
     <link href="https://fonts.googleapis.com/css?family=Pacifico|Nunito:400,300,700" rel="stylesheet" type="text/css">
 
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0" integrity="sha384-BvJpBiO8Kh31EqtJe5DRIeWrHWnCGkwytKs9NKFi86Hhw96dEqdEMzZDeK9iEGTc" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/ext/hx-sse.min.js" integrity="sha384-VZD0TLKqhJ26ayBUgQg3ud6DsOLMJvtcz0ANpNc9WSbgIuQTnlXI2IfsF5jhBjT6" crossorigin="anonymous"></script>
 </head>
-<body class="playing">
+<body class="playing" hx-sse:connect="/sse">
     <div id="background"></div>
     <div id="wrapper">
         <header>
@@ -50,55 +20,13 @@ http_response_code(200);
                 <button class="btn" id="addButton" onclick="document.getElementById('addDialog').showModal()">Add Song</button>
             </div>
 
-            <div class="media-controls">
-                <button class="btn media" id="playButton" hx-post="/action/play" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::PLAYING ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="pauseButton" hx-post="/action/pause" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::PLAYABLE || $activeSong->state === SongState::PAUSED ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="voldownButton" hx-post="/action/volume-down" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::PLAYABLE ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="volupButton" hx-post="/action/volume-up" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::PLAYABLE ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="forwardButton" hx-post="/action/skip" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::PLAYABLE ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="shuffleButton" hx-post="/action/shuffle" hx-swap="none" <?= count($songs) === 0 ? 'disabled' : '' ?>></button>
-            </div>
+            <div class="media-controls" id="mediaControls"></div>
         </header>
 
         <div class="queue">
             <p><strong>Whats on the list?</strong></p>
 
-            <div class="queue-container">
-                <?php foreach ($songs as $song): ?>
-                    <div
-                        id="song-q-<?= e($song->youtubeId) ?>"
-                        data-state="<?= e($song->state->value) ?>"
-                        class="songResult<?= $song->queuedBy !== null ? ' inqueue' : '' ?>"
-                    >
-                        <div class="imageWrapper">
-                            <img src="https://i.ytimg.com/vi/<?= e($song->youtubeId) ?>/mqdefault.jpg" loading="lazy">
-                        </div>
-
-                        <div class="contentWrapper">
-                            <p class="title"><?= e($song->title) ?></p>
-
-                            <span class="status">
-                                <?php if ($song->state === SongState::DOWNLOADING || $song->state === SongState::DOWNLOAD_REQUIRED): ?>
-                                    Downloading...
-                                <?php endif ?>
-                                <?php if ($song->state === SongState::DOWNLOAD_FAILED): ?>
-                                    Download Failed
-                                <?php endif ?>
-                            </span>
-                        </div>
-
-                        <?php if ($song->queuedBy !== null): ?>
-                            <p class="username"><?= e($song->queuedBy) ?></p>
-                        <?php endif ?>
-
-                        <p class="duration"><?= formatDuration($song->duration) ?></p>
-
-                        <?php if ($song->state === SongState::PLAYING || $song->state === SongState::PAUSED): ?>
-                            <progress max="<?= $song->duration ?>" value="0"></progress>
-                        <?php endif ?>
-                    </div>
-                <?php endforeach ?>
-            </div>
+            <div class="queue-container" id="queueContainer"></div>
         </div>
 
         <section id="footer">Lovingly Crafted by Team Freshleaf</section>

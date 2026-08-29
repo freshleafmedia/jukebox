@@ -16,5 +16,4 @@ foreach ($songIds as $sort => $id) {
 
 db()->commit();
 
-header('HX-Redirect: /');
 http_response_code(200);

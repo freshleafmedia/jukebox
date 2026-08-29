@@ -41,5 +41,4 @@ if ($song === false) {
         ->execute([$queuedBy, $nextSort, $song['id']]);
 }
 
-header('HX-Redirect: /');
 http_response_code(200);

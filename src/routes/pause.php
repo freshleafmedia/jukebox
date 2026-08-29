@@ -10,5 +10,4 @@ if ($currentlyPlayingSongId !== false) {
         ->execute([SongState::PAUSED->value, $currentlyPlayingSongId]);
 }
 
-header('HX-Redirect: /');
 http_response_code(200);

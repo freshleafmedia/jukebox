@@ -18,5 +18,4 @@ if ($songIdToPlay !== false) {
         ->execute([SongState::PLAYING->value, $songIdToPlay]);
 }
 
-header('HX-Redirect: /');
 http_response_code(200);
