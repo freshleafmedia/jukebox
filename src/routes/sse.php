@@ -22,17 +22,13 @@ function sendSseData(string $data): void
     flush();
 }
 
-$signatureStatement = Db::connect()->prepare(
-    'SELECT group_concat(id || \':\' || state || \':\' || queued_by || \':\' || sort, \'|\')
-     FROM (SELECT id, state, queued_by, sort FROM songs WHERE queued_by IS NOT NULL ORDER BY sort)',
-);
+$signatureStatement = Db::connect()->prepare('SELECT MAX(updated_at) FROM songs WHERE queued_by IS NOT NULL');
 
 $lastSignature = false;
 
 while (!connection_aborted()) {
     $signatureStatement->execute();
-    $signatureRows = $signatureStatement->fetchAll(PDO::FETCH_COLUMN);
-    $signature = $signatureRows[0] ?? null;
+    $signature = $signatureStatement->fetchColumn();
 
     if ($signature !== $lastSignature) {
         $lastSignature = $signature;
