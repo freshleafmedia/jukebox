@@ -467,3 +467,11 @@ progress {
   padding: 5px 10px;
   border-radius: 10px;
 }
+
+.htmx-indicator {
+  display: none;
+}
+
+.htmx-indicator.htmx-request {
+  display: block;
+}
