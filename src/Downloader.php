@@ -69,7 +69,7 @@ final class Downloader
     private function setSongState(int $songId, SongState $state): void
     {
         Db::connect()
-            ->prepare('UPDATE songs SET state = ? WHERE id = ?')
+            ->prepare('UPDATE songs SET state = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
             ->execute([$state->value, $songId]);
     }
 }

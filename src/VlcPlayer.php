@@ -65,7 +65,7 @@ final class VlcPlayer
         }
 
         Db::connect()
-            ->prepare('UPDATE songs SET state = ? WHERE id = ?')
+            ->prepare('UPDATE songs SET state = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
             ->execute([SongState::PLAYING->value, $songId]);
 
         return $this->activeSong();
@@ -84,7 +84,7 @@ final class VlcPlayer
         $this->currentPlayState = SongState::PLAYING;
 
         Db::connect()
-            ->prepare('INSERT INTO song_history (song_id, played_by) VALUES (?, ?)')
+            ->prepare('INSERT INTO song_history (song_id, played_by, created_at, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)')
             ->execute([$song->id, $song->queuedBy]);
     }
 
@@ -95,7 +95,7 @@ final class VlcPlayer
         proc_close($this->vlcProcess);
 
         Db::connect()
-            ->prepare('UPDATE songs SET state = ?, queued_by = NULL WHERE id = ?')
+            ->prepare('UPDATE songs SET state = ?, queued_by = NULL, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
             ->execute([SongState::PLAYABLE->value, $this->currentSong->id]);
 
         $this->vlcProcess = null;

@@ -32,11 +32,11 @@ $queuedBy = 'Someone';
 
 if ($song === false) {
     Db::connect()
-        ->prepare('INSERT INTO songs (youtube_id, title, duration, queued_by, state, sort) VALUES (?, ?, ?, ?, ?, ?)')
+        ->prepare('INSERT INTO songs (youtube_id, title, duration, queued_by, state, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)')
         ->execute([$youtubeId, $info->title, $info->duration, $queuedBy, 'download_required', $nextSort]);
 } else {
     Db::connect()
-        ->prepare('UPDATE songs SET queued_by = ?, sort = ? WHERE id = ?')
+        ->prepare('UPDATE songs SET queued_by = ?, sort = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
         ->execute([$queuedBy, $nextSort, $song['id']]);
 }
 

@@ -6,7 +6,7 @@ $songIds = Db::connect()
 
 shuffle($songIds);
 
-$statement = Db::connect()->prepare('UPDATE songs SET sort = ? WHERE id = ?');
+$statement = Db::connect()->prepare('UPDATE songs SET sort = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?');
 
 Db::connect()->beginTransaction();
 

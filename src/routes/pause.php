@@ -7,7 +7,7 @@ $currentlyPlayingSongId = $values[0] ?? false;
 
 if ($currentlyPlayingSongId !== false) {
     Db::connect()
-        ->prepare('UPDATE songs SET state = ? WHERE id = ?')
+        ->prepare('UPDATE songs SET state = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
         ->execute([SongState::PAUSED->value, $currentlyPlayingSongId]);
 }
 

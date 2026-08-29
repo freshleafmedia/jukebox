@@ -6,7 +6,7 @@ $currentlyPlayingSongId = $statement->fetchAll(PDO::FETCH_COLUMN)[0] ?? false;
 
 if ($currentlyPlayingSongId !== false) {
     Db::connect()
-        ->prepare('UPDATE songs SET state = ?, queued_by = NULL WHERE id = ?')
+        ->prepare('UPDATE songs SET state = ?, queued_by = NULL, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
         ->execute([SongState::PLAYABLE->value, $currentlyPlayingSongId]);
 }
 
@@ -16,7 +16,7 @@ $nextSongId = $statement->fetchAll(PDO::FETCH_COLUMN)[0] ?? false;
 
 if ($nextSongId !== false) {
     Db::connect()
-        ->prepare('UPDATE songs SET state = ? WHERE id = ?')
+        ->prepare('UPDATE songs SET state = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
         ->execute([SongState::PLAYING->value, $nextSongId]);
 }
 
