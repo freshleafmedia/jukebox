@@ -25,18 +25,6 @@ foreach ($songs as $song) {
 
 $activeSong ??= $nextPlayableSong;
 
-function formatDuration(int $seconds): string
-{
-    $h = intdiv($seconds, 3600);
-    $m = intdiv($seconds % 3600, 60);
-    $s = $seconds % 60;
-
-    $m = str_pad((string) $m, 2, '0', STR_PAD_LEFT);
-    $s = str_pad((string) $s, 2, '0', STR_PAD_LEFT);
-
-    return $h > 0 ? $h . ':' . $m . ':' . $s : $m . ':' . $s;
-}
-
 http_response_code(200);
 
 ?>
@@ -49,6 +37,8 @@ http_response_code(200);
     <link rel="stylesheet" type="text/css" href="/assets/app.css" media="all">
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Pacifico|Nunito:400,300,700" rel="stylesheet" type="text/css">
+
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0" integrity="sha384-BvJpBiO8Kh31EqtJe5DRIeWrHWnCGkwytKs9NKFi86Hhw96dEqdEMzZDeK9iEGTc" crossorigin="anonymous"></script>
 </head>
 <body class="playing">
     <div id="background"></div>
@@ -56,7 +46,7 @@ http_response_code(200);
         <header>
             <div class="masthead">
                 <h1>Freshleaf Jukebox</h1>
-                <button class="btn" id="addButton">Add Song</button>
+                <button class="btn" id="addButton" onclick="document.getElementById('addDialog').showModal()">Add Song</button>
             </div>
 
             <div class="media-controls">
@@ -112,5 +102,47 @@ http_response_code(200);
 
         <section id="footer">Lovingly Crafted by Team Freshleaf</section>
     </div>
+
+    <dialog id="addDialog">
+        <div class="overlay-wrapper">
+            <form method="dialog">
+                <button id="addDialogClose">X</button>
+            </form>
+
+            <div class="search-header">
+                <strong>Search YouTube</strong>
+                <input
+                    type="text"
+                    id="search"
+                    name="q"
+                    autofocus
+                    hx-get="/action/search"
+                    hx-target="#search-results"
+                    hx-trigger="input changed delay:400ms, search"
+                    hx-indicator="#search-status"
+                >
+            </div>
+
+            <div id="search-container">
+                <p id="search-status" class="htmx-indicator status">Searching...</p>
+                <div id="search-results"></div>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        const addDialog = document.getElementById('addDialog');
+
+        addDialog.addEventListener('click', (event) => {
+            if (event.target.id === 'addDialog') {
+                event.target.close();
+            }
+        });
+
+        addDialog.addEventListener('close', () => {
+            document.getElementById('search').value = '';
+            document.getElementById('search-results').innerHTML = '';
+        });
+    </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 /config.php
-/database/*.sqlite
+/storage/jukebox.sqlite
 /storage/songs/*
 /storage/cache/*
 /reference
