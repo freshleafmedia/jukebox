@@ -11,7 +11,6 @@ Nice=-5
 ExecStart=/usr/bin/php bin/download-worker.php
 Restart=on-failure
 RestartSec=10
-KillMode=process
 
 [Install]
 WantedBy=multi-user.target
