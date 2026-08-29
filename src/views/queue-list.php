@@ -4,7 +4,7 @@
  */
 $songs = array_map(
     Song::fromDbRow(...),
-    db()->query('SELECT * FROM songs WHERE queued_by IS NOT NULL ORDER BY sort')->fetchAll(),
+    Db::connect()->query('SELECT * FROM songs WHERE queued_by IS NOT NULL ORDER BY sort')->fetchAll(),
 );
 
 ?>

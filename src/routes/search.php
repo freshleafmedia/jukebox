@@ -24,7 +24,7 @@ if ($results !== []) {
     $ids = array_map(fn (SearchResult $result): string => $result->youtubeId, $results);
     $placeholders = implode(',', array_fill(0, count($ids), '?'));
 
-    $statement = db()->prepare('SELECT youtube_id, state, queued_by FROM songs WHERE youtube_id IN (' . $placeholders . ')');
+    $statement = Db::connect()->prepare('SELECT youtube_id, state, queued_by FROM songs WHERE youtube_id IN (' . $placeholders . ')');
     $statement->execute($ids);
 
     foreach ($statement->fetchAll() as $row) {

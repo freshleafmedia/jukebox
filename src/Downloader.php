@@ -21,10 +21,9 @@ final class Downloader
 
     private function nextSong(): ?Song
     {
-        $statement = db()->prepare('SELECT * FROM songs WHERE state = ? ORDER BY sort ASC LIMIT 1');
+        $statement = Db::connect()->prepare('SELECT * FROM songs WHERE state = ? ORDER BY sort ASC LIMIT 1');
         $statement->execute([SongState::DOWNLOAD_REQUIRED->value]);
-
-        $row = $statement->fetch();
+        $row = $statement->fetchAll()[0] ?? false;
 
         return $row === false ? null : Song::fromDbRow($row);
     }
@@ -69,7 +68,7 @@ final class Downloader
 
     private function setSongState(int $songId, SongState $state): void
     {
-        db()
+        Db::connect()
             ->prepare('UPDATE songs SET state = ? WHERE id = ?')
             ->execute([$state->value, $songId]);
     }

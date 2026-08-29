@@ -2,16 +2,16 @@
 /**
  * @var Song|null $activeSong
  */
-$statement = db()->prepare('SELECT * FROM songs WHERE queued_by IS NOT NULL AND state IN (?, ?) ORDER BY sort LIMIT 1');
+$statement = Db::connect()->prepare('SELECT * FROM songs WHERE queued_by IS NOT NULL AND state IN (?, ?) ORDER BY sort LIMIT 1');
 $statement->execute([SongState::PLAYING->value, SongState::PAUSED->value]);
-$row = $statement->fetch();
-$statement->closeCursor();
+$rows = $statement->fetchAll();
+$row = $rows[0] ?? false;
 
 if ($row === false) {
-    $statement = db()->prepare('SELECT * FROM songs WHERE queued_by IS NOT NULL AND state = ? ORDER BY sort LIMIT 1');
+    $statement = Db::connect()->prepare('SELECT * FROM songs WHERE queued_by IS NOT NULL AND state = ? ORDER BY sort LIMIT 1');
     $statement->execute([SongState::PLAYABLE->value]);
-    $row = $statement->fetch();
-    $statement->closeCursor();
+    $rows = $statement->fetchAll();
+    $row = $rows[0] ?? false;
 }
 
 $activeSong = $row === false ? null : Song::fromDbRow($row);

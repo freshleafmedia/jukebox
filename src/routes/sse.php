@@ -22,7 +22,7 @@ function sendSseData(string $data): void
     flush();
 }
 
-$signatureStatement = db()->prepare(
+$signatureStatement = Db::connect()->prepare(
     'SELECT group_concat(id || \':\' || state || \':\' || queued_by || \':\' || sort, \'|\')
      FROM (SELECT id, state, queued_by, sort FROM songs WHERE queued_by IS NOT NULL ORDER BY sort)',
 );
@@ -31,7 +31,8 @@ $lastSignature = false;
 
 while (!connection_aborted()) {
     $signatureStatement->execute();
-    $signature = $signatureStatement->fetchColumn();
+    $signatureRows = $signatureStatement->fetchAll(PDO::FETCH_COLUMN);
+    $signature = $signatureRows[0] ?? null;
 
     if ($signature !== $lastSignature) {
         $lastSignature = $signature;

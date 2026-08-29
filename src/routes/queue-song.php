@@ -21,22 +21,21 @@ if ($info === null) {
     return;
 }
 
-$statement = db()->prepare('SELECT id FROM songs WHERE youtube_id = ?');
+$statement = Db::connect()->prepare('SELECT id FROM songs WHERE youtube_id = ?');
 $statement->execute([$youtubeId]);
-$song = $statement->fetch();
+$song = $statement->fetchAll()[0] ?? false;
 
-$nextSort = (int) db()
-    ->query('SELECT COALESCE(MAX(sort), -1) + 1 FROM songs WHERE queued_by IS NOT NULL')
-    ->fetchColumn();
+$sortValues = Db::connect()->query('SELECT COALESCE(MAX(sort), -1) + 1 FROM songs WHERE queued_by IS NOT NULL')->fetchAll(PDO::FETCH_COLUMN);
+$nextSort = (int) $sortValues[0];
 
 $queuedBy = 'Someone';
 
 if ($song === false) {
-    db()
+    Db::connect()
         ->prepare('INSERT INTO songs (youtube_id, title, duration, queued_by, state, sort) VALUES (?, ?, ?, ?, ?, ?)')
         ->execute([$youtubeId, $info->title, $info->duration, $queuedBy, 'download_required', $nextSort]);
 } else {
-    db()
+    Db::connect()
         ->prepare('UPDATE songs SET queued_by = ?, sort = ? WHERE id = ?')
         ->execute([$queuedBy, $nextSort, $song['id']]);
 }

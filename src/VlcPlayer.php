@@ -47,25 +47,24 @@ final class VlcPlayer
 
     private function activeSong(): ?Song
     {
-        $statement = db()->prepare('SELECT * FROM songs WHERE queued_by IS NOT NULL AND state IN (?, ?) ORDER BY sort LIMIT 1');
+        $statement = Db::connect()->prepare('SELECT * FROM songs WHERE queued_by IS NOT NULL AND state IN (?, ?) ORDER BY sort LIMIT 1');
         $statement->execute([SongState::PLAYING->value, SongState::PAUSED->value]);
-
-        $row = $statement->fetch();
+        $row = $statement->fetchAll()[0] ?? false;
 
         return $row === false ? null : Song::fromDbRow($row);
     }
 
     private function promoteNextPlayableSong(): ?Song
     {
-        $statement = db()->prepare('SELECT id FROM songs WHERE queued_by IS NOT NULL AND state = ? ORDER BY sort LIMIT 1');
+        $statement = Db::connect()->prepare('SELECT id FROM songs WHERE queued_by IS NOT NULL AND state = ? ORDER BY sort LIMIT 1');
         $statement->execute([SongState::PLAYABLE->value]);
-        $songId = $statement->fetchColumn();
+        $songId = $statement->fetchAll(PDO::FETCH_COLUMN)[0] ?? false;
 
         if ($songId === false) {
             return null;
         }
 
-        db()
+        Db::connect()
             ->prepare('UPDATE songs SET state = ? WHERE id = ?')
             ->execute([SongState::PLAYING->value, $songId]);
 
@@ -84,7 +83,7 @@ final class VlcPlayer
         $this->currentSong = $song;
         $this->currentPlayState = SongState::PLAYING;
 
-        db()
+        Db::connect()
             ->prepare('INSERT INTO song_history (song_id, played_by) VALUES (?, ?)')
             ->execute([$song->id, $song->queuedBy]);
     }
@@ -95,7 +94,7 @@ final class VlcPlayer
 
         proc_close($this->vlcProcess);
 
-        db()
+        Db::connect()
             ->prepare('UPDATE songs SET state = ?, queued_by = NULL WHERE id = ?')
             ->execute([SongState::PLAYABLE->value, $this->currentSong->id]);
 

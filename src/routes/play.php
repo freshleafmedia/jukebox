@@ -1,19 +1,21 @@
 <?php
 
-$statement = db()->prepare('SELECT id FROM songs WHERE queued_by IS NOT NULL AND state IN (?, ?) ORDER BY sort LIMIT 1');
+$statement = Db::connect()->prepare('SELECT id FROM songs WHERE queued_by IS NOT NULL AND state IN (?, ?) ORDER BY sort LIMIT 1');
 $statement->execute([SongState::PLAYING->value, SongState::PAUSED->value]);
-$currentlyPlayingSongId = $statement->fetchColumn();
+$values = $statement->fetchAll(PDO::FETCH_COLUMN);
+$currentlyPlayingSongId = $values[0] ?? false;
 
 if ($currentlyPlayingSongId === false) {
-    $statement = db()->prepare('SELECT id FROM songs WHERE queued_by IS NOT NULL AND state = ? ORDER BY sort LIMIT 1');
+    $statement = Db::connect()->prepare('SELECT id FROM songs WHERE queued_by IS NOT NULL AND state = ? ORDER BY sort LIMIT 1');
     $statement->execute([SongState::PLAYABLE->value]);
-    $songIdToPlay = $statement->fetchColumn();
+    $values = $statement->fetchAll(PDO::FETCH_COLUMN);
+    $songIdToPlay = $values[0] ?? false;
 } else {
     $songIdToPlay = $currentlyPlayingSongId;
 }
 
 if ($songIdToPlay !== false) {
-    db()
+    Db::connect()
         ->prepare('UPDATE songs SET state = ? WHERE id = ?')
         ->execute([SongState::PLAYING->value, $songIdToPlay]);
 }

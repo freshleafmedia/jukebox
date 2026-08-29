@@ -1,7 +1,7 @@
 <?php
 
 require __DIR__ . '/../config.php';
-require __DIR__ . '/../database.php';
+require __DIR__ . '/../src/Db.php';
 require __DIR__ . '/../helpers.php';
 require __DIR__ . '/../src/Cache.php';
 require __DIR__ . '/../src/SearchResult.php';
