@@ -61,7 +61,7 @@ final class Downloader
             rename($tmpFile, $destination);
         }
 
-        $this->setSongState($song->id, SongState::PLAYABLE);
+        $this->markPlayable($song);
 
         echo 'Done' . PHP_EOL;
     }
@@ -71,5 +71,23 @@ final class Downloader
         Db::connect()
             ->prepare('UPDATE songs SET state = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
             ->execute([$state->value, $songId]);
+    }
+
+    private function markPlayable(Song $song): void
+    {
+        if ($song->queuedBy === null) {
+            $this->setSongState($song->id, SongState::PLAYABLE);
+
+            return;
+        }
+
+        Db::connect()
+            ->prepare('UPDATE songs SET state = ?, sort = (SELECT COALESCE(MIN(sort), 0) FROM songs WHERE queued_by IS NOT NULL AND state NOT IN (?, ?)) - 1, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
+            ->execute([
+                SongState::PLAYABLE->value,
+                SongState::PLAYING->value,
+                SongState::PAUSED->value,
+                $song->id,
+            ]);
     }
 }

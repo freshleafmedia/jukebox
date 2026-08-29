@@ -14,6 +14,13 @@ foreach ($songIds as $sort => $id) {
     $statement->execute([$sort, $id]);
 }
 
+Db::connect()
+    ->prepare('UPDATE songs SET sort = -1, updated_at = CURRENT_TIMESTAMP WHERE queued_by IS NOT NULL AND state IN (?, ?)')
+    ->execute([
+        SongState::PLAYING->value,
+        SongState::PAUSED->value,
+    ]);
+
 Db::connect()->commit();
 
 http_response_code(200);
