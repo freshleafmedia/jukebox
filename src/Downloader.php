@@ -21,7 +21,7 @@ final class Downloader
 
     private function nextSong(): ?Song
     {
-        $statement = Db::connect()->prepare('SELECT * FROM songs WHERE state = ? ORDER BY sort ASC LIMIT 1');
+        $statement = Db::connect()->prepare('SELECT * FROM songs WHERE state = ? ORDER BY (queued_by IS NULL) ASC, sort ASC LIMIT 1');
         $statement->execute([SongState::DOWNLOAD_REQUIRED->value]);
         $row = $statement->fetchAll()[0] ?? false;
 
