@@ -24,7 +24,7 @@ else
 fi
 
 sudo apt-get update
-sudo apt-get install -y vlc ffmpeg nodejs php8.5-cli php8.5-sqlite3 php8.5-curl sqlite3 curl git
+sudo apt-get install -y vlc ffmpeg nodejs php8.5-cli php8.5-sqlite3 php8.5-curl sqlite3 curl
 
 if [[ ! -f /usr/local/bin/yt-dlp ]]; then
     sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
