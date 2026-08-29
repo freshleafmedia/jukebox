@@ -14,5 +14,9 @@ function formatDuration(int $seconds): string
     $m = str_pad((string) $m, 2, '0', STR_PAD_LEFT);
     $s = str_pad((string) $s, 2, '0', STR_PAD_LEFT);
 
-    return $h > 0 ? $h . ':' . $m . ':' . $s : $m . ':' . $s;
+    if ($h > 0) {
+        return $h . ':' . $m . ':' . $s;
+    } else {
+        return $m . ':' . $s;
+    }
 }
