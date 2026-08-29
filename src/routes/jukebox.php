@@ -6,7 +6,7 @@ $songs = array_map(
 );
 
 foreach ($songs as $i => $song) {
-    if ($song->state === SongState::Playing || $song->state === SongState::Paused) {
+    if ($song->state === SongState::PLAYING || $song->state === SongState::PAUSED) {
         array_unshift($songs, ...array_splice($songs, $i, 1));
         break;
     }
@@ -16,10 +16,10 @@ $activeSong = null;
 $nextPlayableSong = null;
 
 foreach ($songs as $song) {
-    if ($song->state === SongState::Playing || $song->state === SongState::Paused) {
+    if ($song->state === SongState::PLAYING || $song->state === SongState::PAUSED) {
         $activeSong = $song;
     }
-    if ($song->state === SongState::Playable && $nextPlayableSong === null) {
+    if ($song->state === SongState::PLAYABLE && $nextPlayableSong === null) {
         $nextPlayableSong = $song;
     }
 }
@@ -51,11 +51,11 @@ http_response_code(200);
             </div>
 
             <div class="media-controls">
-                <button class="btn media" id="playButton" hx-post="/action/play" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::Playing ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="pauseButton" hx-post="/action/pause" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::Playable || $activeSong->state === SongState::Paused ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="voldownButton" hx-post="/action/volume-down" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::Playable ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="volupButton" hx-post="/action/volume-up" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::Playable ? 'disabled' : '' ?>></button>
-                <button class="btn media" id="forwardButton" hx-post="/action/skip" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::Playable ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="playButton" hx-post="/action/play" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::PLAYING ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="pauseButton" hx-post="/action/pause" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::PLAYABLE || $activeSong->state === SongState::PAUSED ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="voldownButton" hx-post="/action/volume-down" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::PLAYABLE ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="volupButton" hx-post="/action/volume-up" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::PLAYABLE ? 'disabled' : '' ?>></button>
+                <button class="btn media" id="forwardButton" hx-post="/action/skip" hx-swap="none" <?= $activeSong === null || $activeSong->state === SongState::PLAYABLE ? 'disabled' : '' ?>></button>
                 <button class="btn media" id="shuffleButton" hx-post="/action/shuffle" hx-swap="none" <?= count($songs) === 0 ? 'disabled' : '' ?>></button>
             </div>
         </header>
@@ -78,10 +78,10 @@ http_response_code(200);
                             <p class="title"><?= e($song->title) ?></p>
 
                             <span class="status">
-                                <?php if ($song->state === SongState::Downloading || $song->state === SongState::DownloadRequired): ?>
+                                <?php if ($song->state === SongState::DOWNLOADING || $song->state === SongState::DOWNLOAD_REQUIRED): ?>
                                     Downloading...
                                 <?php endif ?>
-                                <?php if ($song->state === SongState::DownloadFailed): ?>
+                                <?php if ($song->state === SongState::DOWNLOAD_FAILED): ?>
                                     Download Failed
                                 <?php endif ?>
                             </span>
@@ -93,7 +93,7 @@ http_response_code(200);
 
                         <p class="duration"><?= formatDuration($song->duration) ?></p>
 
-                        <?php if ($song->state === SongState::Playing || $song->state === SongState::Paused): ?>
+                        <?php if ($song->state === SongState::PLAYING || $song->state === SongState::PAUSED): ?>
                             <progress max="<?= $song->duration ?>" value="0"></progress>
                         <?php endif ?>
                     </div>

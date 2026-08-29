@@ -2,6 +2,6 @@
 
 enum VlcCommand: string
 {
-    case VolumeUp = 'volup 1';
-    case VolumeDown = 'voldown 1';
+    case VOLUME_UP = 'volup 1';
+    case VOLUME_DOWN = 'voldown 1';
 }

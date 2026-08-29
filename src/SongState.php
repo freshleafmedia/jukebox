@@ -2,10 +2,10 @@
 
 enum SongState: string
 {
-    case Playing = 'playing';
-    case Paused = 'paused';
-    case Playable = 'playable';
-    case Downloading = 'downloading';
-    case DownloadRequired = 'download_required';
-    case DownloadFailed = 'download_failed';
+    case PLAYING = 'playing';
+    case PAUSED = 'paused';
+    case PLAYABLE = 'playable';
+    case DOWNLOADING = 'downloading';
+    case DOWNLOAD_REQUIRED = 'download_required';
+    case DOWNLOAD_FAILED = 'download_failed';
 }

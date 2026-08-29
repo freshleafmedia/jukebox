@@ -22,7 +22,7 @@ final class Downloader
     private function nextSong(): ?Song
     {
         $statement = db()->prepare('SELECT * FROM songs WHERE state = ? ORDER BY sort ASC LIMIT 1');
-        $statement->execute([SongState::DownloadRequired->value]);
+        $statement->execute([SongState::DOWNLOAD_REQUIRED->value]);
 
         $row = $statement->fetch();
 
@@ -33,7 +33,7 @@ final class Downloader
     {
         echo '[' . date('Y-m-d H:i:s') . '] Downloading "' . $song->title . '" (' . $song->youtubeId . ')... ';
 
-        $this->setSongState($song->id, SongState::Downloading);
+        $this->setSongState($song->id, SongState::DOWNLOADING);
 
         $destination = SONGS_PATH . '/' . $song->youtubeId . '.mp3';
         $tmpFile = TMP_PATH . '/' . $song->youtubeId . '.mp3';
@@ -52,7 +52,7 @@ final class Downloader
             exec($command, result_code: $exitCode);
 
             if ($exitCode !== 0 || !is_file($tmpFile)) {
-                $this->setSongState($song->id, SongState::DownloadFailed);
+                $this->setSongState($song->id, SongState::DOWNLOAD_FAILED);
 
                 echo 'Failed' . PHP_EOL;
 
@@ -62,7 +62,7 @@ final class Downloader
             rename($tmpFile, $destination);
         }
 
-        $this->setSongState($song->id, SongState::Playable);
+        $this->setSongState($song->id, SongState::PLAYABLE);
 
         echo 'Done' . PHP_EOL;
     }
