@@ -1,16 +1,16 @@
 <?php
 
-$songIds = Db::connect()
-    ->query('SELECT id FROM songs WHERE queued_by IS NOT NULL')
-    ->fetchAll(PDO::FETCH_COLUMN);
+$queued = Db::connect()
+    ->query('SELECT id, queued_by FROM songs WHERE queued_by IS NOT NULL ORDER BY sort')
+    ->fetchAll();
 
-shuffle($songIds);
+shuffle($queued);
 
 $statement = Db::connect()->prepare('UPDATE songs SET sort = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?');
 
 Db::connect()->beginTransaction();
 
-foreach ($songIds as $sort => $id) {
+foreach (fairQueueOrder($queued) as $sort => $id) {
     $statement->execute([$sort, $id]);
 }
 

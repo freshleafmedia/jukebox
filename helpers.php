@@ -15,6 +15,36 @@ function renderView(string $path, array $vars = []): string
     return ob_get_clean();
 }
 
+/**
+ * @param array<array{id: int, queued_by: string}> $rows Queued songs ordered by their current sort.
+ * @return int[] Song ids in fair, round-robin order across users.
+ */
+function fairQueueOrder(array $rows): array
+{
+    $songIdsGroupedByUser = [];
+
+    foreach ($rows as $row) {
+        $songIdsGroupedByUser[$row['queued_by']][] = $row['id'];
+    }
+
+    $userNames = array_keys($songIdsGroupedByUser);
+    shuffle($userNames);
+    $nextIndexByUser = array_fill_keys($userNames, 0);
+    $ordered = [];
+
+    while ($userNames !== []) {
+        foreach ($userNames as $i => $user) {
+            $ordered[] = $songIdsGroupedByUser[$user][$nextIndexByUser[$user]++];
+
+            if ($nextIndexByUser[$user] >= count($songIdsGroupedByUser[$user])) {
+                unset($userNames[$i]);
+            }
+        }
+    }
+
+    return $ordered;
+}
+
 function formatDuration(int $seconds): string
 {
     $h = intdiv($seconds, 3600);

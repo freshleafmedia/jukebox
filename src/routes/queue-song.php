@@ -25,14 +25,16 @@ $statement = Db::connect()->prepare('SELECT id FROM songs WHERE youtube_id = ?')
 $statement->execute([$youtubeId]);
 $song = $statement->fetchAll()[0] ?? false;
 
-$sortValues = Db::connect()->query('SELECT COALESCE(MAX(sort), -1) + 1 FROM songs WHERE queued_by IS NOT NULL')->fetchAll(PDO::FETCH_COLUMN);
-$nextSort = (int) $sortValues[0];
-
 $queuedBy = substr(trim($_POST['queued_by'] ?? ''), 0, 50);
 
 if ($queuedBy === '' || $queuedBy === 'null') {
     $queuedBy = 'Someone';
 }
+
+Db::connect()->beginTransaction();
+
+$sortValues = Db::connect()->query('SELECT COALESCE(MAX(sort), -1) + 1 FROM songs WHERE queued_by IS NOT NULL')->fetchAll(PDO::FETCH_COLUMN);
+$nextSort = (int) $sortValues[0];
 
 if ($song === false) {
     Db::connect()
@@ -43,5 +45,17 @@ if ($song === false) {
         ->prepare('UPDATE songs SET queued_by = ?, sort = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
         ->execute([$queuedBy, $nextSort, $song['id']]);
 }
+
+$queued = Db::connect()
+    ->query('SELECT id, queued_by FROM songs WHERE queued_by IS NOT NULL ORDER BY sort')
+    ->fetchAll();
+
+$statement = Db::connect()->prepare('UPDATE songs SET sort = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?');
+
+foreach (fairQueueOrder($queued) as $sort => $id) {
+    $statement->execute([$sort, $id]);
+}
+
+Db::connect()->commit();
 
 http_response_code(200);
