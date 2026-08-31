@@ -5,7 +5,7 @@
     <title>Freshleaf Jukebox</title>
 
     <link rel="stylesheet" type="text/css" href="/assets/app.css" media="all">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" href="/assets/images/freshleaf.svg" type="image/svg+xml">
     <link href="https://fonts.googleapis.com/css?family=Pacifico|Nunito:400,300,700" rel="stylesheet" type="text/css">
 
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0" integrity="sha384-BvJpBiO8Kh31EqtJe5DRIeWrHWnCGkwytKs9NKFi86Hhw96dEqdEMzZDeK9iEGTc" crossorigin="anonymous"></script>
