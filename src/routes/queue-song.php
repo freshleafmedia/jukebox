@@ -30,7 +30,7 @@ $nextSort = (int) $sortValues[0];
 
 $queuedBy = substr(trim($_POST['queued_by'] ?? ''), 0, 50);
 
-if ($queuedBy === '') {
+if ($queuedBy === '' || $queuedBy === 'null') {
     $queuedBy = 'Someone';
 }
 
