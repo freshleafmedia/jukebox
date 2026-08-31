@@ -22,9 +22,8 @@ $existing = [];
 
 if ($results !== []) {
     $ids = array_map(fn (SearchResult $result): string => $result->youtubeId, $results);
-    $placeholders = implode(',', array_fill(0, count($ids), '?'));
 
-    $statement = Db::connect()->prepare('SELECT youtube_id, state, queued_by FROM songs WHERE youtube_id IN (' . $placeholders . ')');
+    $statement = Db::connect()->prepare('SELECT youtube_id, state, queued_by FROM songs WHERE youtube_id IN (' . implode(',', array_fill(0, count($ids), '?')) . ')');
     $statement->execute($ids);
 
     foreach ($statement->fetchAll() as $row) {
@@ -46,10 +45,10 @@ foreach ($results as $result):
         class="songResult<?= $inQueue ? ' inqueue' : '' ?>"
         data-state="<?= e($state) ?>"
         <?php if (!$inQueue): ?>
-        hx-post="/action/queue-song"
-        hx-vals='js:{"youtube_id":"<?= e($info->youtubeId) ?>","queued_by":localStorage.getItem("name")}'
-        hx-swap="none"
-        hx-on::before:request="this.classList.add('inqueue')"
+            hx-post="/action/queue-song"
+            hx-vals='js:{"youtube_id":"<?= e($info->youtubeId) ?>","queued_by":localStorage.getItem("name")}'
+            hx-swap="none"
+            hx-on::before:request="this.classList.add('inqueue')"
         <?php endif ?>
     >
         <div class="imageWrapper">
