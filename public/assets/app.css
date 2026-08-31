@@ -303,7 +303,13 @@ button[disabled] {
 .overlay-wrapper {
   position: relative;
   z-index: 7;
-  background: #fdf8f2;
+  background:
+    linear-gradient(
+      rgba(255, 255, 255, 0.55) 0px,
+      rgba(255, 255, 255, 0.55) 150px,
+      rgba(255, 255, 255, 0.9) 400px
+    ),
+    url(/assets/images/planks.jpg);
   border-radius: 10px;
   padding: 20px 40px 10px;
 }
