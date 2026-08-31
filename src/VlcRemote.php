@@ -35,7 +35,7 @@ final readonly class VlcRemote
 
     private static function send(string $command): ?string
     {
-        $connection = stream_socket_client('tcp://' . VLC_RC_HOST, timeout: 1);
+        $connection = @stream_socket_client('tcp://' . VLC_RC_HOST, timeout: 1);
 
         if ($connection === false) {
             return null;
