@@ -311,7 +311,7 @@ input#search {
   text-align: center;
 }
 #search-container .inqueue {
-  background: lightgreen;
+  background: rgba(107, 200, 116, 0.2);
   pointer-events: none;
   cursor: pointer;
 }
