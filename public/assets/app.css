@@ -488,13 +488,28 @@ input#username {
 }
 .songResult progress {
   position: absolute;
-  left: 100px;
-  bottom: 0;
-  width: calc(100% - 110px);
+  left: 110px;
+  bottom: 15px;
+  width: calc(100% - 120px);
+  height: 10px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  overflow: hidden;
 }
 
 progress {
   display: none;
+}
+
+progress::-webkit-progress-value {
+  border-radius: 3px;
+  background: #00aced;
+}
+
+progress::-moz-progress-bar {
+  border-radius: 3px;
+  background: #00aced;
 }
 
 .songResult[data-state="paused"] progress {
