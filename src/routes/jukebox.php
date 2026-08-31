@@ -73,6 +73,10 @@
             document.getElementById('search').value = '';
             document.getElementById('search-results').innerHTML = '';
         });
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
     </script>
 </body>
 </html>
