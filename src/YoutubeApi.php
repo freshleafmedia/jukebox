@@ -32,7 +32,8 @@ class YoutubeApi
                         },
                         $items,
                     ))
-                    |> array_filter(...);
+                    |> array_filter(...)
+                    |> array_values(...);
             },
         );
 
