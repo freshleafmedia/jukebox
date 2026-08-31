@@ -6,10 +6,9 @@
 
     <link rel="stylesheet" type="text/css" href="/assets/app.css" media="all">
     <link rel="icon" href="/assets/images/freshleaf.svg" type="image/svg+xml">
-    <link href="https://fonts.googleapis.com/css?family=Pacifico|Nunito:400,300,700" rel="stylesheet" type="text/css">
 
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0" integrity="sha384-BvJpBiO8Kh31EqtJe5DRIeWrHWnCGkwytKs9NKFi86Hhw96dEqdEMzZDeK9iEGTc" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/ext/hx-sse.min.js" integrity="sha384-VZD0TLKqhJ26ayBUgQg3ud6DsOLMJvtcz0ANpNc9WSbgIuQTnlXI2IfsF5jhBjT6" crossorigin="anonymous"></script>
+    <script src="/assets/htmx-4.0.0.js"></script>
+    <script src="/assets/htmx-4.0.0-ext-sse.js"></script>
 </head>
 <body class="playing" hx-sse:connect="/sse?<?= bin2hex(random_bytes(8)) ?>">
     <div id="background"></div>
