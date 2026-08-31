@@ -13,7 +13,7 @@ $youtube = new YoutubeApi();
 try {
     $results = $youtube->search($term);
 } catch (RuntimeException $e) {
-    echo '<p class="status">Search is unavailable right now, try again shortly.</p>' . $e->getMessage();
+    echo '<p class="status">Umm that didn\'t work...</p><details>' . $e->getMessage() . '</details>';
 
     return;
 }
