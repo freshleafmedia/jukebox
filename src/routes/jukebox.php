@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0" integrity="sha384-BvJpBiO8Kh31EqtJe5DRIeWrHWnCGkwytKs9NKFi86Hhw96dEqdEMzZDeK9iEGTc" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/ext/hx-sse.min.js" integrity="sha384-VZD0TLKqhJ26ayBUgQg3ud6DsOLMJvtcz0ANpNc9WSbgIuQTnlXI2IfsF5jhBjT6" crossorigin="anonymous"></script>
 </head>
-<body class="playing" hx-sse:connect="/sse">
+<body class="playing" hx-sse:connect="/sse?<?= bin2hex(random_bytes(8)) ?>">
     <div id="background"></div>
     <div id="debugUpdateTime"></div>
     <div id="wrapper">
