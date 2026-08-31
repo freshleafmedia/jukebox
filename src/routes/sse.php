@@ -47,7 +47,7 @@ while (!connection_aborted()) {
     $activeSong = $activeSongStatement->fetchAll()[0] ?? false;
 
     if ($activeSong !== false) {
-        $position = VlcRemote::query(VlcCommand::GET_TIME);
+        $position = VlcRemote::getPlaybackPosition();
 
         if ($position !== null && $position !== $lastPosition) {
             $lastPosition = $position;

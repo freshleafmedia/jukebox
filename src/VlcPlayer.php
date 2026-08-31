@@ -39,7 +39,11 @@ final class VlcPlayer
         }
 
         if ($songToPlay->state !== $this->currentPlayState) {
-            VlcRemote::send($songToPlay->state === SongState::PAUSED ? VlcCommand::PAUSE : VlcCommand::PLAY);
+            if ($songToPlay->state === SongState::PAUSED) {
+                VlcRemote::pause();
+            } else {
+                VlcRemote::play();
+            }
 
             $this->currentPlayState = $songToPlay->state;
         }

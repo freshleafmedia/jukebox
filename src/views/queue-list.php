@@ -42,7 +42,7 @@ $songs = array_map(Song::fromDbRow(...), $statement->fetchAll());
         <p class="duration"><?= formatDuration($song->duration) ?></p>
 
         <?php if ($song->state === SongState::PLAYING || $song->state === SongState::PAUSED): ?>
-            <progress id="playbackProgress" max="<?= $song->duration ?>" value="<?= VlcRemote::query(VlcCommand::GET_TIME) ?>"></progress>
+            <progress id="playbackProgress" max="<?= $song->duration ?>" value="<?= VlcRemote::getPlaybackPosition() ?>"></progress>
         <?php endif ?>
     </div>
 <?php endforeach ?>

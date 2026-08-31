@@ -1,5 +1,5 @@
 <?php
 
-VlcRemote::send(VlcCommand::VOLUME_UP);
+VlcRemote::volumeUp();
 
 http_response_code(200);
