@@ -5,6 +5,16 @@ function e(mixed $value): string
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
 
+function renderView(string $path, array $vars = []): string
+{
+    extract($vars);
+
+    ob_start();
+    require $path;
+
+    return ob_get_clean();
+}
+
 function formatDuration(int $seconds): string
 {
     $h = intdiv($seconds, 3600);

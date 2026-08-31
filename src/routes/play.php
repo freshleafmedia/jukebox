@@ -21,3 +21,5 @@ if ($songIdToPlay !== false) {
 }
 
 http_response_code(200);
+
+echo '<hx-partial hx-target="#mediaControls">' . renderView(__DIR__ . '/../views/media-controls.php') . '</hx-partial>';

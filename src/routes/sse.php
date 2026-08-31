@@ -37,23 +37,12 @@ while (!connection_aborted()) {
     if ($signature !== $lastSignature) {
         $lastSignature = $signature;
 
-        ob_start();
-        require __DIR__ . '/../views/media-controls.php';
-        $controlsHtml = ob_get_clean();
-
-        ob_start();
-        require __DIR__ . '/../views/queue-list.php';
-        $queueHtml = ob_get_clean();
+        $partials .= '<hx-partial hx-target="#mediaControls">' . renderView(__DIR__ . '/../views/media-controls.php') . '</hx-partial>' . "\n"
+            . '<hx-partial hx-target="#queueContainer">' . renderView(__DIR__ . '/../views/queue-list.php') . '</hx-partial>' . "\n";
 
         $updateTime = microtime(true) - $loopStartedAt;
 
-        ob_start();
-        require __DIR__ . '/../views/debug-update-time.php';
-        $debugHtml = ob_get_clean();
-
-        $partials .= '<hx-partial hx-target="#mediaControls">' . $controlsHtml . '</hx-partial>' . "\n"
-            . '<hx-partial hx-target="#queueContainer">' . $queueHtml . '</hx-partial>' . "\n"
-            . '<hx-partial hx-target="#debugUpdateTime">' . $debugHtml . '</hx-partial>';
+        $partials .= '<hx-partial hx-target="#debugUpdateTime">' . renderView(__DIR__ . '/../views/debug-update-time.php', ['updateTime' => $updateTime]) . '</hx-partial>';
     }
 
     sendSseData($partials);
