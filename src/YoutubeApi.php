@@ -17,15 +17,20 @@ class YoutubeApi
                             'type' => 'video',
                             'part' => 'id,snippet',
                             'maxResults' => 30,
-                            'topicId' => '/m/04rlf',
                             'videoDimension' => '2d',
                         ]
                     );
 
-                return array_map(
-                    fn (array $item): string => $item['id']['videoId'],
+                return array_filter(array_map(
+                    function (array $item): ?string {
+                        if ($item['id']['kind'] !== 'youtube#video') {
+                            return null;
+                        }
+
+                        return $item['id']['videoId'];
+                    },
                     $data['items'] ?? []
-                );
+                ));
             },
         );
 
