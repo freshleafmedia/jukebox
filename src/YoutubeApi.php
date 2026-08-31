@@ -21,16 +21,18 @@ class YoutubeApi
                         ]
                     );
 
-                return array_filter(array_map(
-                    function (array $item): ?string {
-                        if ($item['id']['kind'] !== 'youtube#video') {
-                            return null;
-                        }
+                return ($data['items'] ?? [])
+                    |> (fn (array $items): array => array_map(
+                        function (array $item): ?string {
+                            if ($item['id']['kind'] !== 'youtube#video') {
+                                return null;
+                            }
 
-                        return $item['id']['videoId'];
-                    },
-                    $data['items'] ?? []
-                ));
+                            return $item['id']['videoId'];
+                        },
+                        $items,
+                    ))
+                    |> array_filter(...);
             },
         );
 
