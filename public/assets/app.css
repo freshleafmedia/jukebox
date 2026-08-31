@@ -6,6 +6,9 @@ body {
   margin: 0;
   padding: 0;
 }
+html:has(dialog[open]) {
+  overflow: hidden;
+}
 
 #background {
   position: fixed;
@@ -225,15 +228,43 @@ button[disabled] {
 
 #addDialog {
   position: fixed;
-  left: 20%;
-  right: 20%;
+  left: 50%;
   top: 20px;
-  width: auto;
+  transform: translateX(-50%);
+  width: 880px;
+  max-height: calc(100vh - 50px);
   margin: 0;
   padding: 0;
   border: none;
   background: transparent;
   max-width: none;
+}
+#addDialog .overlay-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 80px);
+}
+#addDialog .search-header {
+  flex-shrink: 0;
+}
+#addDialog #search-container {
+  display: none;
+}
+#addDialog:has(#search-status.htmx-request) #search-container,
+#addDialog:has(#search-results:not(:empty)) #search-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+#addDialog:has(#search-status.htmx-request) #search-results {
+  display: none;
+}
+#addDialog #search-results {
+  padding-top: 20px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 #addDialog::backdrop {
   background: rgba(0, 0, 0, 0.4);
@@ -244,33 +275,40 @@ button[disabled] {
   top: 0;
   cursor: pointer;
 }
-.search-container {
-  padding-top: 20px;
-}
 
 .overlay-wrapper {
   position: relative;
   z-index: 7;
-  background: #fff;
+  background: #fdf8f2;
   border-radius: 10px;
-  padding: 40px 40px 20px;
+  padding: 20px 40px 10px;
 }
 .search-header {
   width: 100%;
-  border-bottom: 1px solid #00aced;
+  border-bottom: 1px solid transparent;
   padding-bottom: 40px;
+  text-align: center;
+}
+#addDialog:has(#search-status.htmx-request) .search-header,
+#addDialog:has(#search-results:not(:empty)) .search-header {
+  border-bottom-color: #00aced;
+}
+.search-title {
+  font-family: 'Pacifico', cursive;
+  font-size: 40px;
+  color: #227fde;
+  margin: 0 0 20px;
 }
 input#search {
-  width: 75%;
-  margin-left: 2%;
+  width: 60%;
   height: 40px;
   border-radius: 10px;
   border: 2px solid #e7466f;
   font-size: 16px;
   text-indent: 20px;
 }
-#search-container {
-  padding-top: 20px;
+#search-status {
+  text-align: center;
 }
 #search-container .inqueue {
   background: lightgreen;
@@ -286,24 +324,6 @@ input#search {
 }
 .highlight {
   border-right: 5px solid #227fde;
-}
-#addDialogClose {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #fff;
-  border-radius: 5px;
-  cursor: pointer !important;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #227fde;
-  font-family: 'Pacifico', cursive;
-  line-height: 40px;
-  color: #fff;
-  padding: 0;
-  transition: background 0.3s linear;
-}
-#addDialogClose:hover {
-  background-color: #6bc874;
 }
 #search-container .songResult {
   cursor: pointer;
@@ -342,6 +362,10 @@ input#search {
   border-bottom: none;
   padding-bottom: 20px;
   text-align: center;
+}
+#nameDialog .search-title {
+  font-size: 28px;
+  margin: 0;
 }
 input#username {
   width: 100%;

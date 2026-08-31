@@ -36,7 +36,7 @@
     <dialog id="nameDialog">
         <div class="overlay-wrapper">
             <div class="search-header">
-                <strong>What's your name?</strong>
+                <h2 class="search-title">What's your name?</h2>
             </div>
 
             <form id="nameForm">
@@ -56,12 +56,9 @@
 
     <dialog id="addDialog">
         <div class="overlay-wrapper">
-            <form method="dialog">
-                <button id="addDialogClose">X</button>
-            </form>
-
             <div class="search-header">
-                <strong>Search YouTube</strong>
+                <h2 class="search-title">Song Search</h2>
+
                 <input
                     type="text"
                     id="search"
@@ -116,8 +113,8 @@
         });
 
         addDialog.addEventListener('close', () => {
-            document.getElementById('search').value = '';
-            document.getElementById('search-results').innerHTML = '';
+            addDialog.querySelector('#search').value = '';
+            addDialog.querySelector('#search-results').innerHTML = '';
         });
 
         if ('serviceWorker' in navigator) {
