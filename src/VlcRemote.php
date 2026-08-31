@@ -12,12 +12,12 @@ final readonly class VlcRemote
         self::send('pause');
     }
 
-    public static function volumeUp(int $amount): void
+    public static function volumeUp(int $amount = 1): void
     {
         self::send('volup ' . $amount);
     }
 
-    public static function volumeDown(int $amount): void
+    public static function volumeDown(int $amount = 1): void
     {
         self::send('voldown ' . $amount);
     }
