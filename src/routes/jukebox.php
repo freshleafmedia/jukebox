@@ -33,6 +33,27 @@
         <section id="footer">Lovingly Crafted by Team Freshleaf</section>
     </div>
 
+    <dialog id="nameDialog">
+        <div class="overlay-wrapper">
+            <div class="search-header">
+                <strong>What's your name?</strong>
+            </div>
+
+            <form id="nameForm">
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    autofocus
+                    required
+                    maxlength="50"
+                    placeholder=""
+                >
+                <button type="submit" id="saveUsernameButton">Save</button>
+            </form>
+        </div>
+    </dialog>
+
     <dialog id="addDialog">
         <div class="overlay-wrapper">
             <form method="dialog">
@@ -61,6 +82,31 @@
     </dialog>
 
     <script>
+        const USERNAME_KEY = 'name';
+        const nameDialog = document.getElementById('nameDialog');
+        const nameForm = document.getElementById('nameForm');
+
+        if (!localStorage.getItem(USERNAME_KEY)) {
+            nameDialog.showModal();
+        }
+
+        nameDialog.addEventListener('cancel', (event) => {
+            event.preventDefault();
+        });
+
+        nameForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+
+            if (username === '') {
+                return;
+            }
+
+            localStorage.setItem(USERNAME_KEY, username);
+            nameDialog.close();
+        });
+
         const addDialog = document.getElementById('addDialog');
 
         addDialog.addEventListener('click', (event) => {

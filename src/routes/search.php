@@ -47,7 +47,7 @@ foreach ($results as $result):
         data-state="<?= e($state) ?>"
         <?php if (!$inQueue): ?>
         hx-post="/action/queue-song"
-        hx-vals='{"youtube_id":"<?= e($info->youtubeId) ?>"}'
+        hx-vals='js:{"youtube_id":"<?= e($info->youtubeId) ?>","queued_by":localStorage.getItem("jukebox_username")}'
         hx-swap="none"
         <?php endif ?>
     >

@@ -28,7 +28,11 @@ $song = $statement->fetchAll()[0] ?? false;
 $sortValues = Db::connect()->query('SELECT COALESCE(MAX(sort), -1) + 1 FROM songs WHERE queued_by IS NOT NULL')->fetchAll(PDO::FETCH_COLUMN);
 $nextSort = (int) $sortValues[0];
 
-$queuedBy = 'Someone';
+$queuedBy = substr(trim($_POST['queued_by'] ?? ''), 0, 50);
+
+if ($queuedBy === '') {
+    $queuedBy = 'Someone';
+}
 
 if ($song === false) {
     Db::connect()
