@@ -3,5 +3,4 @@
 /storage/jukebox.sqlite*
 /storage/songs/*
 /storage/cache/*
-/reference
 .idea
