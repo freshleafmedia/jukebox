@@ -49,6 +49,7 @@ foreach ($results as $result):
         hx-post="/action/queue-song"
         hx-vals='js:{"youtube_id":"<?= e($info->youtubeId) ?>","queued_by":localStorage.getItem("name")}'
         hx-swap="none"
+        hx-on::before:request="this.classList.add('inqueue')"
         <?php endif ?>
     >
         <div class="imageWrapper">
