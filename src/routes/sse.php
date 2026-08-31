@@ -27,8 +27,12 @@ $signatureStatement = Db::connect()->prepare('SELECT MAX(updated_at) FROM songs 
 $lastSignature = false;
 
 while (!connection_aborted()) {
+    $loopStartedAt = microtime(true);
+
     $signatureStatement->execute();
     $signature = $signatureStatement->fetchColumn();
+
+    $partials = '';
 
     if ($signature !== $lastSignature) {
         $lastSignature = $signature;
@@ -41,14 +45,19 @@ while (!connection_aborted()) {
         require __DIR__ . '/../views/queue-list.php';
         $queueHtml = ob_get_clean();
 
-        sendSseData(
-            '<hx-partial hx-target="#mediaControls">' . $controlsHtml . '</hx-partial>' . "\n"
-            . '<hx-partial hx-target="#queueContainer">' . $queueHtml . '</hx-partial>',
-        );
-    } else {
-        echo ": keep-alive\n\n";
-        flush();
+        $partials .= '<hx-partial hx-target="#mediaControls">' . $controlsHtml . '</hx-partial>' . "\n"
+            . '<hx-partial hx-target="#queueContainer">' . $queueHtml . '</hx-partial>' . "\n";
     }
 
-    sleep(1);
+    $updateTime = microtime(true) - $loopStartedAt;
+
+    ob_start();
+    require __DIR__ . '/../views/debug-update-time.php';
+    $debugHtml = ob_get_clean();
+
+    $partials .= '<hx-partial hx-target="#debugUpdateTime">' . $debugHtml . '</hx-partial>';
+
+    sendSseData($partials);
+
+    usleep(100_000);
 }

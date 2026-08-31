@@ -13,6 +13,7 @@
 </head>
 <body class="playing" hx-sse:connect="/sse">
     <div id="background"></div>
+    <div id="debugUpdateTime"></div>
     <div id="wrapper">
         <header>
             <div class="masthead">
