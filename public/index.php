@@ -22,6 +22,7 @@ match (true) {
     $path === '/' => require __DIR__ . '/../src/routes/jukebox.php',
     $path === '/action/search' => require __DIR__ . '/../src/routes/search.php',
     $path === '/action/queue-song' => require __DIR__ . '/../src/routes/queue-song.php',
+    $path === '/action/remove-song' => require __DIR__ . '/../src/routes/remove-song.php',
     $path === '/action/play' => require __DIR__ . '/../src/routes/play.php',
     $path === '/action/pause' => require __DIR__ . '/../src/routes/pause.php',
     $path === '/action/skip' => require __DIR__ . '/../src/routes/skip.php',

@@ -119,6 +119,38 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js');
         }
+
+        function updateRemoveButtons() {
+            const currentUser = localStorage.getItem(USERNAME_KEY);
+
+            if (!currentUser) {
+                return;
+            }
+
+            document.querySelectorAll('.remove-song-btn').forEach((button) => {
+                const songDiv = button.closest('.songResult');
+                const queuedBy = songDiv?.dataset.queuedBy;
+
+                if (queuedBy === currentUser) {
+                    button.style.display = 'flex';
+                    button.style.pointerEvents = 'auto';
+                } else {
+                    button.style.display = 'none';
+                    button.style.pointerEvents = 'none';
+                }
+            });
+        }
+
+        const queueObserver = new MutationObserver(() => {
+            updateRemoveButtons();
+        });
+
+        queueObserver.observe(document.getElementById('queueContainer'), {
+            childList: true,
+            subtree: true
+        });
+
+        updateRemoveButtons();
     </script>
 </body>
 </html>
