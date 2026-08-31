@@ -24,16 +24,6 @@ body {
   filter: blur(30px);
 }
 
-#debugUpdateTime {
-  position: fixed;
-  top: 4px;
-  right: 8px;
-  margin: 0;
-  color: #fff;
-  font-size: 10px;
-  z-index: 10;
-}
-
 #wrapper {
   overflow: hidden;
   width: 100%;
