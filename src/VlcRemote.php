@@ -24,14 +24,18 @@ final readonly class VlcRemote
 
     public static function getPlaybackPosition(): ?int
     {
-        $reply = self::send('get_time');
+        $playbackPosition = self::send('get_time');
 
-        return ctype_digit($reply) ? (int) $reply : null;
+        if ($playbackPosition === null || ctype_digit($playbackPosition) === false) {
+            return null;
+        }
+
+        return (int) $playbackPosition;
     }
 
-    public static function send(string $command): ?string
+    private static function send(string $command): ?string
     {
-        $connection = @stream_socket_client('unix://' . VLC_RC_SOCKET_PATH, timeout: 1);
+        $connection = stream_socket_client('tcp://' . VLC_RC_HOST, timeout: 1);
 
         if ($connection === false) {
             return null;
@@ -41,10 +45,27 @@ final readonly class VlcRemote
 
         fwrite($connection, $command . "\n");
 
-        $reply = trim(fread($connection, 1024));
+        $content = '';
+
+        while (substr_count($content, '> ') < 2) {
+            $chunk = fread($connection, 2024);
+
+            if ($chunk === false || $chunk === '') {
+                break;
+            }
+
+            $content .= $chunk;
+        }
 
         fclose($connection);
 
-        return $reply;
+        $parts = explode('> ', $content);
+        $response = trim($parts[count($parts) - 2] ?? '');
+
+        if ($response === '') {
+            return null;
+        }
+
+        return $response;
     }
 }

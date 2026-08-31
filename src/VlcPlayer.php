@@ -79,10 +79,8 @@ final class VlcPlayer
     {
         echo '[' . date('Y-m-d H:i:s') . '] Playing "' . $song->title . '" (' . $song->youtubeId . ')' . PHP_EOL;
 
-        @unlink(VLC_RC_SOCKET_PATH);
-
         $this->vlcProcess = proc_open(
-            ['cvlc', '--play-and-exit', '--intf', 'dummy', '--intf', 'oldrc', '--rc-unix', VLC_RC_SOCKET_PATH, SONGS_PATH . '/' . $song->youtubeId . '.mp3'],
+            ['cvlc', '--play-and-exit', '-I', 'rc', '--rc-host', VLC_RC_HOST, SONGS_PATH . '/' . $song->youtubeId . '.mp3'],
             [1 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']],
             $pipes,
         );
