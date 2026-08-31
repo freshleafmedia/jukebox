@@ -9,7 +9,6 @@ require __DIR__ . '/../src/VideoInfo.php';
 require __DIR__ . '/../src/YoutubeApi.php';
 require __DIR__ . '/../src/SongState.php';
 require __DIR__ . '/../src/Song.php';
-require __DIR__ . '/../src/VlcCommand.php';
 require __DIR__ . '/../src/VlcRemote.php';
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

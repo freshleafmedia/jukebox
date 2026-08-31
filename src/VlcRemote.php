@@ -29,7 +29,7 @@ final readonly class VlcRemote
         return ctype_digit($reply) ? (int) $reply : null;
     }
 
-    public static function send(string $command): ?int
+    public static function send(string $command): ?string
     {
         $connection = @stream_socket_client('unix://' . VLC_RC_SOCKET_PATH, timeout: 1);
 
