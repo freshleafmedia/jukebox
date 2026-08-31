@@ -5,7 +5,7 @@
     <title>Freshleaf Jukebox</title>
 
     <link rel="stylesheet" type="text/css" href="/assets/app.css" media="all">
-    <link rel="icon" href="/assets/images/freshleaf.svg" type="image/svg+xml">
+    <link rel="icon" href="/assets/images/icon.png" type="image/png">
 
     <script src="/assets/htmx-4.0.0.js"></script>
     <script src="/assets/htmx-4.0.0-ext-sse.js"></script>
