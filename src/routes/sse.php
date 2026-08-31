@@ -23,8 +23,10 @@ function sendSseData(string $data): void
 }
 
 $signatureStatement = Db::connect()->prepare('SELECT MAX(updated_at) FROM songs WHERE queued_by IS NOT NULL');
+$activeSongStatement = Db::connect()->prepare('SELECT id, duration FROM songs WHERE queued_by IS NOT NULL AND state IN (?, ?) ORDER BY sort LIMIT 1');
 
 $lastSignature = false;
+$lastPosition = null;
 
 while (!connection_aborted()) {
     $loopStartedAt = microtime(true);
@@ -39,10 +41,23 @@ while (!connection_aborted()) {
 
         $partials .= '<hx-partial hx-target="#mediaControls">' . renderView(__DIR__ . '/../views/media-controls.php') . '</hx-partial>' . "\n"
             . '<hx-partial hx-target="#queueContainer">' . renderView(__DIR__ . '/../views/queue-list.php') . '</hx-partial>' . "\n";
+    }
 
-        $updateTime = microtime(true) - $loopStartedAt;
+    $activeSongStatement->execute([SongState::PLAYING->value, SongState::PAUSED->value]);
+    $activeSong = $activeSongStatement->fetchAll()[0] ?? false;
 
-        $partials .= '<hx-partial hx-target="#debugUpdateTime">' . renderView(__DIR__ . '/../views/debug-update-time.php', ['updateTime' => $updateTime]) . '</hx-partial>';
+    if ($activeSong !== false) {
+        $position = VlcRemote::query(VlcCommand::GET_TIME);
+
+        if ($position !== null && $position !== $lastPosition) {
+            $lastPosition = $position;
+
+            $partials .= '<hx-partial hx-target="#playbackProgress" hx-swap="outerHTML"><progress id="playbackProgress" max="' . $activeSong['duration'] . '" value="' . $position . '"></progress></hx-partial>' . "\n";
+        }
+    }
+
+    if ($partials !== '') {
+        $partials .= '<hx-partial hx-target="#debugUpdateTime">' . renderView(__DIR__ . '/../views/debug-update-time.php', ['updateTime' => microtime(true) - $loopStartedAt]) . '</hx-partial>';
     }
 
     sendSseData($partials);
