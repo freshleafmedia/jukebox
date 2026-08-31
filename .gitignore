@@ -1,23 +1,7 @@
-# Caches
-.phpunit.result.cache
-/.phpunit.cache
-
-# Secrets
-auth.json
-.env
-/storage/*.key
-
-# Logs
-npm-debug.log
-yarn-error.log
-
-# PHPStorm
+/config.php
+/storage/jukebox.sqlite
+/storage/jukebox.sqlite*
+/storage/songs/*
+/storage/cache/*
+/reference
 .idea
-
-# Dependencies
-/node_modules/
-/vendor/
-
-# Octane
-rr
-.rr.yaml

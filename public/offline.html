@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Freshleaf Jukebox — Offline</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #background {
+            position: fixed;
+            background: url(/assets/images/jukebox.png) no-repeat center top;
+            background-size: cover;
+            background-blend-mode: hard-light;
+            background-color: #666;
+            top: -5%;
+            left: -5%;
+            height: 110%;
+            width: 110%;
+            filter: blur(30px);
+        }
+
+        .offline-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+            width: 90%;
+            max-width: 900px;
+            text-align: center;
+            font-family: Impact, 'Arial Narrow Bold', sans-serif;
+            font-size: min(2vw, 64px);
+            letter-spacing: 0.35em;
+            line-height: 1.8;
+            color: #fff;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div id="background"></div>
+    <p class="offline-message">jukebox<br/>offline</p>
+</body>
+</html>

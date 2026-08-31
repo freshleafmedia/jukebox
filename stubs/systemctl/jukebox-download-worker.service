@@ -1,14 +1,14 @@
 [Unit]
-Description=Jukebox VLC Player
-After=network.target sound.target
+Description=Jukebox Download Worker
+After=network.target
 
 [Service]
 Type=simple
 User={{ UID }}
 Group={{ UID }}
 WorkingDirectory={{ PWD }}
-Nice=10
-ExecStart=/usr/bin/php bin/vlc-player.php
+Nice=-5
+ExecStart=/usr/bin/php bin/download-worker.php
 Restart=on-failure
 RestartSec=10
 
