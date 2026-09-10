@@ -6,6 +6,9 @@ final class Downloader
     {
         echo '[' . date('Y-m-d H:i:s') . '] Download worker started' . PHP_EOL;
 
+        $this->resetSongsInDownloadingState();
+        $this->registerShutdownHandlers();
+
         while (true) {
             $song = $this->nextSong();
 
@@ -17,6 +20,27 @@ final class Downloader
 
             $this->download($song);
         }
+    }
+
+    private function resetSongsInDownloadingState(): void
+    {
+        Db::connect()
+            ->prepare('UPDATE songs SET state = ?, updated_at = CURRENT_TIMESTAMP WHERE state = ?')
+            ->execute([SongState::DOWNLOAD_REQUIRED->value, SongState::DOWNLOADING->value]);
+    }
+
+    private function registerShutdownHandlers(): void
+    {
+        pcntl_async_signals(true);
+
+        $handler = function (): void {
+            $this->resetSongsInDownloadingState();
+
+            exit;
+        };
+
+        pcntl_signal(SIGTERM, $handler);
+        pcntl_signal(SIGINT, $handler);
     }
 
     private function nextSong(): ?Song
