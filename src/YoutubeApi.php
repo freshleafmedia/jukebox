@@ -101,6 +101,9 @@ class YoutubeApi
 
         $curl = curl_init('https://www.googleapis.com/youtube/v3/' . $endpoint . '?' . http_build_query($params));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 15);
+        curl_setopt($curl, CURLOPT_ENCODING, '');
         $response = curl_exec($curl);
 
         if ($response === false) {
