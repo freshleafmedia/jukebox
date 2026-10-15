@@ -66,7 +66,7 @@ class YoutubeApi
 
         return array_map(
             fn (array $row): VideoInfo => new VideoInfo($row['youtube_id'], $row['title'], $row['duration']),
-            $rows,
+            array_filter($rows),
         );
     }
 
