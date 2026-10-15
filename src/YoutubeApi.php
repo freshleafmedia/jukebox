@@ -42,37 +42,57 @@ class YoutubeApi
 
     public function videoInfo(string $youtubeId): ?VideoInfo
     {
-        $data = Cache::remember(
-            $youtubeId,
-            function () use ($youtubeId): ?array {
-                $data = $this
-                    ->apiGet(
-                        'videos',
-                        [
-                            'id' => $youtubeId,
-                            'part' => 'id,snippet,contentDetails',
-                        ],
-                    );
+        return $this->videoInfos([$youtubeId])[$youtubeId] ?? null;
+    }
 
-                if (empty($data['items'])) {
-                    return null;
-                }
+    public function videoInfos(array $youtubeIds): array
+    {
+        $rows = [];
+        $uncached = [];
 
-                $item = $data['items'][0];
+        foreach ($youtubeIds as $youtubeId) {
+            if (Cache::has($youtubeId)) {
+                $rows[$youtubeId] = Cache::get($youtubeId);
+            } else {
+                $uncached[] = $youtubeId;
+            }
+        }
 
-                return [
+        foreach ($this->fetchVideoInfos($uncached) as $youtubeId => $row) {
+            Cache::put($youtubeId, $row);
+
+            $rows[$youtubeId] = $row;
+        }
+
+        return array_map(
+            fn (array $row): VideoInfo => new VideoInfo($row['youtube_id'], $row['title'], $row['duration']),
+            $rows,
+        );
+    }
+
+    private function fetchVideoInfos(array $youtubeIds): array
+    {
+        $rows = [];
+
+        foreach (array_chunk($youtubeIds, 50) as $chunk) {
+            $data = $this->apiGet(
+                'videos',
+                [
+                    'id' => implode(',', $chunk),
+                    'part' => 'id,snippet,contentDetails',
+                ],
+            );
+
+            foreach ($data['items'] as $item) {
+                $rows[$item['id']] = [
                     'youtube_id' => $item['id'],
                     'title' => $item['snippet']['title'],
                     'duration' => $this->parseIso8601DurationToSeconds($item['contentDetails']['duration']),
                 ];
             }
-        );
-
-        if ($data === null) {
-            return null;
         }
 
-        return new VideoInfo($data['youtube_id'], $data['title'], $data['duration']);
+        return $rows;
     }
 
     private function apiGet(string $endpoint, array $params): array

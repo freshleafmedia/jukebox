@@ -31,8 +31,12 @@ if ($results !== []) {
     }
 }
 
+$infos = $youtube->videoInfos(
+    array_map(fn (SearchResult $result): string => $result->youtubeId, $results),
+);
+
 foreach ($results as $result):
-    $info = $youtube->videoInfo($result->youtubeId);
+    $info = $infos[$result->youtubeId] ?? null;
 
     if ($info === null) {
         continue;
