@@ -4,16 +4,30 @@ final class VlcPlayer
 {
     private mixed $vlcProcess = null;
     private ?Song $currentSong = null;
-    private ?SongState $currentPlayState = null;
+    private SongState $currentPlayState = SongState::PAUSED;
 
     public function run(): void
     {
         echo '[' . date('Y-m-d H:i:s') . '] VLC player started' . PHP_EOL;
 
+        $this->pauseQueueOnBoot();
+
         while (true) {
             $this->tick();
 
             usleep(250_000);
+        }
+    }
+
+    private function pauseQueueOnBoot(): void
+    {
+        Db::connect()
+            ->prepare('UPDATE songs SET state = ?, updated_at = CURRENT_TIMESTAMP WHERE state = ?')
+            ->execute([SongState::PAUSED->value, SongState::PLAYING->value]);
+
+        if ($this->queueIsEmpty()) {
+            // The first song to get added should autoplay
+            $this->currentPlayState = SongState::PLAYING;
         }
     }
 
@@ -70,7 +84,7 @@ final class VlcPlayer
 
         Db::connect()
             ->prepare('UPDATE songs SET state = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
-            ->execute([SongState::PLAYING->value, $songId]);
+            ->execute([$this->currentPlayState->value, $songId]);
 
         return $this->activeSong();
     }
@@ -80,12 +94,21 @@ final class VlcPlayer
         echo '[' . date('Y-m-d H:i:s') . '] Playing "' . $song->title . '" (' . $song->youtubeId . ')' . PHP_EOL;
 
         $this->vlcProcess = proc_open(
-            ['cvlc', '--play-and-exit', '-I', 'rc', '--rc-host', VLC_RC_HOST, SONGS_PATH . '/' . $song->youtubeId . '.mp3'],
+            [
+                'cvlc',
+                '--play-and-exit',
+                ...($song->state === SongState::PAUSED ? ['--start-paused'] : []),
+                '-I',
+                'rc',
+                '--rc-host',
+                VLC_RC_HOST,
+                SONGS_PATH . '/' . $song->youtubeId . '.mp3',
+            ],
             [1 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']],
             $pipes,
         );
         $this->currentSong = $song;
-        $this->currentPlayState = SongState::PLAYING;
+        $this->currentPlayState = $song->state;
 
         Db::connect()
             ->prepare('INSERT INTO song_history (song_id, played_by, created_at, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)')
@@ -104,7 +127,6 @@ final class VlcPlayer
 
         $this->vlcProcess = null;
         $this->currentSong = null;
-        $this->currentPlayState = null;
     }
 
     private function stop(): void
@@ -121,7 +143,14 @@ final class VlcPlayer
 
         $this->vlcProcess = null;
         $this->currentSong = null;
-        $this->currentPlayState = null;
+        $this->currentPlayState = SongState::PLAYING;
+    }
+
+    private function queueIsEmpty(): bool
+    {
+        return (bool) Db::connect()
+            ->query('SELECT NOT EXISTS (SELECT 1 FROM songs WHERE queued_by IS NOT NULL)')
+            ->fetchColumn();
     }
 
     private function isRunning(): bool
