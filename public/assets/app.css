@@ -290,6 +290,73 @@ button[disabled] {
   flex: 1;
   min-height: 0;
 }
+#addDialog #browse {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+#addDialog:has(#search-status.htmx-request) #browse,
+#addDialog:has(#search-results:not(:empty)) #browse,
+#addDialog:has(#artist-cloud:empty) #browse {
+  display: none;
+}
+#artist-cloud {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 0 -40px;
+  padding: 20px 40px 20px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  align-content: start;
+}
+
+.artistTag {
+  --card: hsl(var(--hue, 340) 32% 74%);
+  --tab: hsl(var(--hue, 340) 34% 46%);
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  border: none;
+  border-radius: 3px;
+  padding: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 60%),
+    var(--card);
+  color: #222;
+  font-weight: 700;
+  font-size: 13px;
+  font-variant: small-caps;
+  cursor: pointer;
+}
+.artistTag::before,
+.artistTag::after {
+  content: '';
+  flex: 0 0 10px;
+  height: 5px;
+  background: var(--tab);
+}
+.artistTag span {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 20px;
+  line-height: 18px;
+  padding: 0 6px;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  background: #fff;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.artistTag:hover {
+  --card: #b8284f;
+  --tab: #fff;
+}
 #addDialog::backdrop {
   background: rgba(0, 0, 0, 0.4);
 }
@@ -320,7 +387,8 @@ button[disabled] {
   text-align: center;
 }
 #addDialog:has(#search-status.htmx-request) .search-header,
-#addDialog:has(#search-results:not(:empty)) .search-header {
+#addDialog:has(#search-results:not(:empty)) .search-header,
+#addDialog:has(#artist-cloud:not(:empty)) .search-header {
   border-bottom-color: #00aced;
 }
 .search-title {

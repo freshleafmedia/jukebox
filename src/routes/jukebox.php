@@ -17,7 +17,7 @@
         <header>
             <div class="masthead">
                 <h1>Freshleaf Jukebox</h1>
-                <button class="btn" id="addButton" onclick="document.getElementById('addDialog').showModal()">Add Song</button>
+                <button class="btn" id="addButton" onclick="document.getElementById('addDialog').showModal(); htmx.trigger('#artist-cloud', 'browse')">Add Song</button>
             </div>
 
             <div class="media-controls" id="mediaControls"></div>
@@ -70,6 +70,10 @@
                 >
             </div>
 
+            <div id="browse">
+                <div id="artist-cloud" hx-get="/action/browse-artists" hx-trigger="browse" hx-swap="innerHTML"></div>
+            </div>
+
             <div id="search-container">
                 <p id="search-status" class="htmx-indicator status">Searching...</p>
                 <div id="search-results"></div>
@@ -109,6 +113,19 @@
             if (event.target.id === 'addDialog') {
                 event.target.close();
             }
+        });
+
+        addDialog.addEventListener('click', (event) => {
+            const tag = event.target.closest('.artistTag');
+
+            if (!tag) {
+                return;
+            }
+
+            const search = addDialog.querySelector('#search');
+
+            search.value = tag.dataset.artist;
+            htmx.trigger(search, 'search');
         });
 
         addDialog.addEventListener('close', () => {
